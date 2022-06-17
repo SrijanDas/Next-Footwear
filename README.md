@@ -1,5 +1,5 @@
 # Next-Shoes
 
-## Screenshots
+<!-- ## Screenshots -->
 
 ![App Screenshot](screenshots/homepage.png)
