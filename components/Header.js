@@ -1,11 +1,15 @@
+import Link from "next/link";
 import React from "react";
-import { HiSearch, HiShoppingCart } from "react-icons/hi";
+import { HiMenu, HiShoppingCart, HiSearch } from "react-icons/hi";
 
 function Header() {
   return (
     <nav className="flex flex-wrap p-3 bg-gray-800 justify-between items-center">
-      <div className="navBrand text-white">
-        <h2 className="text-lg font-semibold cursor-pointer">Next Shoes</h2>
+      <div className="navBrand flex items-center text-lg font-semibold text-white cursor-pointer">
+        <HiMenu />
+        <Link href="/">
+          <h2 className="ml-2">Next Shoes</h2>
+        </Link>
       </div>
       <div className="buttons flex gap-2 md:order-last">
         <button className="btn-white">Login</button>
@@ -14,8 +18,19 @@ function Header() {
           Cart (2)
         </button>
       </div>
-      <div className="search p-2 mt-3 bg-white rounded-md w-[100%] md:mt-0 md:w-[60%]">
-        Search Container
+      <div className="search mt-3 w-full md:mt-0 md:w-[60%]">
+        <form className="flex bg-gray-50 rounded-lg">
+          <input
+            type="search"
+            id="default-search"
+            class="block p-2.5 w-full text-sm outline-none text-gray-900 rounded-lg"
+            placeholder="Search here..."
+            required
+          />
+          <button type="submit" class="btn-green">
+            <HiSearch />
+          </button>
+        </form>
       </div>
     </nav>
   );
