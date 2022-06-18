@@ -4,9 +4,16 @@
 
 @layer components {
     .btn-green {
-      @apply py-2 px-4 flex justify-center items-center  bg-green-500 hover:bg-green-600 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-md;
+      @apply py-2 px-4 w-auto flex justify-center items-center  bg-green-500 hover:bg-green-600 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-md;
     }
     .btn-white {
         @apply py-2 px-4 border text-base rounded-md text-gray-600 bg-white hover:bg-gray-100
+    }
+    .btn-black-outlined {
+        @apply py-2 px-3.5 font-medium text-sm transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none
+    }
+
+    .btn-black {
+        @apply py-2 px-3.5 font-medium text-sm transition ease-in duration-200 uppercase rounded-full bg-gray-800 hover:bg-gray-900 text-white border-2 border-gray-900 focus:outline-none
     }
   }
