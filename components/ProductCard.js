@@ -64,9 +64,9 @@ function ProductCard() {
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             ₹8999
           </span>
-          <a href="#" className="btn-green mt-2 md:mt-0">
-            Add to cart
-          </a>
+          <Link href="/cart">
+            <button className="btn-green mt-2 md:mt-0">Add to cart</button>
+          </Link>
         </div>
       </div>
     </div>
