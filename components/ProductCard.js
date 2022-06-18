@@ -60,11 +60,11 @@ function ProductCard() {
             5.0
           </span>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center">
           <span className="text-2xl font-bold text-gray-900 dark:text-white">
             ₹8999
           </span>
-          <a href="#" className="btn-green">
+          <a href="#" className="btn-green mt-2 md:mt-0">
             Add to cart
           </a>
         </div>
