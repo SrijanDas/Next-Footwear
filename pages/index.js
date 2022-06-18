@@ -1,9 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
+  const [newProducts, setnewProducts] = useState([{}, {}, {}, {}]);
   return (
     <div className="">
       <Head>
@@ -29,12 +31,14 @@ export default function Home() {
       </section>
 
       <section className="newProducts p-4">
-        <div className="flex flex-wrap justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center pb-4">
           <span className="text-lg font-semibold">NEW ARRIVALS</span>
           <button className="btn-black-outlined">VIEW ALL</button>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <ProductCard />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-3">
+          {newProducts.map((index, product) => (
+            <ProductCard key={index} />
+          ))}
         </div>
       </section>
     </div>
