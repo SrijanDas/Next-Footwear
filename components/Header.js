@@ -6,16 +6,6 @@ import Sidebar from "./Sidebar";
 function Header() {
   const [showSidebar, setShowSidebar] = useState(false);
 
-  const toggleDrawer = () => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setShowSidebar(false);
-  };
-
   return (
     <>
       <nav className="flex flex-wrap p-3 bg-gray-800 justify-between items-center">
@@ -26,11 +16,15 @@ function Header() {
           </Link>
         </div>
         <div className="buttons flex gap-2 md:order-last">
-          <button className="btn-white">Login</button>
-          <button className="btn-green">
-            <HiShoppingCart className="mr-2" />
-            Cart (2)
-          </button>
+          <Link href={"/login"}>
+            <button className="btn-white">Login</button>
+          </Link>
+          <Link href="/cart">
+            <button className="btn-green">
+              <HiShoppingCart className="mr-2" />
+              Cart (2)
+            </button>
+          </Link>
         </div>
         <div className="search mt-3 w-full md:mt-0 md:w-[60%]">
           <form className="flex bg-gray-50 rounded-lg">

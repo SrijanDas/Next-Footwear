@@ -1,11 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+
 import { useState } from "react";
 import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
+import { HiArrowRight } from "react-icons/hi";
+
+import products from "../dummyData";
 
 export default function Home() {
-  const [newProducts, setnewProducts] = useState([{}, {}, {}, {}]);
+  const [newProducts, setnewProducts] = useState(products);
   return (
     <div className="">
       <Head>
@@ -26,18 +31,25 @@ export default function Home() {
           <h1 className="text-xl font-semibold">
             YEEZY BOOST 350 V2 ONYX AND BONE
           </h1>
-          <button className="btn-black-outlined mt-4">FIND OUT MORE</button>
+          <Link href="/products">
+            <button className="btn-black-outlined mt-4">FIND OUT MORE</button>
+          </Link>
         </div>
       </section>
 
-      <section className="newProducts p-4">
+      <section className="newProducts p-4 md:p-10">
         <div className="flex flex-wrap justify-between items-center pb-4">
           <span className="text-lg font-semibold">NEW ARRIVALS</span>
-          <button className="btn-black-outlined">VIEW ALL</button>
+          <Link href="/products">
+            <button className="btn-black-outlined flex items-center gap-2">
+              VIEW ALL
+              <HiArrowRight />
+            </button>
+          </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-3">
-          {newProducts.map((index, product) => (
-            <ProductCard key={index} />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-3 ">
+          {newProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>

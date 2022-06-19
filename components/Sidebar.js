@@ -8,7 +8,7 @@ function Sidebar({ showSidebar, setShowSidebar }) {
           showSidebar ? "translate-x-0 " : "translate-x-full"
         }`}
       >
-        <div className="w-[35vw]  bg-white h-full fixed z-40 top-0 left-0">
+        <div className="w-[35vw] bg-white h-full fixed z-40 top-0 left-0">
           <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
             <ul className="space-y-2">
               <li>
@@ -77,18 +77,18 @@ function Sidebar({ showSidebar, setShowSidebar }) {
               </li>
             </ul>
           </div>
+          {/* <button
+            className="flex text-4xl text-black items-center cursor-pointer fixed left-52 top-1 z-50"
+            onClick={() => setShowSidebar(false)}
+          >
+            x
+          </button> */}
         </div>
         <div
           onClick={() => setShowSidebar(false)}
           className="bg-gray-500/30  w-full"
         ></div>
       </div>
-      <button
-        className="flex text-4xl text-white items-center cursor-pointer fixed left-52 top-1 z-50"
-        onClick={() => setShowSidebar(false)}
-      >
-        x
-      </button>
     </>
   );
 }

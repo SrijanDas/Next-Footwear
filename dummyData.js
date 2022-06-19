@@ -1,3 +1,5 @@
+import Img from "./assets/addidas1.png";
+
 const products = [
   {
     id: 0,
@@ -19,9 +21,9 @@ const products = [
   },
   {
     id: 3,
-    name: "Puma Unisex-Child Jaro Ac Ps Closed Shoe",
-    img: "https://m.media-amazon.com/images/I/614bRZqewWL._UL1200_.jpg",
-    price: 744.0,
+    name: "Addidas FORUM LOW",
+    img: Img,
+    price: 8999.0,
   },
 ];
 
