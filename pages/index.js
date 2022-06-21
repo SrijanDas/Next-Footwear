@@ -2,15 +2,15 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useState } from "react";
 import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
 
-import products from "../dummyData";
+import axios from "../helpers/axios";
 
-export default function Home() {
-  const [newProducts, setnewProducts] = useState(products);
+export default function Home(props) {
+  const newProducts = props.data;
+  // console.log(newProducts);
   return (
     <div className="">
       <Head>
@@ -55,4 +55,17 @@ export default function Home() {
       </section>
     </div>
   );
+}
+
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  try {
+    const res = await axios.get("/latest-products");
+    // Pass data to the page via props
+    return { props: { data: res.data } };
+  } catch (error) {
+    console.log(error);
+    return { props: { error: error } };
+  }
 }

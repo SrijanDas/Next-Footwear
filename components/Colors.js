@@ -1,0 +1,87 @@
+import React from "react";
+
+const Yellow = ({ selectedColor, setSelectedColor }) => {
+  return (
+    <li onClick={() => setSelectedColor("yellow")} className="mr-4 last:mr-0">
+      <span
+        className={`block p-1 border-2 border-${
+          selectedColor === "yellow" ? "gray-500" : "white"
+        } hover:border-gray-500 rounded-full transition ease-in duration-300`}
+      >
+        <button className="block w-6 h-6 bg-yellow-500 rounded-full"></button>
+      </span>
+    </li>
+  );
+};
+
+const Black = ({ selectedColor, setSelectedColor }) => {
+  return (
+    <li onClick={() => setSelectedColor("black")} className="mr-4 last:mr-0">
+      <span
+        className={`block p-1 border-2 border-${
+          selectedColor === "black" ? "gray-500" : "white"
+        } hover:border-gray-500 rounded-full transition ease-in duration-300`}
+      >
+        <button className="block w-6 h-6 bg-black rounded-full"></button>
+      </span>
+    </li>
+  );
+};
+
+function Colors({
+  selectedColor,
+  setSelectedColor,
+  mainColor,
+  availableColors,
+}) {
+  return (
+    <div className="my-4">
+      <span className="mb-2 text-lg">Colors:</span>
+      <ul className="flex flex-row items-center mt-2">
+        {availableColors.map((color, index) =>
+          color === "black" ? (
+            <Black
+              key={`${index}_${color}`}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
+          ) : color === "yellow" ? (
+            <Yellow
+              key={`${index}_${color}`}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
+          ) : (
+            ""
+          )
+        )}
+        {/* <li className="mr-4 last:mr-0">
+          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
+            <a
+              href="#yellow"
+              className="block w-6 h-6 bg-yellow-500 rounded-full"
+            ></a>
+          </span>
+        </li>
+        <li className="mr-4 last:mr-0">
+          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
+            <a
+              href="#red"
+              className="block w-6 h-6 bg-red-500 rounded-full"
+            ></a>
+          </span>
+        </li>
+        <li className="mr-4 last:mr-0">
+          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
+            <a
+              href="#green"
+              className="block w-6 h-6 bg-green-500 rounded-full"
+            ></a>
+          </span>
+        </li> */}
+      </ul>
+    </div>
+  );
+}
+
+export default Colors;

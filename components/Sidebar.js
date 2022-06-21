@@ -54,14 +54,14 @@ function Sidebar({ showSidebar, setShowSidebar }) {
                 </a>
               </li>
             </ul>
-            <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+            <ul className="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
               <li>
                 <a
                   href="#"
-                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                 >
                   <svg
-                    class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ function Sidebar({ showSidebar, setShowSidebar }) {
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  <span class="ml-3">Help</span>
+                  <span className="ml-3">Help</span>
                 </a>
               </li>
             </ul>
