@@ -22,7 +22,6 @@ const MobileFilter = () => {
 
 function Products({ data }) {
   const products = data;
-  console.log(data);
   return (
     <>
       <Head>
