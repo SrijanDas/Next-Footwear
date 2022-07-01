@@ -8,7 +8,7 @@ function Header() {
 
   return (
     <>
-      <nav className="flex flex-wrap p-3 bg-gray-800 justify-between items-center">
+      <nav className="flex flex-wrap sticky top-0 z-40 p-3 bg-gray-800 justify-between items-center">
         <div className="navBrand flex items-center text-lg font-semibold text-white cursor-pointer">
           <HiMenu onClick={() => setShowSidebar(true)} />
           <Link href="/">
@@ -41,9 +41,8 @@ function Header() {
           </form>
         </div>
       </nav>
-      {showSidebar && (
-        <Sidebar setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
-      )}
+
+      <Sidebar setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
     </>
   );
 }
