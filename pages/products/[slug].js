@@ -49,7 +49,7 @@ function ProductSlug(props) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20">
+      <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
         <div className="leftSide w-full lg:w-[40%]">
           <div className="w-full h-[18rem] relative">
             <Image src={product.image_url} layout="fill" objectFit="contain" />

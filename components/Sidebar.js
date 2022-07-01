@@ -85,7 +85,7 @@ function Sidebar({ showSidebar, setShowSidebar }) {
       </div>
       <div
         onClick={() => setShowSidebar(false)}
-        className={`bg-gray-500/30 w-full`}
+        className={`w-full ${showSidebar && "bg-gray-500/30"}`}
       ></div>
     </div>
   );
