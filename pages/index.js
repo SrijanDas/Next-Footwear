@@ -40,7 +40,7 @@ export default function Home(props) {
         </div>
       </section>
 
-      <section className="newProducts p-4 md:p-10">
+      <section className="newProducts p-4 md:p-10 bg-white">
         <div className="flex flex-wrap justify-between items-center pb-4">
           <span className="text-lg font-semibold">NEW ARRIVALS</span>
           <Link href="/products">
