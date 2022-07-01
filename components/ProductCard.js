@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
 
   return (
-    <div className="flex flex-col h-auto min-h-[18rem] bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-col h-auto max-h-[22rem] min-h-[18rem] bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
       <Link href={productLink}>
         <div className="p-1 rounded-t-lg cursor-pointer flex flex-col items-center">
           <Image
@@ -62,4 +62,4 @@ function ProductCard({ product }) {
   );
 }
 
-export default ProductCard;
+export default memo(ProductCard);

@@ -2,7 +2,8 @@ import React from "react";
 import ProductCard from "../../components/ProductCard";
 import { HiFilter, HiSortAscending } from "react-icons/hi";
 import Filter from "../../components/Filter";
-import products from "../../dummyData";
+import axios from "../../helpers/axios";
+import Head from "next/head";
 
 const MobileFilter = () => {
   return (
@@ -19,9 +20,19 @@ const MobileFilter = () => {
   );
 };
 
-function Products() {
+function Products({ data }) {
+  const products = data;
+  console.log(data);
   return (
     <>
+      <Head>
+        <title>NFootwears | Products</title>
+        <meta
+          name="description"
+          content="We ship footwares directly from the brands to your doorsteps..."
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <MobileFilter />
 
       <div className="flex gap-4">
@@ -32,9 +43,7 @@ function Products() {
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+
           <div className="h-full"></div>
         </div>
       </div>
@@ -43,3 +52,12 @@ function Products() {
 }
 
 export default Products;
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await axios.get("/latest-products");
+  const { data } = res;
+
+  // Pass data to the page via props
+  return { props: { data } };
+}
