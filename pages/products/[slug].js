@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import BrandContainer from "../../components/BrandContainer";
-import Colors from "../../components/Colors";
-import Size from "../../components/Size";
+import BrandContainer from "../../components/products/BrandContainer";
+import Colors from "../../components/products/Colors";
+import Size from "../../components/products/Size";
 import axios from "../../helpers/axios";
 
 function ProductSlug(props) {
