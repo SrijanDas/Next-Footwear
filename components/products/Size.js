@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 function Size({ selectedSize, setSelectedSize }) {
   const sizes = [6, 7, 8, 9, 10];
@@ -25,4 +25,4 @@ function Size({ selectedSize, setSelectedSize }) {
   );
 }
 
-export default Size;
+export default memo(Size);

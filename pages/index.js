@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
@@ -8,7 +9,16 @@ import { HiArrowRight } from "react-icons/hi";
 
 import axios from "../helpers/axios";
 
+import { useDispatch } from "react-redux";
+import { load_user } from "../store/actions/authActions";
+
 export default function Home(props) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(load_user());
+  }, [dispatch]);
+
   const newProducts = props.data;
   // console.log(newProducts);
   return (

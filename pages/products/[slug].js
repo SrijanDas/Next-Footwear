@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
@@ -13,6 +14,10 @@ function ProductSlug(props) {
   const [price, setPrice] = useState("₹" + product.starting_price);
   const [selectedColor, setSelectedColor] = useState(product.color);
   const [selectedSize, setSelectedSize] = useState(0);
+  const btnsDisabled =
+    selectedColor === "" ||
+    selectedSize === 0 ||
+    price === "This variant is not available";
 
   // updating price when color or size is changed
   useEffect(() => {
@@ -39,10 +44,26 @@ function ProductSlug(props) {
     fetchPrice();
   }, [selectedColor, selectedSize]);
 
+  const dispatch = useDispatch();
+
+  const addToCart = () => {
+    console.log("added to card", product.id);
+    dispatch({
+      type: "ADDED_TO_CART",
+      payload: {
+        id: product.id,
+        slug: product.slug,
+        size: selectedSize,
+        color: selectedColor,
+        quantity: 1,
+      },
+    });
+  };
+
   return (
     <>
       <Head>
-        <title>NFootwears | {product.name}</title>
+        <title>NFootwears | </title>
         <meta
           name="description"
           content="We ship footwares directly from the brands to your doorsteps..."
@@ -55,8 +76,19 @@ function ProductSlug(props) {
             <Image src={product.image_url} layout="fill" objectFit="contain" />
           </div>
           <div className="mt-4 flex gap-2">
-            <button className="btn-green w-1/2">BUY NOW</button>
-            <button className="btn-black rounded-md w-1/2">ADD TO CART</button>
+            <button
+              className="btn btn-green w-1/2 outline-none border-none"
+              disabled={btnsDisabled}
+            >
+              BUY NOW
+            </button>
+            <button
+              onClick={addToCart}
+              className="btn btn-black rounded-md w-1/2"
+              disabled={btnsDisabled}
+            >
+              ADD TO CART
+            </button>
           </div>
         </div>
         <div className="rightSide px-1 py-5 lg:w-[40%] lg:py-0 lg:px-10">

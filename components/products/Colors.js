@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const Yellow = ({ selectedColor, setSelectedColor }) => {
   return (
@@ -28,12 +28,7 @@ const Black = ({ selectedColor, setSelectedColor }) => {
   );
 };
 
-function Colors({
-  selectedColor,
-  setSelectedColor,
-  mainColor,
-  availableColors,
-}) {
+function Colors({ selectedColor, setSelectedColor, availableColors }) {
   return (
     <div className="my-4">
       <span className="mb-2 text-lg">Colors:</span>
@@ -55,33 +50,9 @@ function Colors({
             ""
           )
         )}
-        {/* <li className="mr-4 last:mr-0">
-          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
-            <a
-              href="#yellow"
-              className="block w-6 h-6 bg-yellow-500 rounded-full"
-            ></a>
-          </span>
-        </li>
-        <li className="mr-4 last:mr-0">
-          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
-            <a
-              href="#red"
-              className="block w-6 h-6 bg-red-500 rounded-full"
-            ></a>
-          </span>
-        </li>
-        <li className="mr-4 last:mr-0">
-          <span className="block p-1 border-2 border-white hover:border-gray-500 rounded-full transition ease-in duration-300">
-            <a
-              href="#green"
-              className="block w-6 h-6 bg-green-500 rounded-full"
-            ></a>
-          </span>
-        </li> */}
       </ul>
     </div>
   );
 }
 
-export default Colors;
+export default memo(Colors);

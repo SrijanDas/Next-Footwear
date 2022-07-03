@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 
 function BrandContainer({ brand }) {
@@ -12,4 +12,4 @@ function BrandContainer({ brand }) {
   );
 }
 
-export default BrandContainer;
+export default memo(BrandContainer);
