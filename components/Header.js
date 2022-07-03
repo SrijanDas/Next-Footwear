@@ -1,10 +1,17 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HiMenu, HiShoppingCart, HiSearch } from "react-icons/hi";
 import Sidebar from "./Sidebar";
 
 function Header() {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [isAuthenticated, setisAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setisAuthenticated(
+      JSON.parse(localStorage.getItem("nf_auth_token")) || false
+    );
+  }, []);
 
   return (
     <>
@@ -16,9 +23,16 @@ function Header() {
           </Link>
         </div>
         <div className="buttons flex gap-2 md:order-last">
-          <Link href={"/login"}>
-            <button className="btn-white">Login</button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href={"/account"}>
+              <button className="btn-white">My Account</button>
+            </Link>
+          ) : (
+            <Link href={"/login"}>
+              <button className="btn-white">Login</button>
+            </Link>
+          )}
+
           <Link href="/cart">
             <button className="btn-green">
               <HiShoppingCart className="mr-2" />

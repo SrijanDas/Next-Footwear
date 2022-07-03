@@ -51,9 +51,10 @@ export default function Home(props) {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-3 ">
-          {newProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {newProducts.length >= 0 &&
+            newProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
         </div>
       </section>
     </div>
@@ -64,11 +65,11 @@ export default function Home(props) {
 export async function getServerSideProps() {
   // Fetch data from external API
   try {
-    const res = await axios.get("/latest-products");
+    const res = await axios.get("/products/latest-products");
     // Pass data to the page via props
     return { props: { data: res.data } };
   } catch (error) {
-    console.log(error);
-    return { props: { error: error } };
+    // console.log(error);
+    return { props: { data: [] } };
   }
 }

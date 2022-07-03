@@ -16,4 +16,7 @@
     .btn-black {
         @apply py-2 px-3.5 font-medium text-sm transition ease-in duration-200 uppercase rounded-full bg-gray-800 hover:bg-gray-900 text-white border-2 border-gray-900 focus:outline-none
     }
+    .link{
+        @apply cursor-pointer no-underline text-indigo-500 hover:text-gray-800 hover:underline
+    }
   }
