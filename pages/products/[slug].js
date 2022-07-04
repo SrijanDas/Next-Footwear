@@ -10,10 +10,11 @@ import axios from "../../helpers/axios";
 function ProductSlug(props) {
   const product = props.data;
   const brand = product.brand;
-
   const [price, setPrice] = useState("₹" + product.starting_price);
   const [selectedColor, setSelectedColor] = useState(product.color);
   const [selectedSize, setSelectedSize] = useState(0);
+  const [productId, setProductId] = useState(product.id);
+
   const btnsDisabled =
     selectedColor === "" ||
     selectedSize === 0 ||
@@ -29,6 +30,7 @@ function ProductSlug(props) {
         const newSlug = strArr.join("-");
         const res = await axios.get(`/products/get-price/${newSlug}`);
         setPrice("₹" + res.data.price);
+        setProductId(res.data.id);
       } catch (error) {
         // console.log(error);
         if (selectedSize !== 0) {
@@ -47,15 +49,15 @@ function ProductSlug(props) {
   const dispatch = useDispatch();
 
   const addToCart = () => {
-    console.log("added to card", product.id);
+    console.log("added to card", productId);
     dispatch({
       type: "ADDED_TO_CART",
       payload: {
-        id: product.id,
-        slug: product.slug,
+        id: productId,
         size: selectedSize,
         color: selectedColor,
         quantity: 1,
+        price: parseInt(price.replace("₹", "")),
       },
     });
   };

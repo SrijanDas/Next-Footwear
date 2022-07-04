@@ -2,10 +2,12 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { HiMenu, HiShoppingCart, HiSearch } from "react-icons/hi";
 import Sidebar from "./Sidebar";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [isAuthenticated, setisAuthenticated] = useState(false);
+  const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     setisAuthenticated(
@@ -36,7 +38,7 @@ function Header() {
           <Link href="/cart">
             <button className="btn-green">
               <HiShoppingCart className="mr-2" />
-              Cart (2)
+              Cart ({cart.totalItems})
             </button>
           </Link>
         </div>
