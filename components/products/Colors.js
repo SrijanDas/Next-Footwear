@@ -28,6 +28,34 @@ const Black = ({ selectedColor, setSelectedColor }) => {
   );
 };
 
+const Blue = ({ selectedColor, setSelectedColor }) => {
+  return (
+    <li onClick={() => setSelectedColor("blue")} className="mr-4 last:mr-0">
+      <span
+        className={`block p-1 border-2 border-${
+          selectedColor === "blue" ? "gray-500" : "white"
+        } hover:border-gray-500 rounded-full transition ease-in duration-300`}
+      >
+        <button className="block w-6 h-6 bg-blue-900 rounded-full"></button>
+      </span>
+    </li>
+  );
+};
+
+const Gray = ({ selectedColor, setSelectedColor }) => {
+  return (
+    <li onClick={() => setSelectedColor("grey")} className="mr-4 last:mr-0">
+      <span
+        className={`block p-1 border-2 border-${
+          selectedColor === "grey" ? "gray-500" : "white"
+        } hover:border-gray-500 rounded-full transition ease-in duration-300`}
+      >
+        <button className="block w-6 h-6 bg-gray-500 rounded-full"></button>
+      </span>
+    </li>
+  );
+};
+
 function Colors({ selectedColor, setSelectedColor, availableColors }) {
   return (
     <div className="my-4">
@@ -42,6 +70,18 @@ function Colors({ selectedColor, setSelectedColor, availableColors }) {
             />
           ) : color === "yellow" ? (
             <Yellow
+              key={`${index}_${color}`}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
+          ) : color === "blue" ? (
+            <Blue
+              key={`${index}_${color}`}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+            />
+          ) : color === "grey" ? (
+            <Gray
               key={`${index}_${color}`}
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}
