@@ -1,4 +1,4 @@
-import * as actionTypes from "../types";
+import * as actionTypes from "../types/cartTypes";
 
 const initialState = {
   items: [],
@@ -8,27 +8,41 @@ const initialState = {
 
 const cartReducer = (state = initialState, action) => {
   const { type, payload } = action;
+  let items = [...state.items];
+  let totalAmount = state.totalAmount;
+  let totalItems = state.totalItems;
+
   switch (type) {
+    case actionTypes.CART_LOADED_SUCCESS:
+      state = payload;
+      return {
+        ...state,
+      };
+    case actionTypes.CART_LOADED_FAIL:
+      return {
+        ...state,
+      };
     case actionTypes.ADDED_TO_CART:
-      console.log(payload);
       const { id } = payload;
-      const itemIndex = state.items.findIndex((item) => item.id === id);
+      const itemIndex = items.findIndex((item) => item.id === id);
 
       if (itemIndex === -1) {
-        return {
-          items: [...state.items, payload],
-          totalItems: state.totalItems + 1,
-          totalAmount: state.totalAmount + payload.price,
-        };
+        items.push(payload);
       } else {
-        state.items[itemIndex].quantity += 1;
-        state.items[itemIndex].price += payload.price;
-        return {
-          items: [...state.items],
-          totalItems: state.totalItems + 1,
-          totalAmount: state.totalAmount + payload.price,
-        };
+        items[itemIndex].quantity += 1;
+        items[itemIndex].price += payload.price;
       }
+      totalItems += 1;
+      totalAmount += payload.price;
+      localStorage.setItem(
+        "nf_cart",
+        JSON.stringify({ items, totalAmount, totalItems })
+      );
+      return {
+        items,
+        totalItems,
+        totalAmount,
+      };
     case actionTypes.REMOVED_FROM_CART:
       return {
         items: [...state.items.filter((item) => item.id !== payload)],

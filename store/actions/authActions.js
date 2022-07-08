@@ -1,4 +1,4 @@
-import * as actiontypes from "../types";
+import * as actiontypes from "../types/authTypes";
 import axios from "../../helpers/axios";
 
 export const load_user = () => async (dispatch) => {

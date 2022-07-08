@@ -11,12 +11,15 @@ import axios from "../helpers/axios";
 
 import { useDispatch } from "react-redux";
 import { load_user } from "../store/actions/authActions";
+import { load_cart } from "../store/actions/cartActions";
+import { initializeStore } from "../store";
 
 export default function Home(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(load_user());
+    dispatch(load_cart());
   }, [dispatch]);
 
   const newProducts = props.data;
@@ -71,15 +74,23 @@ export default function Home(props) {
   );
 }
 
-// This gets called on every request
-export async function getServerSideProps() {
-  // Fetch data from external API
-  try {
-    const res = await axios.get("/products/latest-products");
-    // Pass data to the page via props
-    return { props: { data: res.data } };
-  } catch (error) {
-    // console.log(error);
-    return { props: { data: [] } };
-  }
+export async function getStaticProps() {
+  initializeStore();
+  const res = await axios.get("/products/latest-products");
+  return {
+    props: { data: res.data },
+  };
 }
+
+// // This gets called on every request
+// export async function getServerSideProps() {
+//   // Fetch data from external API
+//   try {
+//     const res = await axios.get("/products/latest-products");
+//     // Pass data to the page via props
+//     return { props: { data: res.data } };
+//   } catch (error) {
+//     // console.log(error);
+//     return { props: { data: [] } };
+//   }
+// }

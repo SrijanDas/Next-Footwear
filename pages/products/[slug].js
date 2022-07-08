@@ -36,7 +36,6 @@ function ProductSlug(props) {
   // updating price when color or size is changed
   useEffect(() => {
     const fetchProduct = async () => {
-      console.log("called");
       try {
         let strArr = product.slug.split("-");
         strArr[strArr.length - 1] = selectedColor;
@@ -65,7 +64,6 @@ function ProductSlug(props) {
   const dispatch = useDispatch();
 
   const addToCart = () => {
-    console.log("added to card", productId);
     dispatch({
       type: "ADDED_TO_CART",
       payload: {
