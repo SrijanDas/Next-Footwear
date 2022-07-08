@@ -9,28 +9,44 @@ import axios from "../../helpers/axios";
 
 function ProductSlug(props) {
   const product = props.data;
+  const pageTitle = `NFootwears | ${product.name}`;
   const brand = product.brand;
   const [price, setPrice] = useState("₹" + product.starting_price);
   const [selectedColor, setSelectedColor] = useState(product.color);
   const [selectedSize, setSelectedSize] = useState(0);
   const [productId, setProductId] = useState(product.id);
+  const [imageUrl, setImageUrl] = useState(product.image_url);
 
   const btnsDisabled =
     selectedColor === "" ||
     selectedSize === 0 ||
     price === "This variant is not available";
 
+  // updating image change
+  useEffect(() => {
+    let strArr = product.slug.split("-");
+    strArr[strArr.length - 1] = selectedColor;
+    const newSlug = strArr.join("-");
+
+    axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
+      setImageUrl(res.data.image_url);
+    });
+  }, [selectedColor]);
+
   // updating price when color or size is changed
   useEffect(() => {
-    const fetchPrice = async () => {
+    const fetchProduct = async () => {
+      console.log("called");
       try {
         let strArr = product.slug.split("-");
         strArr[strArr.length - 1] = selectedColor;
         strArr.push(selectedSize);
         const newSlug = strArr.join("-");
-        const res = await axios.get(`/products/get-price/${newSlug}`);
-        setPrice("₹" + res.data.price);
-        setProductId(res.data.id);
+        const { data } = await axios.get(`/products/details/${newSlug}`);
+
+        setPrice("₹" + data.price);
+        setProductId(data.id);
+        setImageUrl(data.image_url);
       } catch (error) {
         // console.log(error);
         if (selectedSize !== 0) {
@@ -43,7 +59,7 @@ function ProductSlug(props) {
       setPrice("Please select size");
       return;
     }
-    fetchPrice();
+    fetchProduct();
   }, [selectedColor, selectedSize]);
 
   const dispatch = useDispatch();
@@ -65,7 +81,7 @@ function ProductSlug(props) {
   return (
     <>
       <Head>
-        <title>NFootwears | </title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content="We ship footwares directly from the brands to your doorsteps..."
@@ -75,7 +91,7 @@ function ProductSlug(props) {
       <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
         <div className="leftSide w-full lg:w-[40%]">
           <div className="w-full h-[18rem] relative">
-            <Image src={product.image_url} layout="fill" objectFit="contain" />
+            <Image src={imageUrl} layout="fill" objectFit="contain" />
           </div>
           <div className="mt-4 flex gap-2">
             <button
