@@ -21,7 +21,7 @@ function Header() {
         <div className="navBrand flex items-center text-lg font-semibold text-white cursor-pointer">
           <HiMenu onClick={() => setShowSidebar(true)} />
           <Link href="/">
-            <h2 className="ml-2">Next Shoes</h2>
+            <h2 className="ml-2">Next Footwear</h2>
           </Link>
         </div>
         <div className="buttons flex gap-2 md:order-last">
