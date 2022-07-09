@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { createWrapper } from "next-redux-wrapper";
 import rootReducer from "./reducers";
 import { useMemo } from "react";
 import { persistReducer } from "redux-persist";
@@ -13,7 +12,7 @@ let store;
 const persistConfig = {
   key: "primary",
   storage,
-  whitelist: ["cart"], // place to select which state you want to persist
+  whitelist: ["cart", "auth"], // place to select which state you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

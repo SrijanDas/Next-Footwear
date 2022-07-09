@@ -18,9 +18,18 @@ const userReducer = (state = initialState, action) => {
       };
     case actionTypes.USER_LOADED_FAIL:
       return {
+        ...state,
         loading: false,
         isAuthenticated: false,
         error: payload,
+      };
+
+    case actionTypes.USER_LOGOUT:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        loading: false,
       };
     default:
       return state;

@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import axios from "../helpers/axios";
+import React, { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/actions/authActions";
+import { useRouter } from "next/router";
 
 function account() {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    axios
-      .get("/auth/users/me", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${JSON.parse(
-            localStorage.getItem("nf_auth_token")
-          )}`,
-        },
-      })
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Something went wrong!");
-      });
-  }, []);
+  // const [user, setUser] = useState({});
+  const dispatch = useDispatch();
 
-  return (
-    <div>
-      <h1>{user.username}</h1>
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/login");
+  };
+
+  const router = useRouter();
+
+  isAuthenticated ? (
+    router.push("/account")
+  ) : (
+    <div className="p-10">
+      <div className="flex justify-between items-center">
+        <h1>{user.username}</h1>
+        <button onClick={handleLogout} className="btn btn-outline">
+          Logout
+        </button>
+      </div>
       <ToastContainer position="bottom-right" />
     </div>
   );

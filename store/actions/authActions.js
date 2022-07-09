@@ -30,3 +30,10 @@ export const load_user = () => async (dispatch) => {
     });
   }
 };
+
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("nf_auth_token");
+  dispatch({
+    type: actiontypes.USER_LOGOUT,
+  });
+};

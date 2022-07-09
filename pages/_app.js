@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { useStore } from "../store";
 import { Provider } from "react-redux";
+import Loading from "../components/Loading";
 
 export default function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
@@ -15,7 +16,7 @@ export default function App({ Component, pageProps }) {
   });
   return (
     <Provider store={store}>
-      <PersistGate loading={<div>loading</div>} persistor={persistor}>
+      <PersistGate loading={<Loading />} persistor={persistor}>
         <div className="flex flex-col h-screen justify-between">
           <Header />
           <Component {...pageProps} />

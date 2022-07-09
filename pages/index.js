@@ -74,7 +74,7 @@ export default function Home(props) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   initializeStore();
   const res = await axios.get("/products/latest-products");
   return {
