@@ -1,4 +1,4 @@
-# Next-Shoes
+# Next-Footwear
 
 <!-- ## Screenshots -->
 
