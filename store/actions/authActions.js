@@ -31,6 +31,28 @@ export const load_user = () => async (dispatch) => {
   }
 };
 
+export const loginCall = (email, password) => async (dispatch) => {
+  try {
+    const res = await axios.post("/auth/token/login/", {
+      username: email,
+      password,
+    });
+    localStorage.setItem("nf_auth_token", JSON.stringify(res.data.auth_token));
+    dispatch({
+      type: actiontypes.LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    load_user();
+  } catch (e) {
+    const errorData = e.response.data;
+
+    dispatch({
+      type: actiontypes.LOGIN_FAIL,
+      payload: errorData.non_field_errors[0],
+    });
+  }
+};
+
 export const logout = () => (dispatch) => {
   localStorage.removeItem("nf_auth_token");
   dispatch({

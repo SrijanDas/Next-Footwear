@@ -1,6 +1,6 @@
 import React from "react";
 
-function Loading() {
+function Loader() {
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-5">
       <h1 className="text-5xl font-bold">NFootwear</h1>
@@ -9,4 +9,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default Loader;

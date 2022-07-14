@@ -3,12 +3,22 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { load_user } from "../store/actions/authActions";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
+
+  if (typeof window !== undefined && isAuthenticated) {
+    router.replace("/");
+    return null;
+  }
 
   const handleSunmit = async (e) => {
     e.preventDefault();
@@ -16,15 +26,17 @@ function login() {
       toast.error("Please fill all fields");
       return;
     }
-    const formData = {
+
+    const body = {
       username: email,
       password,
     };
+
     await axios
-      .post("/auth/token/login/", formData)
+      .post("/auth/token/login/", body)
       .then(({ data }) => {
         localStorage.setItem("nf_auth_token", JSON.stringify(data.auth_token));
-        router.push("/");
+        router.replace("/");
       })
       .catch((e) => {
         const errorData = e.response.data;
@@ -32,6 +44,8 @@ function login() {
           toast.error(errorData.non_field_errors[0]);
         console.error(e);
       });
+
+    dispatch(load_user());
   };
 
   return (

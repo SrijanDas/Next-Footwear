@@ -17,9 +17,12 @@ function account() {
 
   const router = useRouter();
 
-  isAuthenticated ? (
-    router.push("/account")
-  ) : (
+  if (typeof window !== undefined && !isAuthenticated) {
+    router.push("/login");
+    return null;
+  }
+
+  return (
     <div className="p-10">
       <div className="flex justify-between items-center">
         <h1>{user.username}</h1>

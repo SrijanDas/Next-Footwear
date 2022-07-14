@@ -4,16 +4,8 @@ import { HiMenu, HiShoppingCart, HiSearch } from "react-icons/hi";
 import Sidebar from "./Sidebar";
 import { useSelector } from "react-redux";
 
-function Header() {
+function Header({ isAuthenticated, cart }) {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [isAuthenticated, setisAuthenticated] = useState(false);
-  const cart = useSelector((state) => state.cart);
-
-  useEffect(() => {
-    setisAuthenticated(
-      JSON.parse(localStorage.getItem("nf_auth_token")) || false
-    );
-  }, []);
 
   return (
     <>

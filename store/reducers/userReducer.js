@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   loading: true,
+  error: null,
 };
 
 const userReducer = (state = initialState, action) => {

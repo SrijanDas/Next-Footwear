@@ -1,44 +1,26 @@
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./reducers";
 import { useMemo } from "react";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunkMiddleware from "redux-thunk";
+import reducers from "./reducers";
 
 let store;
 
-// persist reducer
-const persistConfig = {
-  key: "primary",
-  storage,
-  whitelist: ["cart", "auth"], // place to select which state you want to persist
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// initial states here
-const initalState = {};
-
-// middleware
-const middleware = [thunk];
-
-// creating store
-function makeStore(initialState = initalState) {
+function initStore(initialState) {
   return createStore(
-    persistedReducer,
+    reducers,
     initialState,
-    composeWithDevTools(applyMiddleware(...middleware))
+    composeWithDevTools(applyMiddleware(thunkMiddleware))
   );
 }
 
 export const initializeStore = (preloadedState) => {
-  let _store = store ?? makeStore(preloadedState);
+  let _store = store ?? initStore(preloadedState);
 
   // After navigating to a page with an initial Redux state, merge that state
   // with the current state in the store, and create a new store
   if (preloadedState && store) {
-    _store = makeStore({
+    _store = initStore({
       ...store.getState(),
       ...preloadedState,
     });
@@ -54,7 +36,6 @@ export const initializeStore = (preloadedState) => {
   return _store;
 };
 
-// assigning store to next wrapper
 export function useStore(initialState) {
   const store = useMemo(() => initializeStore(initialState), [initialState]);
   return store;
