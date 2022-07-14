@@ -1,8 +1,7 @@
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { HiMenu, HiShoppingCart, HiSearch } from "react-icons/hi";
 import Sidebar from "./Sidebar";
-import { useSelector } from "react-redux";
 
 function Header({ isAuthenticated, cart }) {
   const [showSidebar, setShowSidebar] = useState(false);

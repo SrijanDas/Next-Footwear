@@ -5,21 +5,20 @@ import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
 import axios from "../helpers/axios";
-import { initializeStore } from "../store";
 
 export default function Home(props) {
   const newProducts = props.data;
   // console.log(newProducts);
   return (
-    <div className="">
-      <Head>
-        <title>NFootwears | Home</title>
+    <div>
+      {/* <Head>
+        <title>NFootwear | Home</title>
         <meta
           name="description"
           content="We ship footwares directly from the brands to your doorsteps..."
         />
         <link rel="icon" href="/favicon.ico" />
-      </Head>
+      </Head> */}
 
       <section className="hero flex flex-col md:flex-row md:items-end bg-[#EDECE1] p-10">
         <div className="h-auto w-full md:order-2">
@@ -61,7 +60,6 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps() {
-  initializeStore();
   const res = await axios.get("/products/latest-products");
   return {
     props: { data: res.data },
