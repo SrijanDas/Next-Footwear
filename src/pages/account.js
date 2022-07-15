@@ -23,7 +23,7 @@ function account() {
   }
 
   return (
-    <div className="p-10">
+    <div className="p-4 md:p-10">
       <div className="flex justify-between items-center my-4">
         <h1>{user.username}</h1>
         <button onClick={handleLogout} className="btn btn-outline">
