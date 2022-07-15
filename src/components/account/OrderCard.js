@@ -6,7 +6,7 @@ import { HiStar } from "react-icons/hi";
 function OrderCard() {
   return (
     <div className="my-2 cursor-pointer card card-side bg-base-100 shadow-md hover:shadow-lg border border-gray-200 p-4 flex flex-col justify-around gap-2 md:flex-row ">
-      <div className="rounded-lg w-30 h-30 md:mt-0">
+      <div className="rounded-lg w-30 h-30 md:w-40 md:mt-0">
         <Image src={ProductImage} objectFit="cover" className="rounded-xl" />
       </div>
       <div>
