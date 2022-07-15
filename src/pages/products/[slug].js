@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
@@ -68,12 +69,15 @@ function ProductSlug(props) {
       type: "ADDED_TO_CART",
       payload: {
         id: productId,
+        name: product.name,
+        imageUrl,
         size: selectedSize,
         color: selectedColor,
         quantity: 1,
         price: parseInt(price.replace("₹", "")),
       },
     });
+    toast.success("Added to cart");
   };
 
   return (
@@ -124,6 +128,7 @@ function ProductSlug(props) {
           <Size selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
         </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   );
 }

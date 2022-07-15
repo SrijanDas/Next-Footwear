@@ -4,7 +4,7 @@
 
 @layer components {
     .btn-green {
-      @apply py-2 px-4 w-auto flex justify-center items-center  bg-green-500 hover:bg-green-600 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-md;
+      @apply outline-none border-none py-2 px-4 w-auto flex justify-center items-center  bg-green-500 hover:bg-green-600 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-md;
     }
     .btn-white {
         @apply py-2 px-4 border text-base rounded-md text-gray-600 bg-white hover:bg-gray-100
@@ -22,3 +22,15 @@
 
    
   }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

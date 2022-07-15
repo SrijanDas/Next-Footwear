@@ -30,7 +30,6 @@ const cartReducer = (state = initialState, action) => {
         items.push(payload);
       } else {
         items[itemIndex].quantity += 1;
-        items[itemIndex].price += payload.price;
       }
       totalItems += 1;
       totalAmount += payload.price;
@@ -44,9 +43,64 @@ const cartReducer = (state = initialState, action) => {
         totalAmount,
       };
     case actionTypes.REMOVED_FROM_CART:
+      const { id: idToRemove } = payload;
+      const index = items.findIndex((item) => item.id === idToRemove);
+      if (index === -1) {
+        return { ...state };
+      }
+      totalItems -= 1;
+      totalAmount -= payload.price;
+      totalAmount = totalAmount > 0 ? totalAmount : 0;
+      totalItems = totalAmount > 0 ? totalItems : 0;
+      items.splice(index, 1);
+      localStorage.setItem(
+        "nf_cart",
+        JSON.stringify({ items, totalAmount, totalItems })
+      );
       return {
-        items: [...state.items.filter((item) => item.id !== payload)],
+        items,
+        totalAmount,
+        totalItems,
       };
+
+    case actionTypes.INCREMENT_QUANTITY:
+      const { itemId } = payload;
+      const itemIndex2 = items.findIndex((item) => item.id === itemId);
+      items[itemIndex2].quantity += 1;
+      totalItems += 1;
+      totalAmount += payload.price;
+      localStorage.setItem(
+        "nf_cart",
+        JSON.stringify({ items, totalAmount, totalItems })
+      );
+      return {
+        items,
+        totalItems,
+        totalAmount,
+      };
+    case actionTypes.DECREMENT_QUANTITY:
+      const { itemId2 } = payload;
+      const itemIndex3 = items.findIndex((item) => item.id === itemId2);
+      items[itemIndex3].quantity -= 1;
+      totalItems -= 1;
+      totalAmount -= payload.price;
+      localStorage.setItem(
+        "nf_cart",
+        JSON.stringify({ items, totalAmount, totalItems })
+      );
+      return {
+        items,
+        totalItems,
+        totalAmount,
+      };
+    case actionTypes.CLEAR_CART:
+      localStorage.removeItem("nf_cart");
+      return {
+        items: [],
+        totalAmount: 0,
+        totalItems: 0,
+      };
+
     default:
       return state;
   }
