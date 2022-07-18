@@ -24,10 +24,13 @@ const cartReducer = (state = initialState, action) => {
       };
     case actionTypes.ADDED_TO_CART:
       const { id } = payload;
-      const itemIndex = items.findIndex((item) => item.id === id);
+      const itemIndex = items.findIndex((item) => item.product === id);
 
       if (itemIndex === -1) {
-        items.push(payload);
+        items.push({
+          product: id,
+          ...payload,
+        });
       } else {
         items[itemIndex].quantity += 1;
       }
@@ -44,7 +47,7 @@ const cartReducer = (state = initialState, action) => {
       };
     case actionTypes.REMOVED_FROM_CART:
       const { id: idToRemove } = payload;
-      const index = items.findIndex((item) => item.id === idToRemove);
+      const index = items.findIndex((item) => item.product === idToRemove);
       if (index === -1) {
         return { ...state };
       }
@@ -65,7 +68,7 @@ const cartReducer = (state = initialState, action) => {
 
     case actionTypes.INCREMENT_QUANTITY:
       const { itemId } = payload;
-      const itemIndex2 = items.findIndex((item) => item.id === itemId);
+      const itemIndex2 = items.findIndex((item) => item.product === itemId);
       items[itemIndex2].quantity += 1;
       totalItems += 1;
       totalAmount += payload.price;
@@ -80,7 +83,7 @@ const cartReducer = (state = initialState, action) => {
       };
     case actionTypes.DECREMENT_QUANTITY:
       const { itemId2 } = payload;
-      const itemIndex3 = items.findIndex((item) => item.id === itemId2);
+      const itemIndex3 = items.findIndex((item) => item.product === itemId2);
       items[itemIndex3].quantity -= 1;
       totalItems -= 1;
       totalAmount -= payload.price;
