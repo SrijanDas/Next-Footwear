@@ -19,7 +19,7 @@ function checkout() {
   const [deliveryDetails, setDeliveryDetails] = useState({
     first_name: "",
     last_name: "",
-    email: user.username,
+    email: "",
     phone: "",
     address: "",
     city: "",
@@ -134,7 +134,7 @@ function checkout() {
       </Head>
       <div className="p-4 flex flex-col gap-2 md:p-10 md:w-[60%] max-w-5xl mx-auto">
         <AccountDetails user={user} isAuthenticated={isAuthenticated} />
-        {isAuthenticated ? (
+        {isAuthenticated && (
           <>
             <DeliveryDetails
               deliveryDetails={deliveryDetails}
@@ -170,8 +170,6 @@ function checkout() {
                 <OrderPlaced orderDetails={order.order_details} />
               )}
           </>
-        ) : (
-          <h1>Please login to continue</h1>
         )}
       </div>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />

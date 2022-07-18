@@ -1,5 +1,6 @@
 import React from "react";
 import { HiCheck, HiOutlineX } from "react-icons/hi";
+import Link from "next/link";
 
 function AccountDetails({ isAuthenticated, user }) {
   return (
@@ -31,7 +32,15 @@ function AccountDetails({ isAuthenticated, user }) {
       ) : (
         <div className="flex flex-col gap-2">
           <span className="text-gray-600">You are not logged in.</span>
-          <span className="text-gray-600">Please login to continue.</span>
+          <span className="text-gray-600">
+            Please
+            <Link href={"/login"}>
+              <span className="text-indigo-600 hover:underline mx-1 cursor-pointer">
+                login
+              </span>
+            </Link>
+            to continue.
+          </span>
         </div>
       )}
     </div>
