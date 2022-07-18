@@ -40,6 +40,7 @@ function checkout() {
     const body = {
       ...deliveryDetails,
       user: user.id,
+      email: user.username,
       items: items,
     };
     const token = await JSON.parse(localStorage.getItem("nf_auth_token"));
