@@ -33,8 +33,18 @@ function DeliveryDetails({
         </span>
       </div>
       {deliveryDetailsFilled ? (
-        <div className="flex flex-col gap-2 mt-3">
-          <span className="text-gray-600">Delivery details are filled.</span>
+        <div className="flex flex-col mt-3">
+          <span className="text-gray-600 capitalize">
+            {" "}
+            <b>
+              {`${deliveryDetails.first_name} ${deliveryDetails.last_name}`}
+            </b>{" "}
+            | {deliveryDetails.phone}
+          </span>
+          <span className="text-gray-600 capitalize">
+            {deliveryDetails.address}, {deliveryDetails.city},{" "}
+            {deliveryDetails.state} - <strong>{deliveryDetails.zipcode}</strong>
+          </span>
         </div>
       ) : (
         <form
@@ -165,7 +175,7 @@ function DeliveryDetails({
             </div>
           </div>
           <button type="submit" className="btn mt-4 w-[40%] ml-auto">
-            Continue
+            {"Save & Continue"}
           </button>
         </form>
       )}

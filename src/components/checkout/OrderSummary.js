@@ -9,7 +9,6 @@ function OrderSummary({
   confirmOrder,
   orderConfirmed,
   loading,
-  setLoading,
 }) {
   return (
     <div className="orderSummary bg-white rounded-lg border border-gray-200 shadow-md p-4">
@@ -25,7 +24,9 @@ function OrderSummary({
       </div>
       {orderConfirmed ? (
         <div className="mt-3">
-          <span>{totalItems} items</span>
+          <span>
+            {totalItems} {totalItems > 1 ? "items" : "item"}
+          </span>
         </div>
       ) : (
         <>
@@ -77,11 +78,7 @@ function OrderSummary({
               Sub Total:{totalAmount}
             </span>
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                setLoading(true);
-                confirmOrder();
-              }}
+              onClick={confirmOrder}
               className={`btn ${loading && "loading"}`}
             >
               Confirm Order

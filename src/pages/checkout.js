@@ -1,36 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AccountDetails from "../components/checkout/AccountDetails";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DeliveryDetails from "../components/checkout/DeliveryDetails";
 import PaymentDetails from "../components/checkout/PaymentDetails";
 import OrderSummary from "../components/checkout/OrderSummary";
 import Head from "next/head";
 import Script from "next/script";
 import axios from "../helpers/axios";
+import OrderPlaced from "../components/checkout/OrderPlaced";
 
 function checkout() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const { items, totalAmount, totalItems } = useSelector((state) => state.cart);
 
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const [deliveryDetails, setDeliveryDetails] = useState({
-    first_name: "srijan",
-    last_name: "das",
+    first_name: "",
+    last_name: "",
     email: user.username,
-    phone: "9832587412",
-    address: "address",
-    city: "city",
-    state: "state",
-    zipcode: "711104",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zipcode: "",
   });
 
-  const [deliveryDetailsFilled, setDeliveryDetailsFilled] = useState(true);
+  const [deliveryDetailsFilled, setDeliveryDetailsFilled] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
-  const [order, setOrder] = useState({});
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [order, setOrder] = useState({});
+  const [transactionDetails, setTransactionDetails] = useState({});
 
-  const confirmOrder = async () => {
+  const confirmOrder = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    console.log(loading);
     const body = {
       ...deliveryDetails,
       user: user.id,
@@ -48,12 +54,11 @@ function checkout() {
         } else {
           setOrderConfirmed(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    setLoading(false);
   };
 
   const handlePayment = (e) => {
@@ -76,7 +81,10 @@ function checkout() {
       handler: (response) => {
         setPaymentSuccess(true);
         setLoading(false);
-
+        setTransactionDetails(response.razorpay_payment_id);
+        dispatch({
+          type: "CLEAR_CART",
+        });
         // alert(response.razorpay_payment_id);
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
@@ -92,10 +100,18 @@ function checkout() {
       theme: {
         color: "#3399cc",
       },
+      modal: {
+        ondismiss: function () {
+          console.log("Checkout form closed");
+          setLoading(false);
+          setPaymentSuccess(false);
+        },
+      },
     };
 
     const rzp1 = new Razorpay(options);
-    rzp1.on("payment.failed", function (response) {
+
+    rzp1.on("payment.failed", (response) => {
       alert(response.error.code);
       alert(response.error.description);
       alert(response.error.source);
@@ -116,7 +132,7 @@ function checkout() {
       <Head>
         <title>NFootwear | Checkout</title>
       </Head>
-      <div className="p-4 flex flex-col gap-2 md:p-10">
+      <div className="p-4 flex flex-col gap-2 md:p-10 md:w-[60%] max-w-5xl mx-auto">
         <AccountDetails user={user} isAuthenticated={isAuthenticated} />
         {isAuthenticated ? (
           <>
@@ -144,8 +160,15 @@ function checkout() {
                 handlePayment={handlePayment}
                 paymentSuccess={paymentSuccess}
                 loading={loading}
+                transactionDetails={transactionDetails}
               />
             )}
+            {isAuthenticated &&
+              deliveryDetailsFilled &&
+              orderConfirmed &&
+              paymentSuccess && (
+                <OrderPlaced orderDetails={order.order_details} />
+              )}
           </>
         ) : (
           <h1>Please login to continue</h1>
