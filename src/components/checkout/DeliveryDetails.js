@@ -10,15 +10,15 @@ function DeliveryDetails({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let validator = Object.values(deliveryDetails).map((value) => {
-      if (value === "") {
-        alert("please fill all the fields");
-        setDeliveryDetailsFilled(false);
-        return false;
-      }
-      return true;
-    });
-    setDeliveryDetailsFilled(!validator.includes(false));
+    // let validator = Object.values(deliveryDetails).map((value) => {
+    //   if (value === "") {
+    //     alert("please fill all the fields");
+    //     setDeliveryDetailsFilled(false);
+    //     return false;
+    //   }
+    //   return true;
+    // });
+    setDeliveryDetailsFilled(true);
   };
   return (
     <div className="DeliveryDetails bg-white rounded-lg border border-gray-200 shadow-md p-4">
