@@ -93,7 +93,12 @@ function ProductSlug(props) {
       <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
         <div className="leftSide w-full lg:w-[40%]">
           <div className="w-full h-[18rem] relative">
-            <Image src={imageUrl} layout="fill" objectFit="contain" />
+            <Image
+              alt="image"
+              src={imageUrl}
+              layout="fill"
+              objectFit="contain"
+            />
           </div>
           <div className="mt-4 flex gap-2">
             <button

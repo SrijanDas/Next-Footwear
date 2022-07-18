@@ -23,6 +23,7 @@ export default function Home(props) {
       <section className="hero flex flex-col md:flex-row md:items-end bg-[#EDECE1] p-10">
         <div className="h-auto w-full md:order-2">
           <Image
+            alt="image"
             src={HeroImg}
             alt="hero"
             className="object-cover h-full w-full"

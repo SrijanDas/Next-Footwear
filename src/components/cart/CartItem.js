@@ -80,6 +80,7 @@ function CartItem({ item }) {
         <div className="flex flex-col items-center">
           <div className="rounded-xl w-40 h-30">
             <Image
+              alt="image"
               src={item.imageUrl}
               className="rounded-xl"
               width="100%"

@@ -18,6 +18,7 @@ function Card({ product }) {
           </div>
           <div onClick={handleClick} className="prod-img cursor-pointer">
             <Image
+              alt="image"
               src={product.img}
               className="w-full object-cover object-center"
               width={200}

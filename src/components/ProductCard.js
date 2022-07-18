@@ -17,6 +17,7 @@ function ProductCard({ product }) {
       <Link href={productLink}>
         <div className="p-1 rounded-t-lg cursor-pointer flex flex-col items-center">
           <Image
+            alt="image"
             src={product.image_url}
             className="w-full"
             width={200}

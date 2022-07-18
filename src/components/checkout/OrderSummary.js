@@ -50,8 +50,8 @@ function OrderSummary({
                         <div className="avatar">
                           <div className="mask mask-squircle w-12 h-12">
                             <Image
-                              src={item.imageUrl}
                               alt="image"
+                              src={item.imageUrl}
                               layout="fill"
                             />
                           </div>
