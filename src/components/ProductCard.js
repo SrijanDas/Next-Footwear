@@ -1,35 +1,31 @@
 import React, { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import trimProductName from "../utils/trimProductName";
 
 function ProductCard({ product }) {
-  const productName = product.name;
-  const nameCharLimit = 50;
-  const shortProductName =
-    productName.length > nameCharLimit
-      ? productName.slice(0, nameCharLimit) + "..."
-      : productName;
-
   const productLink = `/products/${product.slug}`;
 
   return (
-    <div className="flex flex-col h-auto max-h-[22rem] min-h-[18rem] bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex sm:flex-col gap-2 sm:gap-4 rounded-lg shadow-xl p-4 border-2 border-gray-100">
       <Link href={productLink}>
-        <div className="p-1 rounded-t-lg cursor-pointer flex flex-col items-center">
+        <a className="rounded-lg w-40 h-30 sm:w-full">
           <Image
             alt="image"
             src={product.image_url}
-            className="w-full"
-            width={200}
-            height={200}
-            objectFit="contain"
+            className="rounded-lg"
+            width="100%"
+            height="100%"
+            layout="responsive"
+            objectFit="cover"
           />
-        </div>
+        </a>
       </Link>
-      <div className="px-5 py-2">
+
+      <div className="">
         <Link href={productLink}>
           <h5 className="text-lg cursor-pointer font-semibold tracking-tight text-gray-900 dark:text-white hover:text-green-600">
-            {shortProductName}
+            {trimProductName(product.name)}
           </h5>
         </Link>
         <Link href={productLink}>

@@ -1,27 +1,10 @@
 import React from "react";
 import ProductCard from "../../components/ProductCard";
-import { HiFilter, HiSortAscending } from "react-icons/hi";
-import Filter from "../../components/Filter";
 import axios from "../../helpers/axios";
 import Head from "next/head";
+import { MobileFilter, DesktopFilter } from "../../components/products/Filters";
 
-const MobileFilter = () => {
-  return (
-    <div className="p-4 md:hidden flex items-center justify-center gap-4">
-      <button className="flex gap-1 items-center btn-black-outlined ">
-        <HiSortAscending />
-        Sort
-      </button>
-      <button className="flex gap-1 items-center btn-black-outlined ">
-        <HiFilter />
-        Filter
-      </button>
-    </div>
-  );
-};
-
-function Products({ data }) {
-  const products = data;
+function Products({ products }) {
   return (
     <>
       <Head>
@@ -32,18 +15,14 @@ function Products({ data }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MobileFilter />
 
-      <div className="flex gap-4">
-        <div className="hidden md:contents">
-          <Filter />
-        </div>
-        <div className="grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-4 p-2 md:pt-10 md:pr-10">
+      <div className="productsPage flex flex-col items-center md:flex-row gap-4 md:items-start">
+        <MobileFilter />
+        <DesktopFilter />
+        <div className="p-2 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:p-10">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-
-          <div className="h-full"></div>
         </div>
       </div>
     </>
@@ -55,8 +34,8 @@ export default Products;
 export async function getServerSideProps() {
   // Fetch data from external API
   const res = await axios.get("/products/latest-products");
-  const { data } = res;
+  const products = res.data;
 
   // Pass data to the page via props
-  return { props: { data } };
+  return { props: { products } };
 }
