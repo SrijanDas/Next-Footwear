@@ -20,29 +20,31 @@ function AccountDetails({ isAuthenticated, user }) {
         </span>
       </div>
 
-      {isAuthenticated ? (
-        <div className="flex flex-col gap-2">
-          <span className="text-gray-600">
-            Welcome, <strong>{user.name}</strong>
-          </span>
-          <span className="text-gray-600">
-            You are logged in as <strong>{user.username}</strong>
-          </span>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2">
-          <span className="text-gray-600">You are not logged in.</span>
-          <span className="text-gray-600">
-            Please
-            <Link href={"/login"}>
-              <span className="text-indigo-600 hover:underline mx-1 cursor-pointer">
-                login
-              </span>
-            </Link>
-            to continue.
-          </span>
-        </div>
-      )}
+      <div className="flex flex-col gap-2">
+        {isAuthenticated ? (
+          <>
+            <span className="text-gray-600">
+              Welcome, <strong>{user.name}</strong>
+            </span>
+            <span className="text-gray-600">
+              You are logged in as <strong>{user.username}</strong>
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="text-gray-600">You are not logged in.</span>
+            <span className="text-gray-600">
+              Please
+              <Link href={"/login"}>
+                <span className="text-indigo-600 hover:underline mx-1 cursor-pointer">
+                  login
+                </span>
+              </Link>
+              to continue.
+            </span>
+          </>
+        )}
+      </div>
     </div>
   );
 }

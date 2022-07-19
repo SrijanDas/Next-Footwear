@@ -8,6 +8,7 @@ import Head from "next/head";
 import Script from "next/script";
 import axios from "../helpers/axios";
 import OrderPlaced from "../components/checkout/OrderPlaced";
+import { toast, ToastContainer } from "react-toastify";
 
 function checkout() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -113,13 +114,13 @@ function checkout() {
     const rzp1 = new Razorpay(options);
 
     rzp1.on("payment.failed", (response) => {
-      alert(response.error.code);
-      alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert(response.error.metadata.order_id);
-      alert(response.error.metadata.payment_id);
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      toast.error("Payment Failed");
 
       setLoading(false);
       setPaymentSuccess(false);
@@ -133,7 +134,7 @@ function checkout() {
       <Head>
         <title>NFootwear | Checkout</title>
       </Head>
-      <div className="p-4 flex flex-col gap-2 md:p-10 md:w-[60%] max-w-5xl mx-auto">
+      <div className="p-4 flex flex-col gap-2 w-full md:p-10 md:w-[60%] max-w-5xl mx-auto">
         <AccountDetails user={user} isAuthenticated={isAuthenticated} />
         {isAuthenticated && (
           <>
@@ -173,6 +174,8 @@ function checkout() {
           </>
         )}
       </div>
+      <ToastContainer position="bottom-right" />
+
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
     </>
   );

@@ -6,24 +6,21 @@ import ProductCard from "../components/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
 import axios from "../helpers/axios";
 
-export default function Home(props) {
-  const newProducts = props.data;
-  // console.log(newProducts);
+export default function Home({ newProducts }) {
   return (
     <div>
-      {/* <Head>
+      <Head>
         <title>NFootwear | Home</title>
         <meta
           name="description"
           content="We ship footwares directly from the brands to your doorsteps..."
         />
         <link rel="icon" href="/favicon.ico" />
-      </Head> */}
+      </Head>
 
       <section className="hero flex flex-col md:flex-row md:items-end bg-[#EDECE1] p-10">
         <div className="h-auto w-full md:order-2">
           <Image
-            alt="image"
             src={HeroImg}
             alt="hero"
             className="object-cover h-full w-full"
@@ -49,7 +46,7 @@ export default function Home(props) {
             </button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-3 ">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {newProducts.length >= 0 &&
             newProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -62,20 +59,8 @@ export default function Home(props) {
 
 export async function getServerSideProps() {
   const res = await axios.get("/products/latest-products");
+  const newProducts = res.data;
   return {
-    props: { data: res.data },
+    props: { newProducts },
   };
 }
-
-// // This gets called on every request
-// export async function getServerSideProps() {
-//   // Fetch data from external API
-//   try {
-//     const res = await axios.get("/products/latest-products");
-//     // Pass data to the page via props
-//     return { props: { data: res.data } };
-//   } catch (error) {
-//     // console.log(error);
-//     return { props: { data: [] } };
-//   }
-// }

@@ -1,15 +1,22 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../../components/Loader";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
 import axios from "../../helpers/axios";
+import { HiShoppingCart, HiLightningBolt, HiCheckCircle } from "react-icons/hi";
 
-function ProductSlug(props) {
-  const product = props.data;
+function ProductSlug({ product }) {
+  const router = useRouter();
+  if (!product) {
+    router.push("/500");
+    return <Loader />;
+  }
   const pageTitle = `NFootwears | ${product.name}`;
   const brand = product.brand;
   const [price, setPrice] = useState("₹" + product.starting_price);
@@ -17,6 +24,7 @@ function ProductSlug(props) {
   const [selectedSize, setSelectedSize] = useState(0);
   const [productId, setProductId] = useState(product.id);
   const [imageUrl, setImageUrl] = useState(product.image_url);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const btnsDisabled =
     selectedColor === "" ||
@@ -77,7 +85,13 @@ function ProductSlug(props) {
         price: parseInt(price.replace("₹", "")),
       },
     });
+    setAddedToCart(true);
     toast.success("Added to cart");
+  };
+
+  const buyNow = () => {
+    addToCart();
+    router.push("/cart");
   };
 
   return (
@@ -102,18 +116,29 @@ function ProductSlug(props) {
           </div>
           <div className="mt-4 flex gap-2">
             <button
-              className="btn btn-green w-1/2 outline-none border-none"
+              className="btn gap-2 btn-green w-1/2 outline-none border-none"
               disabled={btnsDisabled}
+              onClick={buyNow}
             >
+              <HiLightningBolt className="text-2xl" />
               BUY NOW
             </button>
-            <button
-              onClick={addToCart}
-              className="btn btn-black rounded-md w-1/2"
-              disabled={btnsDisabled}
-            >
-              ADD TO CART
-            </button>
+
+            {addedToCart ? (
+              <button className="btn gap-2 rounded-md w-1/2">
+                <HiCheckCircle className="text-2xl" />
+                Added to Cart
+              </button>
+            ) : (
+              <button
+                onClick={addToCart}
+                className="btn btn-black gap-2 rounded-md w-1/2"
+                disabled={btnsDisabled}
+              >
+                <HiShoppingCart className="text-2xl" />
+                ADD TO CART
+              </button>
+            )}
           </div>
         </div>
         <div className="rightSide px-1 py-5 lg:w-[40%] lg:py-0 lg:px-10">
@@ -148,9 +173,8 @@ export async function getServerSideProps(req, res) {
   try {
     const res = await axios.get(`/products/${slug}`);
     // Pass data to the page via props
-    return { props: { data: res.data } };
+    return { props: { product: res.data } };
   } catch (error) {
-    console.log(error);
-    return { props: { error: error } };
+    return { props: { product: null } };
   }
 }

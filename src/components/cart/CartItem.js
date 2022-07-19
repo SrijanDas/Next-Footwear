@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
@@ -70,14 +71,15 @@ function CartItem({ item }) {
         price: item.price * item.quantity,
       },
     });
-    toast.error(`You've removed '${item.name}' from cart`);
+    toast.warning(`You've removed '${item.name}' from cart`);
   };
 
   return (
-    <div className="border-t-2 border-gray-300 py-4">
-      <div className="flex gap-6">
+    <div className="border-t-2 border-gray-300 py-4 flex flex-col gap-2">
+      <div className="flex md:gap-6">
         <div className="flex flex-col items-center">
-          <div className="rounded-xl w-40 h-30">
+          {/* <Link href={`/products/${item.slug}`}> */}
+          <a className="rounded-xl w-40 h-30">
             <Image
               alt="image"
               src={item.imageUrl}
@@ -85,9 +87,10 @@ function CartItem({ item }) {
               width="100%"
               height="100%"
               layout="responsive"
-              objectFit="contain"
+              objectFit="cover"
             />
-          </div>
+          </a>
+          {/* </Link> */}
           <div className="flex items-center gap-3 mt-4">
             <button
               onClick={decrementQty}
@@ -122,17 +125,17 @@ function CartItem({ item }) {
               ₹{item.price * item.quantity}
             </span>
           </div>
-          <div>
-            <button className="btn btn-ghost gap-2" onClick={saveToWishlist}>
-              Save for later
-              <HiHeart />
-            </button>
-            <button className="btn btn-ghost gap-2" onClick={removeItem}>
-              <HiOutlineTrash />
-              Remove
-            </button>
-          </div>
         </div>
+      </div>
+      <div className="card-btns flex items-center">
+        <button className="btn btn-ghost gap-2 w-1/2" onClick={saveToWishlist}>
+          Save for later
+          <HiHeart />
+        </button>
+        <button className="btn btn-ghost gap-2 w-1/2" onClick={removeItem}>
+          <HiOutlineTrash />
+          Remove
+        </button>
       </div>
     </div>
   );
