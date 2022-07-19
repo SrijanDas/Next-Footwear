@@ -1,9 +1,8 @@
 import Image from "next/image";
 import React from "react";
-import ProductImage from "../../assets/addidas1.png";
 import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
@@ -135,7 +134,6 @@ function CartItem({ item }) {
           </div>
         </div>
       </div>
-      <ToastContainer position="bottom-center" />
     </div>
   );
 }
