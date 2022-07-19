@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Loader from "../components/Loader";
 import NextNProgress from "nextjs-progressbar";
+import LoginModal from "./LoginModal";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);
@@ -21,6 +22,13 @@ function Layout({ title, content, children }) {
   };
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.getElementById("login-modal-btn").click();
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -54,7 +62,7 @@ function Layout({ title, content, children }) {
           <div
             className={`flex flex-col h-screen justify-between ease-in duration-200`}
           >
-            <NextNProgress />
+            <NextNProgress height={4} />
             <Header
               isAuthenticated={isAuthenticated}
               totalItems={totalItems}
@@ -64,6 +72,7 @@ function Layout({ title, content, children }) {
             {children}
             <Footer />
           </div>
+          <LoginModal />
         </>
       )}
     </>
