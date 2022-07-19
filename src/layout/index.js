@@ -1,16 +1,24 @@
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../store/actions/authActions";
 import { load_cart } from "../store/actions/cartActions";
+import Drawer from "./Drawer";
 import Footer from "./Footer";
 import Header from "./Header";
 import Loader from "./Loader";
+import NextNProgress from "nextjs-progressbar";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const cart = useSelector((state) => state.cart);
+  const { totalItems } = useSelector((state) => state.cart);
+
+  // drawer state
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const dispatch = useDispatch();
 
@@ -31,11 +39,32 @@ function Layout({ title, content, children }) {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="flex flex-col h-screen justify-between">
-          <Header isAuthenticated={isAuthenticated} cart={cart} />
-          {children}
-          <Footer />
-        </div>
+        <>
+          <Drawer
+            isAuthenticated={isAuthenticated}
+            drawerOpen={drawerOpen}
+            toggleDrawer={toggleDrawer}
+          />
+          {drawerOpen && (
+            <div
+              onClick={() => setDrawerOpen(false)}
+              className={`w-full h-full bg-gray-500/30 z-40 fixed`}
+            ></div>
+          )}
+          <div
+            className={`flex flex-col h-screen justify-between ease-in duration-200`}
+          >
+            <NextNProgress />
+            <Header
+              isAuthenticated={isAuthenticated}
+              totalItems={totalItems}
+              toggleDrawer={toggleDrawer}
+            />
+
+            {children}
+            <Footer />
+          </div>
+        </>
       )}
     </>
   );
