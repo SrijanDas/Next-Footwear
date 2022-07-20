@@ -9,12 +9,12 @@ import Header from "./Header";
 import Loader from "../components/Loader";
 import NextNProgress from "nextjs-progressbar";
 import LoginModal from "./LoginModal";
+import { useRef } from "react";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const { totalItems } = useSelector((state) => state.cart);
-
   // drawer state
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer = () => {
@@ -23,12 +23,28 @@ function Layout({ title, content, children }) {
 
   const dispatch = useDispatch();
 
+  // login modal state
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const closeLoginModal = () => {
+    setLoginModalOpen(false);
+  };
   useEffect(() => {
-    const timer = setTimeout(() => {
-      document.getElementById("login-modal-btn").click();
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!isAuthenticated) {
+      const timer = setTimeout(() => {
+        setLoginModalOpen(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated]);
+
+  // prevents user from scrolling when login modal or drawer is open
+  useEffect(() => {
+    if (drawerOpen || loginModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else if (!drawerOpen || !loginModalOpen) {
+      document.body.style.overflow = "auto";
+    }
+  }, [drawerOpen, loginModalOpen]);
 
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -72,7 +88,7 @@ function Layout({ title, content, children }) {
             {children}
             <Footer />
           </div>
-          <LoginModal />
+          <LoginModal isOpen={loginModalOpen} closeModal={closeLoginModal} />
         </>
       )}
     </>
