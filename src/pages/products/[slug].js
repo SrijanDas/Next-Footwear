@@ -31,8 +31,12 @@ function ProductSlug({ product }) {
     selectedSize === 0 ||
     price === "This variant is not available";
 
+  const [loadingImg, setLoadingImg] = useState(false);
+
   // updating image change
   useEffect(() => {
+    setAddedToCart(false);
+    setLoadingImg(true);
     let strArr = product.slug.split("-");
     strArr[strArr.length - 1] = selectedColor;
     const newSlug = strArr.join("-");
@@ -40,10 +44,14 @@ function ProductSlug({ product }) {
     axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
       setImageUrl(res.data.image_url);
     });
+
+    setLoadingImg(false);
   }, [selectedColor]);
 
   // updating price when color or size is changed
   useEffect(() => {
+    setAddedToCart(false);
+
     const fetchProduct = async () => {
       try {
         let strArr = product.slug.split("-");
@@ -105,20 +113,33 @@ function ProductSlug({ product }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
-        <div className="leftSide w-full lg:w-[40%]">
-          <div className="w-full h-[18rem] relative">
-            <Image
-              alt="image"
-              src={imageUrl}
-              layout="fill"
-              objectFit="contain"
-            />
+        <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
+          <div
+            className={`w-[14rem] h-[18rem] relative ${
+              loadingImg && "animate-pulse"
+            }`}
+          >
+            {loadingImg ? (
+              <div className="bg-slate-200 h-full w-full"> </div>
+            ) : (
+              <Image
+                alt="image"
+                src={imageUrl}
+                layout="fill"
+                objectFit="contain"
+              />
+            )}
           </div>
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex gap-2 w-full">
             <button
               className="btn gap-2 btn-green w-1/2 outline-none border-none"
-              disabled={btnsDisabled}
-              onClick={buyNow}
+              onClick={() => {
+                if (btnsDisabled) {
+                  toast.warning(price);
+                  return;
+                }
+                buyNow();
+              }}
             >
               <HiLightningBolt className="text-2xl" />
               BUY NOW
@@ -131,9 +152,14 @@ function ProductSlug({ product }) {
               </button>
             ) : (
               <button
-                onClick={addToCart}
+                onClick={() => {
+                  if (btnsDisabled) {
+                    toast.warning(price);
+                    return;
+                  }
+                  addToCart();
+                }}
                 className="btn btn-black gap-2 rounded-md w-1/2"
-                disabled={btnsDisabled}
               >
                 <HiShoppingCart className="text-2xl" />
                 ADD TO CART

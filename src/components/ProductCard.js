@@ -7,7 +7,7 @@ function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
 
   return (
-    <div className="flex sm:flex-col gap-2 sm:gap-4 rounded-lg shadow-xl p-4 border-2 border-gray-100">
+    <div className="flex sm:flex-col gap-2 sm:gap-4 rounded-lg shadow-md p-4 border-2 border-gray-100">
       <Link href={productLink}>
         <a className="rounded-lg w-40 h-30 sm:w-full">
           <Image
