@@ -4,8 +4,10 @@ import {
   HiMenu,
   HiShoppingCart,
   HiSearch,
+  HiUser,
   HiChevronDown,
 } from "react-icons/hi";
+import { isBrowser } from "react-device-detect";
 
 function Header({ isAuthenticated, totalItems, toggleDrawer }) {
   return (
@@ -20,36 +22,64 @@ function Header({ isAuthenticated, totalItems, toggleDrawer }) {
               <HiMenu className="w-6 h-6" />
             </button>
             <Link href="/">
-              <a className="ml-2">NFootwear</a>
+              <a className="ml-1">{isBrowser ? "NFootwear" : "NF"}</a>
             </Link>
           </div>
-          <div className="buttons flex gap-2 md:order-last">
-            {/* <Link href="/products">
-              <button className="btn gap-2">
-                Products
-                <HiChevronDown className="" />
-              </button>
-            </Link> */}
-            <div className="hidden md:contents">
-              {isAuthenticated ? (
-                <Link href={"/account"}>
-                  <button className="btn btn-white">My Account</button>
-                </Link>
-              ) : (
-                <Link href={"/login"}>
-                  <button className="btn btn-white">Login</button>
-                </Link>
-              )}
-            </div>
+          <div className="rightBtns flex md:order-last">
+            {isBrowser && (
+              <div className="dropdown dropdown-hover">
+                <label tabIndex="0" className="btn btn-black gap-2">
+                  Products
+                  <HiChevronDown className="" />
+                </label>
+                <ul
+                  tabIndex="0"
+                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    <Link href="/products">
+                      <a>Men</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products">
+                      <a>Women</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products">
+                      <a>Kids</a>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            {isAuthenticated ? (
+              <Link href={"/account"}>
+                <button className="btn gap-1 btn-black">
+                  <HiUser className="h-5 w-5" />
+                  {isBrowser && "Account"}
+                </button>
+              </Link>
+            ) : (
+              <Link href={"/login"}>
+                <button className="btn btn-black">Login</button>
+              </Link>
+            )}
 
             <Link href="/cart">
-              <button className="btn gap-2 btn-green">
-                <HiShoppingCart className="" />
-                Cart ({totalItems})
+              <button className="btn btn-black border-none">
+                {/* <div className="indicator"> */}
+                <HiShoppingCart className="h-5 w-5 text-green-500" />
+                <span className="badge badge-sm indicator-item">
+                  {totalItems}
+                </span>
+                {/* </div> */}
               </button>
             </Link>
           </div>
-          <div className="search mt-3 w-full md:mt-0 md:w-[60%]">
+          <div className="search mt-3 w-full md:mt-0 md:w-[50%]">
             <form className="flex bg-gray-50 rounded-lg">
               <input
                 type="search"
