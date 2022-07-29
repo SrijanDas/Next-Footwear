@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 function SignUp() {
   const [error, setError] = useState({ status: false, message: "" });
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
@@ -25,7 +27,9 @@ function SignUp() {
     }
 
     const formData = {
-      username: email,
+      email,
+      first_name: firstName,
+      last_name: lastName,
       password: password1,
       re_password: password2,
     };
@@ -79,9 +83,35 @@ function SignUp() {
                 onSubmit={handleSunmit}
                 className="flex flex-col gap-2 mt-5"
               >
+                <div className="flex items-center gap-4">
+                  <div className="w-[50%]">
+                    <label className="label">
+                      <span className="label-text">First Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder=""
+                      className="input input-bordered w-full"
+                      required
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-[50%]">
+                    <label className="label">
+                      <span className="label-text">Last Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder=""
+                      className="input input-bordered w-full"
+                      required
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+                </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">Email / Username</span>
+                    <span className="label-text">Email</span>
                   </label>
                   <input
                     type="email"

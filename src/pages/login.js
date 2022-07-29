@@ -28,7 +28,7 @@ function login() {
     }
 
     const body = {
-      username: email,
+      email,
       password,
     };
 

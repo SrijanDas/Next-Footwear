@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi";
 import { isBrowser } from "react-device-detect";
 
-function Header({ isAuthenticated, totalItems, toggleDrawer }) {
+function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
   return (
     <>
       <nav className="bg-gray-800 sticky top-0 z-30">
@@ -57,9 +57,9 @@ function Header({ isAuthenticated, totalItems, toggleDrawer }) {
 
             {isAuthenticated ? (
               <Link href={"/account"}>
-                <button className="btn gap-1 btn-black">
+                <button className="btn gap-1 btn-black capitalize">
                   <HiUser className="h-5 w-5" />
-                  {isBrowser && "Account"}
+                  {firstName ? firstName : "Account"}
                 </button>
               </Link>
             ) : (

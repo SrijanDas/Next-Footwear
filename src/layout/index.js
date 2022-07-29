@@ -9,11 +9,11 @@ import Header from "./Header";
 import Loader from "../components/Loader";
 import NextNProgress from "nextjs-progressbar";
 import LoginModal from "./LoginModal";
-import { useRef } from "react";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
   const { totalItems } = useSelector((state) => state.cart);
   // drawer state
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -81,6 +81,7 @@ function Layout({ title, content, children }) {
             <NextNProgress height={4} />
             <Header
               isAuthenticated={isAuthenticated}
+              firstName={user ? user.first_name : null}
               totalItems={totalItems}
               toggleDrawer={toggleDrawer}
             />
