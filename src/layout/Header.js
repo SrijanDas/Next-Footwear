@@ -26,34 +26,32 @@ function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
             </Link>
           </div>
           <div className="rightBtns flex md:order-last">
-            {isBrowser && (
-              <div className="dropdown dropdown-hover">
-                <label tabIndex="0" className="btn btn-black gap-2">
-                  Products
-                  <HiChevronDown className="" />
-                </label>
-                <ul
-                  tabIndex="0"
-                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  <li>
-                    <Link href="/products">
-                      <a>Men</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/products">
-                      <a>Women</a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/products">
-                      <a>Kids</a>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <div className="dropdown dropdown-hover">
+              <label tabIndex="0" className="btn btn-black gap-2">
+                Products
+                <HiChevronDown className="" />
+              </label>
+              <ul
+                tabIndex="0"
+                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link href="/products">
+                    <a>Men</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products">
+                    <a>Women</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products">
+                    <a>Kids</a>
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
             {isAuthenticated ? (
               <Link href={"/account"}>

@@ -73,9 +73,9 @@ function OrderSummary({
               </tbody>
             </table>
           </div>
-          <div className="flex flex-col items-end mt-4">
+          <div className="flex items-center justify-between mt-4">
             <span className="text-gray-600 mb-2 font-semibold text-2xl">
-              Sub Total:{totalAmount}
+              Sub Total: {totalAmount}
             </span>
             <button
               onClick={confirmOrder}

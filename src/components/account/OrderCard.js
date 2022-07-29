@@ -3,18 +3,28 @@ import React from "react";
 import ProductImage from "../../assets/addidas1.png";
 import { HiStar } from "react-icons/hi";
 
-function OrderCard() {
+function OrderCard({ order }) {
+  const { id, items } = order;
   return (
     <div className="my-2 cursor-pointer card card-side bg-base-100 shadow-md hover:shadow-lg border border-gray-200 p-4 flex flex-col justify-around gap-2 md:flex-row ">
-      <div className="rounded-lg w-30 h-30 md:w-40 md:mt-0">
+      {/* <div className="rounded-lg w-30 h-30 md:w-40 md:mt-0">
         <Image
           alt="image"
           src={ProductImage}
           objectFit="cover"
           className="rounded-xl"
         />
-      </div>
+      </div> */}
       <div>
+        <h5 className="text-black text-lg font-semibold">Order ID #{id}</h5>
+        <span className="mr-2">Total Items: {items.length}</span> <br />
+        <span className="mr-2">
+          Amount: {Number(order.sub_total) + Number(order.packaging_fees)}
+        </span>{" "}
+        <br />
+        <span className="mr-2">Order Status: {order.order_status}</span>
+      </div>
+      {/* <div>
         <h5 className="text-black text-lg font-semibold">Addidas</h5>
         <span className="mr-2">Color: Blue</span>
         <span>Size: 7</span>
@@ -31,7 +41,7 @@ function OrderCard() {
         <span className="text-indigo-600 mt-2 text-lg font-semibold flex gap-2 items-center">
           <HiStar /> Rate and Review
         </span>
-      </div>
+      </div>*/}
     </div>
   );
 }

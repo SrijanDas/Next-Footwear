@@ -80,7 +80,7 @@ function Colors({ selectedColor, setSelectedColor, availableColors }) {
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}
             />
-          ) : color === "grey" ? (
+          ) : color === "gray" ? (
             <Gray
               key={`${index}_${color}`}
               selectedColor={selectedColor}

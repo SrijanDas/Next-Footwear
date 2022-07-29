@@ -18,14 +18,13 @@ function checkout() {
   const [loading, setLoading] = useState(false);
 
   const [deliveryDetails, setDeliveryDetails] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
+    name: "",
     phone: "",
+    pincode: "",
     address: "",
     city: "",
     state: "",
-    zipcode: "",
+    landmark: "",
   });
 
   const [deliveryDetailsFilled, setDeliveryDetailsFilled] = useState(false);
@@ -37,18 +36,22 @@ function checkout() {
   const confirmOrder = async (e) => {
     setLoading(true);
     e.preventDefault();
-    console.log(loading);
-    const body = {
-      ...deliveryDetails,
+
+    const data = {
       user: user.id,
-      email: user.username,
       items: items,
+      address: deliveryDetails.id,
     };
-    const token = await JSON.parse(localStorage.getItem("nf_auth_token"));
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${JSON.parse(
+        localStorage.getItem("nf_auth_token")
+      )}`,
+    };
+
     axios
-      .post("/orders/checkout/", body, {
-        Headers: { Authorization: `Token ${token}` },
-      })
+      .post("/orders/checkout/", data, { headers })
       .then((res) => {
         if (res.data.status) {
           setOrderConfirmed(true);
@@ -92,9 +95,9 @@ function checkout() {
         // alert(response.razorpay_signature);
       },
       prefill: {
-        name: `${order_details.first_name} ${order_details.last_name}`,
-        email: order_details.email,
-        contact: order_details.phone,
+        name: deliveryDetails.name,
+        email: user.email,
+        contact: deliveryDetails.phone,
       },
       notes: {
         address: "NextFootwear Corporate Office",
@@ -139,8 +142,8 @@ function checkout() {
         {isAuthenticated && (
           <>
             <DeliveryDetails
-              deliveryDetails={deliveryDetails}
-              setDeliveryDetails={setDeliveryDetails}
+              deliveryAddress={deliveryDetails}
+              setDeliveryAddress={setDeliveryDetails}
               deliveryDetailsFilled={deliveryDetailsFilled}
               setDeliveryDetailsFilled={setDeliveryDetailsFilled}
               loading={loading}

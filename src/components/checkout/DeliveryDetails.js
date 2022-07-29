@@ -1,185 +1,159 @@
-import React from "react";
-import { HiCheck } from "react-icons/hi";
+import React, { useEffect, useState } from "react";
+import { HiCheck, HiPlusCircle } from "react-icons/hi";
+import { toast } from "react-toastify";
+import axios from "../../helpers/axios";
+import NewAddressForm from "./NewAddressForm";
+
+const Address = ({ address, showCheckbox = false, handleAddressChange }) => {
+  return (
+    <label className="flex gap-4 my-2 items-center cursor-pointer">
+      {showCheckbox && (
+        <input
+          type="radio"
+          name="radio-2"
+          className="radio radio-primary"
+          onChange={() => handleAddressChange(address.id)}
+        />
+      )}
+      <div className="flex flex-col mt-3">
+        <span className="text-gray-600 capitalize">
+          {" "}
+          <b>{address.name}</b> | {address.phone}
+        </span>
+        <span className="text-gray-600 capitalize">
+          {address.address}, {address.city}, {address.state} -{" "}
+          <strong>{address.zipcode}</strong>
+        </span>
+      </div>
+    </label>
+  );
+};
 
 function DeliveryDetails({
-  deliveryDetails,
-  setDeliveryDetails,
+  deliveryAddress,
+  setDeliveryAddress,
   deliveryDetailsFilled,
   setDeliveryDetailsFilled,
 }) {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [allAddress, setAllAddress] = useState([]);
+  const [showAddressForm, setShowAddressForm] = useState(false);
 
-    // let validator = Object.values(deliveryDetails).map((value) => {
-    //   if (value === "") {
-    //     alert("please fill all the fields");
-    //     setDeliveryDetailsFilled(false);
-    //     return false;
-    //   }
-    //   return true;
-    // });
+  // fetching addresses
+  useEffect(() => {
+    axios
+      .get("/accounts/address/", {
+        headers: {
+          Authorization: `Token ${JSON.parse(
+            localStorage.getItem("nf_auth_token")
+          )}`,
+        },
+      })
+      .then((res) => {
+        setAllAddress(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleAddressChange = (addressId) => {
+    let address = allAddress.find((address) => address.id === addressId);
+    setDeliveryAddress(address);
+  };
+
+  const handleDeliverHere = (e) => {
+    e.preventDefault();
     setDeliveryDetailsFilled(true);
   };
+
+  const handleAddNewAddress = async (e) => {
+    e.preventDefault();
+    try {
+      const data = deliveryAddress;
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Token ${JSON.parse(
+          localStorage.getItem("nf_auth_token")
+        )}`,
+      };
+      const res = await axios.post("/accounts/address/", data, {
+        headers: headers,
+      });
+      setDeliveryAddress(res.data);
+      setDeliveryDetailsFilled(true);
+    } catch (error) {
+      console.log(error);
+      setDeliveryDetailsFilled(false);
+    }
+  };
   return (
-    <div className="DeliveryDetails bg-white rounded-lg border border-gray-200 shadow-md p-4">
-      <div className="border-b-2 border-gray-300 pb-2">
-        <span className="text-xl font-semibold text-gray-500 uppercase flex gap-2 items-center">
-          Delivery Details
-          {deliveryDetailsFilled && (
-            <div className="badge badge-md badge-primary">
-              <HiCheck />
-            </div>
-          )}
-        </span>
-      </div>
-      {deliveryDetailsFilled ? (
-        <div className="flex flex-col mt-3">
-          <span className="text-gray-600 capitalize">
-            {" "}
-            <b>
-              {`${deliveryDetails.first_name} ${deliveryDetails.last_name}`}
-            </b>{" "}
-            | {deliveryDetails.phone}
-          </span>
-          <span className="text-gray-600 capitalize">
-            {deliveryDetails.address}, {deliveryDetails.city},{" "}
-            {deliveryDetails.state} - <strong>{deliveryDetails.zipcode}</strong>
+    <>
+      <div className="DeliveryDetails bg-white rounded-lg border border-gray-200 shadow-md p-4">
+        <div className="border-b-2 border-gray-300 pb-2">
+          <span className="text-xl font-semibold text-gray-500 uppercase flex gap-2 items-center">
+            Delivery Details
+            {deliveryDetailsFilled && (
+              <div className="badge badge-md badge-primary">
+                <HiCheck />
+              </div>
+            )}
           </span>
         </div>
-      ) : (
-        <form
-          className="form-control mt-2 flex flex-col gap-2"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-[50%]">
-              <label className="label">
-                <span className="label-text">First Name</span>
-              </label>
-              <input
-                type="text"
-                placeholder=""
-                className="input input-bordered w-full"
-                required
-                onChange={(e) =>
-                  setDeliveryDetails({
-                    ...deliveryDetails,
-                    first_name: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="w-[50%]">
-              <label className="label">
-                <span className="label-text">Last Name</span>
-              </label>
-              <input
-                type="text"
-                placeholder=""
-                className="input input-bordered w-full"
-                required
-                onChange={(e) =>
-                  setDeliveryDetails({
-                    ...deliveryDetails,
-                    last_name: e.target.value,
-                  })
-                }
-              />
-            </div>
+        {deliveryDetailsFilled ? (
+          <Address address={deliveryAddress} />
+        ) : (
+          <div className="mt-2">
+            {allAddress.length > 0 ? (
+              allAddress.map((address) => (
+                <Address
+                  address={address}
+                  key={address.id}
+                  showCheckbox
+                  handleAddressChange={handleAddressChange}
+                />
+              ))
+            ) : (
+              <span className="text-gray-600">No address added yet</span>
+            )}
+
+            {allAddress.length > 0 && (
+              <button onClick={handleDeliverHere} className="btn mt-4 w-full">
+                Deliver Here
+              </button>
+            )}
           </div>
-          <div>
-            <label className="label">
-              <span className="label-text">Phone Number</span>
-            </label>
-            <input
-              type="number"
-              placeholder=""
-              className="input input-bordered w-full"
-              required
-              onChange={(e) =>
-                setDeliveryDetails({
-                  ...deliveryDetails,
-                  phone: e.target.value,
-                })
-              }
+        )}
+      </div>
+      {!deliveryDetailsFilled && (
+        <div className="DeliveryDetails bg-white rounded-lg border border-gray-200 shadow-md p-4">
+          {showAddressForm ? (
+            <div className="border-b-2 border-gray-300 pb-2">
+              <span className="text-xl font-semibold text-gray-500 uppercase flex gap-2 items-center">
+                Add a New Address
+                {deliveryDetailsFilled && (
+                  <div className="badge badge-md badge-primary">
+                    <HiCheck />
+                  </div>
+                )}
+              </span>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowAddressForm(true)}
+              className="w-full btn gap-2 normal-case"
+            >
+              <HiPlusCircle className="h-5 w-5" />
+              Add New Address
+            </button>
+          )}
+          {showAddressForm && (
+            <NewAddressForm
+              deliveryAddress={deliveryAddress}
+              setDeliveryAddress={setDeliveryAddress}
+              handleAddNewAddress={handleAddNewAddress}
             />
-          </div>
-          <div>
-            <label className="label">
-              <span className="label-text">Address</span>
-            </label>
-            <input
-              type="text"
-              placeholder=""
-              className="input input-bordered w-full"
-              required
-              onChange={(e) =>
-                setDeliveryDetails({
-                  ...deliveryDetails,
-                  address: e.target.value,
-                })
-              }
-            />
-          </div>
-          <div>
-            <label className="label">
-              <span className="label-text">Zipcode</span>
-            </label>
-            <input
-              type="text"
-              placeholder=""
-              className="input input-bordered w-full"
-              required
-              onChange={(e) =>
-                setDeliveryDetails({
-                  ...deliveryDetails,
-                  zipcode: e.target.value,
-                })
-              }
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="w-[50%]">
-              <label className="label">
-                <span className="label-text">State</span>
-              </label>
-              <input
-                type="text"
-                placeholder=""
-                className="input input-bordered w-full"
-                required
-                onChange={(e) =>
-                  setDeliveryDetails({
-                    ...deliveryDetails,
-                    state: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="w-[50%]">
-              <label className="label">
-                <span className="label-text">City</span>
-              </label>
-              <input
-                type="text"
-                placeholder=""
-                className="input input-bordered w-full"
-                required
-                onChange={(e) =>
-                  setDeliveryDetails({
-                    ...deliveryDetails,
-                    city: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
-          <button type="submit" className="btn mt-4 w-[40%] ml-auto">
-            {"Save & Continue"}
-          </button>
-        </form>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
