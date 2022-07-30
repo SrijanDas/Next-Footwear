@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
@@ -184,7 +184,6 @@ function ProductSlug({ product }) {
           <Size selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
         </div>
       </div>
-      <ToastContainer position="bottom-right" />
     </>
   );
 }

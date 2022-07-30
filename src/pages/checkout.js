@@ -8,7 +8,7 @@ import Head from "next/head";
 import Script from "next/script";
 import axios from "../helpers/axios";
 import OrderPlaced from "../components/checkout/OrderPlaced";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 function checkout() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -177,7 +177,6 @@ function checkout() {
           </>
         )}
       </div>
-      <ToastContainer position="bottom-right" />
 
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
     </>

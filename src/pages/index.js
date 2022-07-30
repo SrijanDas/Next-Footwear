@@ -5,8 +5,12 @@ import HeroImg from "../assets/hero-img.jpg";
 import ProductCard from "../components/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
 import axios from "../helpers/axios";
+import LoginSection from "../components/LoginSection";
+import { useSelector } from "react-redux";
 
 export default function Home({ newProducts }) {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   return (
     <div>
       <Head>
@@ -17,6 +21,8 @@ export default function Home({ newProducts }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {!isAuthenticated && <LoginSection />}
 
       <section className="hero flex flex-col md:flex-row md:items-end bg-[#EDECE1] p-10">
         <div className="h-auto w-full md:order-2">

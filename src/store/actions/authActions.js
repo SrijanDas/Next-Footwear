@@ -34,7 +34,7 @@ export const load_user = () => async (dispatch) => {
 export const loginCall = (email, password) => async (dispatch) => {
   try {
     const res = await axios.post("/auth/token/login/", {
-      username: email,
+      email,
       password,
     });
     localStorage.setItem("nf_auth_token", JSON.stringify(res.data.auth_token));

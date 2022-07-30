@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import axios from "../helpers/axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [error, setError] = useState({ status: false, message: "" });
@@ -165,7 +165,6 @@ function SignUp() {
           </span>
         </div>
       </div>
-      <ToastContainer position="bottom-right" />
     </>
   );
 }

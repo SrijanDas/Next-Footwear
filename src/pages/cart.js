@@ -4,7 +4,6 @@ import PriceDetails from "../components/cart/PriceDetails";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ToastContainer } from "react-toastify";
 
 function cart() {
   const cart = useSelector((state) => state.cart);
@@ -48,7 +47,6 @@ function cart() {
           </h1>
         )}
       </div>
-      <ToastContainer position="bottom-center" />
     </>
   );
 }

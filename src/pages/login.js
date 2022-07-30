@@ -2,14 +2,14 @@ import axios from "../helpers/axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { load_user } from "../store/actions/authActions";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -22,6 +22,10 @@ function login() {
 
   const handleSunmit = async (e) => {
     e.preventDefault();
+    dispatch({
+      type: "AUTH_START",
+    });
+
     if (email === "" || password === "") {
       toast.error("Please fill all fields");
       return;
@@ -46,6 +50,9 @@ function login() {
       });
 
     dispatch(load_user());
+    dispatch({
+      type: "AUTH_END",
+    });
   };
 
   return (
@@ -83,7 +90,9 @@ function login() {
           </Link>
           <button
             type="submit"
-            className="btn btn-green outline-none border-none"
+            className={`btn btn-green outline-none border-none ${
+              loading && "loading"
+            }`}
           >
             Login
           </button>
@@ -97,7 +106,6 @@ function login() {
           to sign-up!
         </span>
       </div>
-      <ToastContainer position="bottom-right" />
     </div>
   );
 }

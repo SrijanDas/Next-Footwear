@@ -17,7 +17,7 @@
         @apply py-2 px-3.5 font-medium text-sm transition ease-in duration-200 uppercase rounded-full bg-gray-800 hover:bg-gray-900 text-white focus:outline-none border-0
     }
     .link{
-        @apply cursor-pointer no-underline text-indigo-500 hover:text-gray-800 hover:underline
+        @apply cursor-pointer no-underline text-indigo-500 hover:underline
     }
 
    

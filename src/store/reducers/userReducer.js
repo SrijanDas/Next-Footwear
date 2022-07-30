@@ -10,6 +10,17 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case actionTypes.AUTH_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionTypes.AUTH_END:
+      return {
+        ...state,
+        loading: false,
+      };
+
     case actionTypes.USER_LOADED_SUCCESS:
       return {
         ...state,

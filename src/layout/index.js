@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Loader from "../components/Loader";
 import NextNProgress from "nextjs-progressbar";
-import LoginModal from "./LoginModal";
+import { toast, ToastContainer } from "react-toastify";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);
@@ -23,15 +23,10 @@ function Layout({ title, content, children }) {
 
   const dispatch = useDispatch();
 
-  // login modal state
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const closeLoginModal = () => {
-    setLoginModalOpen(false);
-  };
   useEffect(() => {
     if (!isAuthenticated) {
       const timer = setTimeout(() => {
-        setLoginModalOpen(true);
+        toast.info("You are not logged in. Please login to continue");
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -39,12 +34,12 @@ function Layout({ title, content, children }) {
 
   // prevents user from scrolling when login modal or drawer is open
   useEffect(() => {
-    if (drawerOpen || loginModalOpen) {
+    if (drawerOpen) {
       document.body.style.overflow = "hidden";
-    } else if (!drawerOpen || !loginModalOpen) {
+    } else if (!drawerOpen) {
       document.body.style.overflow = "auto";
     }
-  }, [drawerOpen, loginModalOpen]);
+  }, [drawerOpen]);
 
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -85,11 +80,11 @@ function Layout({ title, content, children }) {
               totalItems={totalItems}
               toggleDrawer={toggleDrawer}
             />
-
             {children}
+            <ToastContainer position="bottom-left" />
+
             <Footer />
           </div>
-          <LoginModal isOpen={loginModalOpen} closeModal={closeLoginModal} />
         </>
       )}
     </>
