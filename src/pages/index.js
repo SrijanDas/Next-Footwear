@@ -22,8 +22,6 @@ export default function Home({ newProducts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!isAuthenticated && <LoginSection />}
-
       <section className="hero flex flex-col md:flex-row md:items-end bg-[#EDECE1] p-10">
         <div className="h-auto w-full md:order-2">
           <Image
@@ -41,6 +39,11 @@ export default function Home({ newProducts }) {
           </Link>
         </div>
       </section>
+      {!isAuthenticated && (
+        <section className="px-4 md:px-10 mt-4">
+          <LoginSection />
+        </section>
+      )}
 
       <section className="newProducts p-4 md:p-10 bg-white">
         <div className="flex flex-wrap justify-between items-center pb-4">
