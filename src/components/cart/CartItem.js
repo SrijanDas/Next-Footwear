@@ -4,6 +4,7 @@ import React from "react";
 import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { isBrowser, isMobile } from "react-device-detect";
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
@@ -75,7 +76,7 @@ function CartItem({ item }) {
   };
 
   return (
-    <div className="border-t-2 border-gray-300 py-4 flex flex-col gap-2">
+    <div className="border-t-2 border-gray-300 py-4 flex flex-col gap-2 sm:gap-4">
       <div className="flex md:gap-6">
         <div className="flex flex-col items-center">
           {/* <Link href={`/products/${item.slug}`}> */}
@@ -112,7 +113,7 @@ function CartItem({ item }) {
             </button>
           </div>
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col">
           <div className="ml-4">
             <h5 className="text-black text-lg font-semibold">{item.name}</h5>
             <span className="mr-2">
@@ -125,18 +126,41 @@ function CartItem({ item }) {
               ₹{item.price * item.quantity}
             </span>
           </div>
+          {isBrowser && (
+            <div className="flex items-center ml-4 mt-6 gap-2">
+              <button
+                className="btn btn-xs btn-ghost gap-2"
+                onClick={saveToWishlist}
+              >
+                Save for later
+                <HiHeart />
+              </button>
+              <button
+                className="btn btn-xs btn-ghost gap-2"
+                onClick={removeItem}
+              >
+                <HiOutlineTrash />
+                Remove
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      <div className="card-btns flex items-center">
-        <button className="btn btn-ghost gap-2 w-1/2" onClick={saveToWishlist}>
-          Save for later
-          <HiHeart />
-        </button>
-        <button className="btn btn-ghost gap-2 w-1/2" onClick={removeItem}>
-          <HiOutlineTrash />
-          Remove
-        </button>
-      </div>
+      {isMobile && (
+        <div className="card-btns flex items-center">
+          <button
+            className="btn btn-ghost gap-2 w-1/2"
+            onClick={saveToWishlist}
+          >
+            Save for later
+            <HiHeart />
+          </button>
+          <button className="btn btn-ghost gap-2 w-1/2" onClick={removeItem}>
+            <HiOutlineTrash />
+            Remove
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
-const charLimit = 40;
+// const charLimit = 30;
 
-const trimProductName = (productName) => {
+const trimProductName = (productName, charLimit = 40) => {
   const trimmedName =
     productName.length > charLimit
       ? productName.slice(0, charLimit) + "..."

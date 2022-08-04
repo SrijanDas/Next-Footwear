@@ -66,13 +66,17 @@ function checkout() {
       });
   };
 
+  // *
+  // * Payment
+  // *
+
   const handlePayment = (e) => {
     setLoading(true);
 
     e.preventDefault();
 
-    const { razorpay_order_id, razorpay_amount, currency, order_details } =
-      order;
+    const { razorpay_order_id, razorpay_amount, currency } =
+      order.razorpay_details;
 
     const options = {
       key: process.env.KEY_ID, // Enter the Key ID generated from the Dashboard

@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { HiCheck, HiPlusCircle } from "react-icons/hi";
-import { toast } from "react-toastify";
 import axios from "../../helpers/axios";
 import NewAddressForm from "./NewAddressForm";
+import Address from "../Address";
 
-const Address = ({ address, showCheckbox = false, handleAddressChange }) => {
-  return (
-    <label className="flex gap-4 my-2 items-center cursor-pointer">
-      {showCheckbox && (
-        <input
-          type="radio"
-          name="radio-2"
-          className="radio radio-primary"
-          onChange={() => handleAddressChange(address.id)}
-        />
-      )}
-      <div className="flex flex-col mt-3">
-        <span className="text-gray-600 capitalize">
-          {" "}
-          <b>{address.name}</b> | {address.phone}
-        </span>
-        <span className="text-gray-600 capitalize">
-          {address.address}, {address.city}, {address.state} -{" "}
-          <strong>{address.zipcode}</strong>
-        </span>
-      </div>
-    </label>
-  );
-};
+// const Address = ({ address, showCheckbox = false, handleAddressChange }) => {
+//   return (
+//     <label className="flex gap-4 my-2 items-center cursor-pointer">
+//       {showCheckbox && (
+//         <input
+//           type="radio"
+//           name="radio-2"
+//           className="radio radio-primary"
+//           onChange={() => handleAddressChange(address.id)}
+//         />
+//       )}
+//       <div className="flex flex-col mt-3">
+//         <span className="text-gray-600 capitalize">
+//           {" "}
+//           <b>{address.name}</b> | {address.phone}
+//         </span>
+//         <span className="text-gray-600 capitalize">
+//           {address.address}, {address.city}, {address.state} -{" "}
+//           <strong>{address.zipcode}</strong>
+//         </span>
+//       </div>
+//     </label>
+//   );
+// };
 
 function DeliveryDetails({
   deliveryAddress,
@@ -98,26 +98,36 @@ function DeliveryDetails({
           </span>
         </div>
         {deliveryDetailsFilled ? (
-          <Address address={deliveryAddress} />
+          <div className="mt-2">
+            <Address address={deliveryAddress} showEditBtn={false} />
+          </div>
         ) : (
           <div className="mt-2">
             {allAddress.length > 0 ? (
               allAddress.map((address) => (
-                <Address
-                  address={address}
-                  key={address.id}
-                  showCheckbox
-                  handleAddressChange={handleAddressChange}
-                />
+                <div className="my-4" key={address.id}>
+                  <label className="flex gap-4 items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="radio-2"
+                      className="radio radio-primary"
+                      onChange={() => handleAddressChange(address.id)}
+                    />
+
+                    <Address address={address} />
+                  </label>
+                  {deliveryAddress.id === address.id && (
+                    <button
+                      onClick={handleDeliverHere}
+                      className="btn mt-2 ml-10"
+                    >
+                      Deliver Here
+                    </button>
+                  )}
+                </div>
               ))
             ) : (
               <span className="text-gray-600">No address added yet</span>
-            )}
-
-            {allAddress.length > 0 && (
-              <button onClick={handleDeliverHere} className="btn mt-4 w-full">
-                Deliver Here
-              </button>
             )}
           </div>
         )}
@@ -138,7 +148,7 @@ function DeliveryDetails({
           ) : (
             <button
               onClick={() => setShowAddressForm(true)}
-              className="w-full btn gap-2 normal-case"
+              className="w-full btn btn-ghost gap-2 normal-case"
             >
               <HiPlusCircle className="h-5 w-5" />
               Add New Address

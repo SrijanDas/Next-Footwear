@@ -17,7 +17,7 @@ function Account() {
 
   useEffect(() => {
     axios
-      .get("orders/all", {
+      .get("orders/", {
         headers: {
           Authorization: `Token ${JSON.parse(
             localStorage.getItem("nf_auth_token")
@@ -56,13 +56,13 @@ function Account() {
   }
 
   return (
-    <div className="p-4 md:p-10 flex flex-col gap-1 w-full max-w-4xl mx-auto">
+    <div className="p-2 md:p-10 flex flex-col gap-1 w-full max-w-4xl mx-auto">
       <AccountInfo user={user} />
       <Orders orders={orders} />
       <Addresses allAddress={allAddress} />
       <Card>
         <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
-          <div className="bg-base-300 rounded-lg p-4 text-center">
+          <div className="bg-base-300 rounded-lg p-4 text-center w-full md:w-1/3">
             <span className="text-3xl font-bold">Next Footwear</span>
           </div>
           <div>

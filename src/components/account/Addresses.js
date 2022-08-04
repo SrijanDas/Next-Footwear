@@ -8,10 +8,10 @@ function Addresses({ allAddress }) {
     <Card title="My Addresses">
       <div className="flex flex-col">
         {allAddress?.map((address, indx) => (
-          <>
-            <Address key={address.id} address={address} />
+          <div key={address.id}>
+            <Address address={address} />
             {indx !== allAddress.length - 1 && <hr className="my-2" />}
-          </>
+          </div>
         ))}
       </div>
     </Card>

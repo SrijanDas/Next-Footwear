@@ -75,7 +75,7 @@ function OrderSummary({
           </div>
           <div className="flex items-center justify-between mt-4">
             <span className="text-gray-600 mb-2 font-semibold text-2xl">
-              Sub Total: {totalAmount}
+              Subtotal: {totalAmount}
             </span>
             <button
               onClick={confirmOrder}

@@ -26,7 +26,9 @@ function Layout({ title, content, children }) {
   useEffect(() => {
     if (!isAuthenticated) {
       const timer = setTimeout(() => {
-        toast.info("You are not logged in. Please login to continue");
+        toast.info("You are not logged in. Please login to continue", {
+          autoClose: false,
+        });
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -81,12 +83,11 @@ function Layout({ title, content, children }) {
               toggleDrawer={toggleDrawer}
             />
             {children}
-            <ToastContainer position="bottom-left" />
-
             <Footer />
           </div>
         </>
       )}
+      <ToastContainer position="bottom-center" />
     </>
   );
 }

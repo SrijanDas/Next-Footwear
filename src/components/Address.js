@@ -1,10 +1,10 @@
 import React, { memo } from "react";
 import { HiOutlinePencil } from "react-icons/hi";
 
-function Address({ address }) {
+function Address({ address, showEditBtn = true }) {
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col mt-3">
+    <div className="flex gap-4 w-full">
+      <div className="flex flex-col">
         <span className="text-gray-600 capitalize">
           {" "}
           <b>{address.name}</b> | {address.phone}
@@ -14,10 +14,12 @@ function Address({ address }) {
           <strong>{address.pincode}</strong>
         </span>
       </div>
-      <button className="btn btn-ghost btn-sm gap-1">
-        <HiOutlinePencil className="h-5 w-5" />
-        Edit
-      </button>
+      {showEditBtn && (
+        <button className="btn btn-ghost btn-xs gap-1">
+          <HiOutlinePencil className="h-5 w-5" />
+          Edit
+        </button>
+      )}
     </div>
   );
 }

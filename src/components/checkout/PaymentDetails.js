@@ -10,7 +10,7 @@ function PaymentDetails({
 }) {
   const packagingFee = Number(orderDetails.packaging_fees);
   const subTotal = Number(orderDetails.sub_total);
-  const totalAmount = packagingFee + subTotal;
+  const totalAmount = Number(orderDetails.total_amount);
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-md p-4 w-auto h-auto">
       <div className="border-b-2 border-gray-300 pb-4">
