@@ -62,6 +62,42 @@ export default function Home({ newProducts }) {
             ))}
         </div>
       </section>
+
+      <section className="trending p-4 md:p-10 bg-white">
+        <div className="flex flex-wrap justify-between items-center pb-4">
+          <span className="text-lg font-semibold">Trending</span>
+          <Link href="/products">
+            <button className="btn-black-outlined flex items-center gap-2">
+              VIEW ALL
+              <HiArrowRight />
+            </button>
+          </Link>
+        </div>
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {newProducts.length >= 0 &&
+            newProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      </section>
+
+      <section className="topRated p-4 md:p-10 bg-white">
+        <div className="flex flex-wrap justify-between items-center pb-4">
+          <span className="text-lg font-semibold">Top Rated</span>
+          <Link href="/products">
+            <button className="btn-black-outlined flex items-center gap-2">
+              VIEW ALL
+              <HiArrowRight />
+            </button>
+          </Link>
+        </div>
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {newProducts.length >= 0 &&
+            newProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      </section>
     </div>
   );
 }
