@@ -24,8 +24,8 @@ export default function Home({ newProducts }) {
       {!isAuthenticated && <LoginSection />}
 
       <HeroSection />
-      <section className="newProducts p-4 md:p-10 bg-white">
-        <div className="flex flex-wrap justify-between items-center pb-4">
+      <section className="newProducts md:p-10 bg-white">
+        <div className="flex flex-wrap justify-between items-center px-2 py-4">
           <span className="text-lg font-semibold uppercase">NEW ARRIVALS</span>
           <Link href="/products">
             <button className="btn-black-outlined flex items-center gap-2">
@@ -34,14 +34,14 @@ export default function Home({ newProducts }) {
             </button>
           </Link>
         </div>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {newProducts.length >= 0 &&
             newProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
         </div>
       </section>
-      <section className="trending p-4 md:p-10 bg-white">
+      {/* <section className="trending p-4 md:p-10 bg-white">
         <div className="flex flex-wrap justify-between items-center pb-4">
           <span className="text-lg font-semibold uppercase">Trending</span>
           <Link href="/products">
@@ -74,7 +74,7 @@ export default function Home({ newProducts }) {
               <ProductCard key={product.id} product={product} />
             ))}
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

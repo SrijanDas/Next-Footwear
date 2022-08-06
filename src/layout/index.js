@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Loader from "../components/Loader";
 import NextNProgress from "nextjs-progressbar";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 function Layout({ title, content, children }) {
   const isLoading = useSelector((state) => state.auth.loading);

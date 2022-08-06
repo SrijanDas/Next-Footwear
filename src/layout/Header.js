@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   HiMenu,
   HiShoppingCart,
@@ -8,8 +8,35 @@ import {
   HiChevronDown,
 } from "react-icons/hi";
 import { isBrowser } from "react-device-detect";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../components/Spinner";
 
 function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
+  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { isSearching, text } = useSelector((state) => state.search);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.length > 0 && search !== text) {
+      dispatch({
+        type: "SEARCH_START",
+        payload: search,
+      });
+      router.push(`/search?q=${search}`);
+    }
+  };
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    if (router.pathname !== "/search") {
+      setSearch("");
+    }
+  }, [router.pathname, router.query.q]);
+
   return (
     <>
       <nav className="bg-gray-800 sticky top-0 z-30">
@@ -83,17 +110,28 @@ function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
             </Link>
           </div>
           <div className="search mt-3 w-full md:mt-0 md:w-[50%]">
-            <form className="flex bg-gray-50 rounded-lg">
+            <form
+              className="flex bg-gray-50 rounded-lg"
+              onSubmit={handleSearch}
+            >
               <input
                 type="search"
                 id="default-search"
                 className="block p-2.5 w-full text-sm outline-none text-gray-900 rounded-lg"
-                placeholder="Search here..."
-                required
+                placeholder="Search for Products..."
+                value={search}
+                onChange={handleSearchChange}
               />
-              <button type="submit" className="btn-green">
-                <HiSearch />
-              </button>
+
+              {isSearching ? (
+                <button type="button" className="btn btn-sm h-auto btn-success">
+                  <Spinner />
+                </button>
+              ) : (
+                <button type="submit" className="btn-sm h-auto btn-green">
+                  <HiSearch className="w-5 h-5" />
+                </button>
+              )}
             </form>
           </div>
         </div>

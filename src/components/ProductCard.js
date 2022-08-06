@@ -7,31 +7,37 @@ function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
 
   return (
-    <div className="flex sm:flex-col gap-2 sm:gap-4 rounded-lg shadow-md p-4 border-2 border-gray-100">
-      <Link href={productLink}>
-        <a className="rounded-lg w-40 h-30 sm:w-full">
-          <Image
-            alt="image"
-            src={product.image_url}
-            className="rounded-lg"
-            width="100%"
-            height="100%"
-            layout="responsive"
-            objectFit="cover"
-          />
-        </a>
-      </Link>
-
-      <div className="">
+    <div className="productCard bg-white flex flex-col border-2 border-gray-100">
+      <div className="productCardImg">
         <Link href={productLink}>
-          <h5 className="text-lg cursor-pointer font-semibold tracking-tight text-gray-900 dark:text-white hover:text-green-600">
+          <a className="avatar w-full h-full">
+            <div className="w-full">
+              <Image
+                alt="image"
+                src={product.image_url}
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+          </a>
+        </Link>
+      </div>
+      <div className="productDetails mt-4 px-3">
+        <p>{product.brand.name}</p>
+        <Link href={productLink}>
+          <h5 className="text-md md:text-lg cursor-pointer font-semibold tracking-tight text-gray-900 dark:text-white hover:text-green-600">
             {trimProductName(product.name)}
           </h5>
         </Link>
+        {product.starting_price !== -1 && (
+          <Link href={productLink}>
+            <h5 className="text-xl md:text-2xl cursor-pointer font-semibold tracking-tight text-red-900 dark:text-white">
+              ₹{product.starting_price}
+            </h5>
+          </Link>
+        )}
         <Link href={productLink}>
-          <h5 className="text-2xl cursor-pointer font-semibold tracking-tight text-red-900 dark:text-white">
-            {product.starting_price != -1 && `₹ ${product.starting_price}`}
-          </h5>
+          <p className="link">{product.available_colors.length} Colors</p>
         </Link>
         <div className="flex items-center mt-2.5 mb-4">
           <div className="flex flex-wrap gap-1 items-center">
@@ -46,12 +52,17 @@ function ProductCard({ product }) {
             <p className="ml text-sm font-bold text-gray-900 dark:text-white">
               {product.rating ? product.rating : "Not rated yet"}
             </p>
-            <span className="w-1 h-1 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-            <Link href={productLink}>
-              <div className="text-sm font-medium text-gray-900 underline hover:no-underline cursor-pointer dark:text-white">
-                {product.review_count ? product.review_count : "0"} reviews
-              </div>
-            </Link>
+
+            {product.review_count && (
+              <>
+                <span className="w-1 h-1 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                <Link href={productLink}>
+                  <div className="text-sm font-medium text-gray-900 underline hover:no-underline cursor-pointer dark:text-white">
+                    {product.review_count}{" "}
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
