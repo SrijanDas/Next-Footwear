@@ -23,17 +23,6 @@ function Layout({ title, content, children }) {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      const timer = setTimeout(() => {
-        toast.info("You are not logged in. Please login to continue", {
-          autoClose: false,
-        });
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated]);
-
   // prevents user from scrolling when login modal or drawer is open
   useEffect(() => {
     if (drawerOpen) {

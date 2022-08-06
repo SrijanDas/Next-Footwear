@@ -20,6 +20,9 @@
         @apply cursor-pointer no-underline text-indigo-500 hover:underline
     }
 
+    .navlink{
+        @apply cursor-pointer no-underline text-gray-100 hover:text-white flex items-center gap-1 font-semibold
+    }
    
   }
 

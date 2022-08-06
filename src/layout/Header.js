@@ -22,36 +22,38 @@ function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
               <HiMenu className="w-6 h-6" />
             </button>
             <Link href="/">
-              <a className="ml-1">{isBrowser ? "NFootwear" : "NF"}</a>
+              <a className="ml-1">NFootwear</a>
             </Link>
           </div>
           <div className="rightBtns flex md:order-last">
-            <div className="dropdown dropdown-hover">
-              <label tabIndex="0" className="btn btn-black gap-2">
-                Products
-                <HiChevronDown className="" />
-              </label>
-              <ul
-                tabIndex="0"
-                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li>
-                  <Link href="/products">
-                    <a>Men</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products">
-                    <a>Women</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products">
-                    <a>Kids</a>
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {isBrowser && (
+              <div className="dropdown dropdown-hover">
+                <label tabIndex="0" className="btn btn-black gap-2">
+                  Products
+                  <HiChevronDown className="" />
+                </label>
+                <ul
+                  tabIndex="0"
+                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    <Link href="/products">
+                      <a>Men</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products">
+                      <a>Women</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products">
+                      <a>Kids</a>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
 
             {isAuthenticated ? (
               <Link href={"/account"}>
@@ -62,7 +64,10 @@ function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
               </Link>
             ) : (
               <Link href={"/login"}>
-                <button className="btn btn-black">Login</button>
+                <button className="btn btn-black gap-1">
+                  <HiUser className="h-5 w-5" />
+                  Login
+                </button>
               </Link>
             )}
 
