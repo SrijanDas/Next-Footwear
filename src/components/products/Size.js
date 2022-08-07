@@ -1,14 +1,13 @@
 import React, { memo } from "react";
 
-function Size({ selectedSize, setSelectedSize }) {
-  const sizes = [6, 7, 8, 9, 10];
+function Size({ selectedSize, availableSizes, handleSizeChange }) {
   return (
     <div className="my-2">
       <span className="mb-2 ">Sizes:</span>
       <div className="mt-2">
-        {sizes.map((size, index) => (
+        {availableSizes.map((size, index) => (
           <button
-            onClick={() => setSelectedSize(size)}
+            onClick={() => handleSizeChange(size)}
             key={index}
             type="button"
             className={`py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 ${

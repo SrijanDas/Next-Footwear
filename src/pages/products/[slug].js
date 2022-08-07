@@ -10,6 +10,9 @@ import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
 import axios from "../../helpers/axios";
 import { HiShoppingCart, HiLightningBolt, HiCheckCircle } from "react-icons/hi";
+import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
+
+const availableSizes = [6, 7, 8, 9, 10];
 
 function ProductSlug({ product }) {
   const router = useRouter();
@@ -19,40 +22,38 @@ function ProductSlug({ product }) {
   }
   const pageTitle = `NFootwears | ${product.name}`;
   const brand = product.brand;
-  const [price, setPrice] = useState("₹" + product.starting_price);
   const [selectedColor, setSelectedColor] = useState(product.color);
   const [selectedSize, setSelectedSize] = useState(0);
   const [productId, setProductId] = useState(product.id);
+  // const [productSlug, setProductSlug] = useState(product.slug);
   const [imageUrl, setImageUrl] = useState(product.image_url);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [price, setPrice] = useState("₹" + product.starting_price);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const btnsDisabled =
     selectedColor === "" ||
     selectedSize === 0 ||
     price === "This variant is not available";
 
-  const [loadingImg, setLoadingImg] = useState(false);
+  // handleColorChange
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+  };
 
-  // updating image change
-  useEffect(() => {
-    setAddedToCart(false);
-    setLoadingImg(true);
-    let strArr = product.slug.split("-");
-    strArr[strArr.length - 1] = selectedColor;
-    const newSlug = strArr.join("-");
-
-    axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
-      setImageUrl(res.data.image_url);
-    });
-
-    setLoadingImg(false);
-  }, [selectedColor]);
+  // handleSizeChange
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+  };
 
   // updating price when color or size is changed
   useEffect(() => {
     setAddedToCart(false);
 
     const fetchProduct = async () => {
+      setIsLoading(true);
+
       try {
         let strArr = product.slug.split("-");
         strArr[strArr.length - 1] = selectedColor;
@@ -67,9 +68,9 @@ function ProductSlug({ product }) {
         // console.log(error);
         if (selectedSize !== 0) {
           setPrice("This variant is not available");
-          return;
         }
       }
+      setIsLoading(false);
     };
     if (selectedSize === 0) {
       setPrice("Please select size");
@@ -77,6 +78,24 @@ function ProductSlug({ product }) {
     }
     fetchProduct();
   }, [selectedColor, selectedSize]);
+
+  // updating image change
+  useEffect(() => {
+    setAddedToCart(false);
+    const fetchImage = async () => {
+      setIsLoading(true);
+      let strArr = product.slug.split("-");
+      strArr[strArr.length - 1] = selectedColor;
+      const newSlug = strArr.join("-");
+
+      await axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
+        setImageUrl(res.data.image_url);
+      });
+
+      setIsLoading(false);
+    };
+    fetchImage();
+  }, [selectedColor]);
 
   const dispatch = useDispatch();
 
@@ -112,78 +131,78 @@ function ProductSlug({ product }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
-        <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
-          <div
-            className={`w-[14rem] h-[18rem] relative ${
-              loadingImg && "animate-pulse"
-            }`}
-          >
-            {loadingImg ? (
-              <div className="bg-slate-200 h-full w-full"> </div>
-            ) : (
+      {isLoading ? (
+        <ProductPageSkeleton />
+      ) : (
+        <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
+          <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
+            <div className={`w-[14rem] h-[18rem] relative`}>
               <Image
                 alt="image"
                 src={imageUrl}
                 layout="fill"
                 objectFit="contain"
+                objectPosition="center"
               />
-            )}
-          </div>
-          <div className="mt-4 flex gap-2 w-full">
-            <button
-              className="btn gap-2 btn-green w-1/2 outline-none border-none"
-              onClick={() => {
-                if (btnsDisabled) {
-                  toast.warning(price);
-                  return;
-                }
-                buyNow();
-              }}
-            >
-              <HiLightningBolt className="text-2xl" />
-              BUY NOW
-            </button>
-
-            {addedToCart ? (
-              <button className="btn gap-2 rounded-md w-1/2">
-                <HiCheckCircle className="text-2xl" />
-                Added to Cart
-              </button>
-            ) : (
+            </div>
+            <div className="mt-4 flex gap-2 w-full">
               <button
+                className="btn gap-2 btn-green w-1/2 outline-none border-none"
                 onClick={() => {
                   if (btnsDisabled) {
                     toast.warning(price);
                     return;
                   }
-                  addToCart();
+                  buyNow();
                 }}
-                className="btn btn-black gap-2 rounded-md w-1/2"
               >
-                <HiShoppingCart className="text-2xl" />
-                ADD TO CART
+                <HiLightningBolt className="text-2xl" />
+                BUY NOW
               </button>
-            )}
+
+              {addedToCart ? (
+                <button className="btn gap-2 rounded-md w-1/2">
+                  <HiCheckCircle className="text-2xl" />
+                  Added to Cart
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (btnsDisabled) {
+                      toast.warning(price);
+                      return;
+                    }
+                    addToCart();
+                  }}
+                  className="btn btn-black gap-2 rounded-md w-1/2"
+                >
+                  <HiShoppingCart className="text-2xl" />
+                  ADD TO CART
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="rightSide px-1 py-0 lg:w-[40%] lg:px-10">
+            <BrandContainer brand={brand} />
+            <span className="text-lg font-medium antialiased mb-5">
+              {product.name}
+            </span>
+            <h5 className="text-3xl font-medium antialiased text-red-900 dark:text-white">
+              {product.starting_price === -1 ? "Currently Unavailable" : price}
+            </h5>
+            <Colors
+              selectedColor={selectedColor}
+              handleColorChange={handleColorChange}
+              availableColors={product.available_colors}
+            />
+            <Size
+              availableSizes={availableSizes}
+              selectedSize={selectedSize}
+              handleSizeChange={handleSizeChange}
+            />
           </div>
         </div>
-        <div className="rightSide px-1 py-5 lg:w-[40%] lg:py-0 lg:px-10">
-          <BrandContainer brand={brand} />
-          <span className="text-lg font-medium antialiased mb-5">
-            {product.name}
-          </span>
-          <br className="h-5 my5" />
-          <h5 className="text-3xl font-medium antialiased text-red-900 dark:text-white mt-5">
-            {product.starting_price === -1 ? "Currently Unavailable" : price}
-          </h5>
-          <Colors
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
-            availableColors={product.available_colors}
-          />
-          <Size selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
-        </div>
-      </div>
+      )}
     </>
   );
 }

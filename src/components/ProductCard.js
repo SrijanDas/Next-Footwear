@@ -1,26 +1,45 @@
-import React, { memo } from "react";
-import Image from "next/image";
+import React, { memo, useState } from "react";
 import Link from "next/link";
 import trimProductName from "../utils/trimProductName";
+import { HiHeart } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
+
+  const addToWishlist = () => {
+    if (!addedToWishlist) {
+      setAddedToWishlist(true);
+      toast.success(`"${product.name}" Added to wishlist`);
+    } else {
+      setAddedToWishlist(false);
+      toast.error(`"${product.name}" removed from wishlist`);
+    }
+  };
 
   return (
-    <div className="productCard bg-white flex flex-col border-2 border-gray-100">
-      <div className="productCardImg">
-        <Link href={productLink}>
-          <a className="avatar w-full h-full">
-            <div className="w-full">
-              <Image
-                alt="image"
-                src={product.image_url}
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-          </a>
-        </Link>
+    <div className="productCard bg-white border-2 border-gray-100 transform hover:-translate-y-4 duration-300">
+      <div
+        className="h-48 w-full bg-gray-200 flex flex-col justify-between p-2 bg-cover bg-center"
+        style={{
+          backgroundImage: ` url(
+              ${product.image_url}
+            )`,
+        }}
+      >
+        <div className="flex justify-end">
+          <button
+            onClick={addToWishlist}
+            className="bg-white rounded-full p-1 shadow-md top-0 right-0 relative cursor-pointer hover:shadow-lg border-2 border-slate-100"
+          >
+            <HiHeart
+              className={`h-6 w-6 ${
+                addedToWishlist ? "text-red-500" : "text-slate-300"
+              }`}
+            />
+          </button>
+        </div>
       </div>
       <div className="productDetails mt-4 px-3">
         <p>{product.brand.name}</p>

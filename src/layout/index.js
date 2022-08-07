@@ -61,9 +61,7 @@ function Layout({ title, content, children }) {
               className={`w-full h-full bg-gray-500/30 z-40 fixed`}
             ></div>
           )}
-          <div
-            className={`flex flex-col h-screen justify-between ease-in duration-200`}
-          >
+          <div className="flex flex-col h-screen justify-between ease-in duration-200">
             <NextNProgress height={4} />
             <Header
               isAuthenticated={isAuthenticated}
@@ -76,7 +74,7 @@ function Layout({ title, content, children }) {
           </div>
         </>
       )}
-      <ToastContainer position="bottom-center" />
+      <ToastContainer position="bottom-right" />
     </>
   );
 }

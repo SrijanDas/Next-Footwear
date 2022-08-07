@@ -4,12 +4,12 @@ const brands = ["Nike", "Adidas", "Puma", "Reebok"];
 
 const MobileFilter = () => {
   return (
-    <div className="pt-4 md:hidden flex items-center justify-center gap-4">
-      <button className="btn gap-2 btn-outline rounded-full">
+    <div className="flex items-center w-full btn-group">
+      <button className="btn btn-ghost gap-2 w-1/2 rounded-none border-r-2 border-r-slate-200">
         <HiSortAscending className="h-5 w-5" />
         Sort
       </button>
-      <button className="btn gap-2 btn-outline rounded-full">
+      <button className="btn btn-ghost gap-2 w-1/2 rounded-none border-l-2 border-l-slate-200">
         <HiFilter className="h-5 w-5" />
         Filter
       </button>
