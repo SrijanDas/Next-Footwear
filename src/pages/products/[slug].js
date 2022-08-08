@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader";
+import Loader from "../../components/shared/Loader";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
@@ -20,6 +20,7 @@ function ProductSlug({ product }) {
     router.push("/500");
     return <Loader />;
   }
+
   const pageTitle = `NFootwears | ${product.name}`;
   const brand = product.brand;
   const [selectedColor, setSelectedColor] = useState(product.color);
@@ -29,7 +30,7 @@ function ProductSlug({ product }) {
   const [imageUrl, setImageUrl] = useState(product.image_url);
   const [addedToCart, setAddedToCart] = useState(false);
   const [price, setPrice] = useState("₹" + product.starting_price);
-
+  const [quantity, setQuantity] = useState(product.quantity);
   const [isLoading, setIsLoading] = useState(false);
 
   const btnsDisabled =
@@ -64,6 +65,7 @@ function ProductSlug({ product }) {
         setPrice("₹" + data.price);
         setProductId(data.id);
         setImageUrl(data.image_url);
+        setQuantity(data.quantity);
       } catch (error) {
         // console.log(error);
         if (selectedSize !== 0) {
@@ -187,9 +189,14 @@ function ProductSlug({ product }) {
             <span className="text-lg font-medium antialiased mb-5">
               {product.name}
             </span>
-            <h5 className="text-3xl font-medium antialiased text-red-900 dark:text-white">
+            <h5 className="text-3xl font-medium antialiased text-red-900">
               {product.starting_price === -1 ? "Currently Unavailable" : price}
             </h5>
+            {quantity < 10 && !btnsDisabled && (
+              <span className="font-medium antialiased text-error">
+                Only {quantity} left in stock
+              </span>
+            )}
             <Colors
               selectedColor={selectedColor}
               handleColorChange={handleColorChange}

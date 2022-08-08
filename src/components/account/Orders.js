@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import Card from "../Card";
+import Card from "../styled/Card";
 import OrderCard from "./OrderCard";
 import { HiChevronUp, HiChevronDown } from "react-icons/hi";
 
@@ -15,7 +15,7 @@ function Orders({ orders }) {
           }`}
         >
           <div className="flex justify-between items-center">
-            <h1>{orders.length} Orders</h1>
+            <h1>{`${orders.length} Orders`}</h1>
             <button
               onClick={toggleShowAllOrders}
               className="btn btn-outline btn-primary gap-2"

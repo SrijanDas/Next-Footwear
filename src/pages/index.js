@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/shared/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
 import axios from "../helpers/axios";
 import LoginSection from "../components/home/LoginSection";

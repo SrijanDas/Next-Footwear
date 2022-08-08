@@ -1,4 +1,4 @@
-import Card from "../Card";
+import Card from "../styled/Card";
 import { HiOutlinePencil } from "react-icons/hi";
 import { useState, memo } from "react";
 import EditAccountModal from "./EditAccountModal";

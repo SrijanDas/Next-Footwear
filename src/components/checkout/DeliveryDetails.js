@@ -2,32 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HiCheck, HiPlusCircle } from "react-icons/hi";
 import axios from "../../helpers/axios";
 import NewAddressForm from "./NewAddressForm";
-import Address from "../Address";
-
-// const Address = ({ address, showCheckbox = false, handleAddressChange }) => {
-//   return (
-//     <label className="flex gap-4 my-2 items-center cursor-pointer">
-//       {showCheckbox && (
-//         <input
-//           type="radio"
-//           name="radio-2"
-//           className="radio radio-primary"
-//           onChange={() => handleAddressChange(address.id)}
-//         />
-//       )}
-//       <div className="flex flex-col mt-3">
-//         <span className="text-gray-600 capitalize">
-//           {" "}
-//           <b>{address.name}</b> | {address.phone}
-//         </span>
-//         <span className="text-gray-600 capitalize">
-//           {address.address}, {address.city}, {address.state} -{" "}
-//           <strong>{address.zipcode}</strong>
-//         </span>
-//       </div>
-//     </label>
-//   );
-// };
+import Address from "../shared/Address";
 
 function DeliveryDetails({
   deliveryAddress,

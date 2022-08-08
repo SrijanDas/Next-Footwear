@@ -10,7 +10,7 @@ import {
 import { isBrowser } from "react-device-detect";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/shared/Spinner";
 
 function Header({ isAuthenticated, firstName, totalItems, toggleDrawer }) {
   const [search, setSearch] = useState("");

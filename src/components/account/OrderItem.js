@@ -11,7 +11,7 @@ function OrderItem({ item, order_status, delivery_date = "" }) {
         <div className="avatar">
           <div className="w-24 rounded-lg">
             <Image
-              alt="image"
+              alt="product"
               src={item.product.image_url}
               layout="fill"
               objectFit="cover"
@@ -54,7 +54,7 @@ function OrderItem({ item, order_status, delivery_date = "" }) {
         <h5 className="text-black text-lg font-semibold">
           {trimProductName(item.product.name, 20)}
         </h5>
-        <span className="mr-2">Color: {item.product.color}</span>
+        <span className="mr-2">Color: {item.product.color.name}</span>
         <span>Size: {item.product.size}</span>
       </div>
     </div>

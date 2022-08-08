@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import React from "react";
 import { HiCheck } from "react-icons/hi";
 
 function OrderPlaced({ orderDetails }) {
-  const router = useRouter();
   return (
     <div className="alert shadow-lg">
       <div>
@@ -14,14 +13,9 @@ function OrderPlaced({ orderDetails }) {
         </div>
       </div>
       <div className="flex-none">
-        <button
-          onClick={() => {
-            router.push("/account");
-          }}
-          className="btn btn-sm btn-primary"
-        >
-          Track Order
-        </button>
+        <Link href={`account/orders/${orderDetails.id}`}>
+          <button className="btn btn-sm btn-primary">Track Order</button>
+        </Link>
       </div>
     </div>
   );

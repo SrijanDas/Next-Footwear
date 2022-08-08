@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   HiTruck,
@@ -22,7 +22,6 @@ const orderStatus = {
 
 function OrderCard({ order }) {
   const { items, order_status, delivery_date, total_amount } = order;
-
   return (
     <Link href={`/account/orders/${order.id}`}>
       <div className="my-4 cursor-pointer rounded-lg bg-base-100 shadow-md hover:shadow-lg border border-gray-200 p-4">
@@ -38,17 +37,22 @@ function OrderCard({ order }) {
             {orderStatus[order_status].text}
           </span>
         </div>
-        {items.map((item) => (
-          <OrderItem
-            key={item.id}
-            item={item}
-            order_status={order_status}
-            delivery_date={delivery_date}
-          />
-        ))}
+        <div>
+          {items.map((item, index) => (
+            <div key={item.id}>
+              <div className="divider"></div>
+              <OrderItem
+                item={item}
+                order_status={order_status}
+                delivery_date={delivery_date}
+              />
+              {/* {index !== items.length - 1 && <div className="divider"></div>} */}
+            </div>
+          ))}
+        </div>
       </div>
     </Link>
   );
 }
 
-export default memo(OrderCard);
+export default OrderCard;

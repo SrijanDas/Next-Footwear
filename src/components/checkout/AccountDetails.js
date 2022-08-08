@@ -24,10 +24,11 @@ function AccountDetails({ isAuthenticated, user }) {
         {isAuthenticated ? (
           <>
             <span className="text-gray-600">
-              Welcome, <strong>{user.name}</strong>
+              Welcome,
+              <strong className="capitalize ml-1">{`${user.first_name} ${user.last_name}`}</strong>
             </span>
             <span className="text-gray-600">
-              You are logged in as <strong>{user.username}</strong>
+              You are logged in as <strong>{user.email}</strong>
             </span>
           </>
         ) : (

@@ -1,9 +1,9 @@
 import React from "react";
-import Card from "../../../components/Card";
+import Card from "../../../components/styled/Card";
 import axios from "../../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
 import OrderItem from "../../../components/account/OrderItem";
-import Address from "../../../components/Address";
+import Address from "../../../components/shared/Address";
 import { isMobile } from "react-device-detect";
 import formatDate from "../../../utils/formatDate";
 
@@ -22,7 +22,7 @@ function Order({ order, error }) {
   return (
     <>
       {!error ? (
-        <div className="p-2 md:p-10 w-full max-w-4xl mx-auto">
+        <div className="p-2 md:p-10 w-full max-w-4xl mx-auto flex flex-col gap-4">
           <Card title={`Order ID #${order.id}`}>
             <div className="flex flex-col">
               <span className="text-black text-lg font-semibold flex gap-2 items-center">

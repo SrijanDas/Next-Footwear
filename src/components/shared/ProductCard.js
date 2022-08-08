@@ -1,22 +1,10 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import Link from "next/link";
-import trimProductName from "../utils/trimProductName";
-import { HiHeart } from "react-icons/hi";
-import { toast } from "react-toastify";
+import trimProductName from "../../utils/trimProductName";
+import AddToWishlist from "./AddToWishlist";
 
 function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
-  const [addedToWishlist, setAddedToWishlist] = useState(false);
-
-  const addToWishlist = () => {
-    if (!addedToWishlist) {
-      setAddedToWishlist(true);
-      toast.success(`"${product.name}" Added to wishlist`);
-    } else {
-      setAddedToWishlist(false);
-      toast.error(`"${product.name}" removed from wishlist`);
-    }
-  };
 
   return (
     <div className="productCard bg-white border-2 border-gray-100 transform hover:-translate-y-4 duration-300">
@@ -29,18 +17,16 @@ function ProductCard({ product }) {
         }}
       >
         <div className="flex justify-end">
-          <button
-            onClick={addToWishlist}
-            className="bg-white rounded-full p-1 shadow-md top-0 right-0 relative cursor-pointer hover:shadow-lg border-2 border-slate-100"
-          >
-            <HiHeart
-              className={`h-6 w-6 ${
-                addedToWishlist ? "text-red-500" : "text-slate-300"
-              }`}
-            />
-          </button>
+          <Link href={productLink}>
+            <a className="w-full h-full"></a>
+          </Link>
+          <AddToWishlist product={product} />
         </div>
+        <Link href={productLink}>
+          <a className="w-full h-full"></a>
+        </Link>
       </div>
+
       <div className="productDetails mt-4 px-3">
         <p>{product.brand.name}</p>
         <Link href={productLink}>

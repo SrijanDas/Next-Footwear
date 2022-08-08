@@ -1,8 +1,8 @@
 import React from "react";
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "../../components/shared/ProductCard";
 import axios from "../../helpers/axios";
 import Head from "next/head";
-import { MobileFilter, DesktopFilter } from "../../components/products/Filters";
+import Filter from "../../components/filters/Filter";
 import { isMobile } from "react-device-detect";
 
 function Products({ products }) {
@@ -17,19 +17,15 @@ function Products({ products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="productsPag flex flex-col items-center md:flex-row md:gap-4 md:items-start pb-10">
-        {isMobile ? (
-          <div className="mb-2 w-full shadow-md">
-            <MobileFilter />
-          </div>
-        ) : (
-          <DesktopFilter />
-        )}
+      <div className="md:p-20">
+        <Filter />
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:p-10">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div className="h-screen md:mt-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </>

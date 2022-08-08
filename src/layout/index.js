@@ -6,7 +6,7 @@ import { load_cart } from "../store/actions/cartActions";
 import Drawer from "./Drawer";
 import Footer from "./Footer";
 import Header from "./Header";
-import Loader from "../components/Loader";
+import Loader from "../components/shared/Loader";
 import NextNProgress from "nextjs-progressbar";
 import { ToastContainer } from "react-toastify";
 
