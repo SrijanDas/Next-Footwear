@@ -11,6 +11,7 @@ import Size from "../../components/products/Size";
 import axios from "../../helpers/axios";
 import { HiShoppingCart, HiLightningBolt, HiCheckCircle } from "react-icons/hi";
 import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
+import AddToWishlist from "../../components/shared/AddToWishlist";
 
 const availableSizes = [6, 7, 8, 9, 10];
 
@@ -28,6 +29,7 @@ function ProductSlug({ product }) {
   const [productId, setProductId] = useState(product.id);
   // const [productSlug, setProductSlug] = useState(product.slug);
   const [imageUrl, setImageUrl] = useState(product.image_url);
+  const [otherImages, setOtherImages] = useState(product.images);
   const [addedToCart, setAddedToCart] = useState(false);
   const [price, setPrice] = useState("₹" + product.starting_price);
   const [quantity, setQuantity] = useState(product.quantity);
@@ -92,6 +94,7 @@ function ProductSlug({ product }) {
 
       await axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
         setImageUrl(res.data.image_url);
+        setOtherImages(res.data.images);
       });
 
       setIsLoading(false);
@@ -138,14 +141,44 @@ function ProductSlug({ product }) {
       ) : (
         <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
           <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
-            <div className={`w-[14rem] h-[18rem] relative`}>
-              <Image
-                alt="image"
-                src={imageUrl}
-                layout="fill"
-                objectFit="contain"
-                objectPosition="center"
-              />
+            <div className="flex w-full h-80 lg:h-[28rem] gap-4">
+              {otherImages.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  {otherImages.map((image, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setImageUrl(image.image_url)}
+                      className={`avatar cursor-pointer border-2 rounded flex flex-col justify-center ${
+                        image.image_url === imageUrl && "border-indigo-500"
+                      }`}
+                    >
+                      <div className="w-16 rounded">
+                        <Image
+                          layout="fill"
+                          src={image.image_url}
+                          alt="image"
+                          objectFit="contain"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div
+                className="h-full w-full bg-white flex flex-col justify-between p-2 bg-cover bg-center"
+                style={{
+                  backgroundImage: ` url(
+              ${imageUrl}
+            )`,
+                  backgroundPosition: "center",
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                <div className="flex justify-end">
+                  <AddToWishlist product={product} />
+                </div>
+              </div>
             </div>
             <div className="mt-4 flex gap-2 w-full">
               <button

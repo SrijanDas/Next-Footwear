@@ -1,6 +1,7 @@
 import React from "react";
+import sortMethods from "../../utils/sortMethods";
 
-function SorterModal({ isOpen, onClose }) {
+function SorterModal({ isOpen, onClose, sortMethod, handleSortMethodChange }) {
   return (
     <div className={`modal ${isOpen && "modal-open"} modal-bottom`}>
       <div className="modal-box">
@@ -14,14 +15,28 @@ function SorterModal({ isOpen, onClose }) {
         </div>
 
         <div className="divider"></div>
-        <div className="form-control">
+        {sortMethods.map((method, index) => (
+          <div key={index} className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text">{method.name}</span>
+              <input
+                type="radio"
+                name="radio-6"
+                className="radio checked:bg-blue-500"
+                checked={sortMethod === method.value}
+                onChange={() => handleSortMethodChange(method.value)}
+              />
+            </label>
+          </div>
+        ))}
+
+        {/* <div className="form-control">
           <label className="label cursor-pointer">
             <span className="label-text">Popularity</span>
             <input
               type="radio"
               name="radio-6"
               className="radio checked:bg-blue-500"
-              checked
             />
           </label>
         </div>
@@ -45,17 +60,7 @@ function SorterModal({ isOpen, onClose }) {
               className="radio checked:bg-blue-500"
             />
           </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Newest Firsts</span>
-            <input
-              type="radio"
-              name="radio-6"
-              className="radio checked:bg-blue-500"
-            />
-          </label>
-        </div>
+        </div> */}
       </div>
     </div>
   );

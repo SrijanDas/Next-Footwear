@@ -2,12 +2,17 @@ import React, { memo } from "react";
 import Link from "next/link";
 import trimProductName from "../../utils/trimProductName";
 import AddToWishlist from "./AddToWishlist";
+import { isDesktop } from "react-device-detect";
 
 function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
 
   return (
-    <div className="productCard bg-white border-2 border-gray-100 transform hover:-translate-y-4 duration-300">
+    <div
+      className={`productCard bg-white border-2 border-gray-100 transform ${
+        isDesktop && "hover:-translate-y-4"
+      } duration-300`}
+    >
       <div
         className="h-48 w-full bg-gray-200 flex flex-col justify-between p-2 bg-cover bg-center"
         style={{
