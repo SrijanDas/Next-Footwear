@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { HiCheck, HiPlusCircle } from "react-icons/hi";
-import axios from "../../helpers/axios";
+import axios from "../../utils/axios";
 import NewAddressForm from "./NewAddressForm";
 import Address from "../shared/Address";
 

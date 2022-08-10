@@ -8,7 +8,7 @@ import Loader from "../../components/shared/Loader";
 import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
-import axios from "../../helpers/axios";
+import axios from "../../utils/axios";
 import { HiShoppingCart, HiLightningBolt, HiCheckCircle } from "react-icons/hi";
 import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
 import AddToWishlist from "../../components/shared/AddToWishlist";

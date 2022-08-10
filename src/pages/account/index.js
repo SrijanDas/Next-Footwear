@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
 import { useRouter } from "next/router";
-import axios from "../../helpers/axios";
+import axios from "../../utils/axios";
 import AccountInfo from "../../components/account/AccountInfo";
 import Orders from "../../components/account/Orders";
 import Addresses from "../../components/account/Addresses";

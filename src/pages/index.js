@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import ProductCard from "../components/shared/ProductCard";
 import { HiArrowRight } from "react-icons/hi";
-import axios from "../helpers/axios";
+import axios from "../utils/axios";
 import LoginSection from "../components/home/LoginSection";
 import { useSelector } from "react-redux";
 import HeroSection from "../components/home/HeroSection";

@@ -1,57 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { HiArrowSmLeft } from "react-icons/hi";
+import axios from "../../utils/axios";
+
+import filterList from "../../utils/filterList";
 import Brand from "./FilterItems/Brand";
 import Price from "./FilterItems/Price";
 
-const filterList = [
-  {
-    name: "Price",
-    component: <Price />,
-  },
-  {
-    name: "Brand",
-    component: <Brand />,
-  },
-  {
-    name: "Customer Ratings",
-    component: <> </>,
-  },
-  {
-    name: "Color",
-    component: <> </>,
-  },
-  {
-    name: "Size",
-    component: <> </>,
-  },
-  {
-    name: "Category",
-    component: <> </>,
-  },
-  {
-    name: "Shoe Type",
-    component: <> </>,
-  },
-];
+function FilterModal({
+  selectedBrands,
+  setSelectedBrands,
+  clearFilters,
+  isOpen,
+  onClose,
+  appliedFilters,
+  setAppliedFilters,
+}) {
+  const [page, setPage] = useState("brand");
 
-function FilterModal({ isOpen, onClose }) {
-  const clearFilters = () => {
-    console.log("clear filters");
+  // handling brand filter
+  const [brandList, setBrandList] = useState([]);
+
+  const handleBrandChange = async (brand) => {
+    const value = brand;
+
+    if (selectedBrands.includes(value)) {
+      setSelectedBrands(selectedBrands.filter((brand) => brand !== value));
+    } else {
+      setSelectedBrands([...selectedBrands, value]);
+    }
+
+    if (!appliedFilters.includes("brand")) {
+      setAppliedFilters([...appliedFilters, "brand"]);
+    }
   };
 
-  const [page, setPage] = useState(0);
-  const [filterItem, setFilterItem] = useState(filterList[0].component);
-
+  // *****
+  // fetching brand list
+  // *****
   useEffect(() => {
-    setFilterItem(filterList[page].component);
-  }, [page]);
+    axios.get("/brand-list").then((res) => {
+      setBrandList(res.data);
+    });
+  }, []);
 
   return (
-    <div className={`modal ${isOpen && "modal-open"} modal-bottom`}>
-      <div className="modal-box px-0">
-        <div className="flex px-5 items-center justify-between">
+    <div
+      className={`modal ${
+        isOpen ? "modal-open" : "modal-closed"
+      } modal-bottom sm:modal-middle`}
+    >
+      <div className="modal-box p-0">
+        <div className="flex px-5 pt-6 items-center justify-between">
           <div className="flex items-center gap-2">
-            <button onClick={onClose} className="btn btn-xs btn-circle">
+            <button onClick={onClose} className="btn btn-sm btn-circle">
               <HiArrowSmLeft className="h-5 w-5" />
             </button>
             <h3 className="font-bold text-lg text-slate-500 uppercase">
@@ -72,10 +73,10 @@ function FilterModal({ isOpen, onClose }) {
             <ul>
               {filterList.map((filter, index) => (
                 <li
-                  onClick={() => setPage(index)}
+                  onClick={() => setPage(filter.value)}
                   key={index}
                   className={`transition ease-in duration-200 p-4 cursor-pointer ${
-                    page === index
+                    page === filter.value
                       ? "bg-white"
                       : "bg-slate-200 hover:bg-slate-300"
                   }`}
@@ -85,7 +86,19 @@ function FilterModal({ isOpen, onClose }) {
               ))}
             </ul>
           </div>
-          <div className="h-full">{filterItem}</div>
+          <div className="h-full">
+            {page === "price" ? (
+              <Price />
+            ) : page === "brand" ? (
+              <Brand
+                brandList={brandList}
+                selectedBrands={selectedBrands}
+                handleBrandChange={handleBrandChange}
+              />
+            ) : (
+              <> </>
+            )}
+          </div>
         </div>
       </div>
     </div>

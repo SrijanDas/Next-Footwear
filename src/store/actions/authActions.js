@@ -1,5 +1,5 @@
 import * as actiontypes from "../types/authTypes";
-import axios from "../../helpers/axios";
+import axios from "../../utils/axios";
 
 export const load_user = () => async (dispatch) => {
   const token = localStorage.getItem("nf_auth_token");

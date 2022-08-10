@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import axios from "../helpers/axios";
+import axios from "../utils/axios";
 import { toast } from "react-toastify";
 
 function SignUp() {

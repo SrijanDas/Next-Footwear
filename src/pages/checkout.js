@@ -6,7 +6,7 @@ import PaymentDetails from "../components/checkout/PaymentDetails";
 import OrderSummary from "../components/checkout/OrderSummary";
 import Head from "next/head";
 import Script from "next/script";
-import axios from "../helpers/axios";
+import axios from "../utils/axios";
 import OrderPlaced from "../components/checkout/OrderPlaced";
 import { toast } from "react-toastify";
 

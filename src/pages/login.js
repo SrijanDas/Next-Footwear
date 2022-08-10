@@ -1,4 +1,4 @@
-import axios from "../helpers/axios";
+import axios from "../utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
