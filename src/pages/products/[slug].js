@@ -9,9 +9,15 @@ import BrandContainer from "../../components/products/BrandContainer";
 import Colors from "../../components/products/Colors";
 import Size from "../../components/products/Size";
 import axios from "../../utils/axios";
-import { HiShoppingCart, HiLightningBolt, HiCheckCircle } from "react-icons/hi";
+import {
+  HiShoppingCart,
+  HiLightningBolt,
+  HiCheckCircle,
+  HiStar,
+} from "react-icons/hi";
 import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
 import AddToWishlist from "../../components/shared/AddToWishlist";
+import ReviewsSection from "../../components/products/ReviewsSection";
 
 const availableSizes = [6, 7, 8, 9, 10];
 
@@ -139,108 +145,122 @@ function ProductSlug({ product }) {
       {isLoading ? (
         <ProductPageSkeleton />
       ) : (
-        <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20 bg-white">
-          <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
-            <div className="flex w-full h-80 lg:h-[28rem] gap-4">
-              {otherImages.length > 0 && (
-                <div className="flex flex-col gap-2">
-                  {otherImages.map((image, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setImageUrl(image.image_url)}
-                      className={`avatar cursor-pointer border-2 rounded flex flex-col justify-center ${
-                        image.image_url === imageUrl && "border-indigo-500"
-                      }`}
-                    >
-                      <div className="w-16 rounded">
-                        <Image
-                          layout="fill"
-                          src={image.image_url}
-                          alt="image"
-                          objectFit="contain"
-                        />
+        <div className="h-auto p-5 lg:p-20 bg-white mb-10">
+          <div className="flex flex-col lg:flex-row">
+            <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
+              <div className="flex w-full h-80 lg:h-[28rem] gap-4">
+                {otherImages.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    {otherImages.map((image, index) => (
+                      <div
+                        key={index}
+                        onClick={() => setImageUrl(image.image_url)}
+                        className={`avatar cursor-pointer border-2 rounded flex flex-col justify-center ${
+                          image.image_url === imageUrl && "border-indigo-500"
+                        }`}
+                      >
+                        <div className="w-16 rounded">
+                          <Image
+                            layout="fill"
+                            src={image.image_url}
+                            alt="image"
+                            objectFit="contain"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div
-                className="h-full w-full bg-white flex flex-col justify-between p-2 bg-cover bg-center"
-                style={{
-                  backgroundImage: ` url(
+                    ))}
+                  </div>
+                )}
+                <div
+                  className="h-full w-full bg-white flex flex-col justify-between p-2 bg-cover bg-center"
+                  style={{
+                    backgroundImage: ` url(
               ${imageUrl}
             )`,
-                  backgroundPosition: "center",
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                }}
-              >
-                <div className="flex justify-end">
-                  <AddToWishlist product={product} />
+                    backgroundPosition: "center",
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  <div className="flex justify-end">
+                    <AddToWishlist product={product} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="mt-4 flex gap-2 w-full">
-              <button
-                className="btn gap-2 btn-green w-1/2 outline-none border-none"
-                onClick={() => {
-                  if (btnsDisabled) {
-                    toast.warning(price);
-                    return;
-                  }
-                  buyNow();
-                }}
-              >
-                <HiLightningBolt className="text-2xl" />
-                BUY NOW
-              </button>
-
-              {addedToCart ? (
-                <button className="btn gap-2 rounded-md w-1/2">
-                  <HiCheckCircle className="text-2xl" />
-                  Added to Cart
-                </button>
-              ) : (
+              <div className="mt-4 flex gap-2 w-full">
                 <button
+                  className="btn gap-2 btn-green w-1/2 outline-none border-none"
                   onClick={() => {
                     if (btnsDisabled) {
                       toast.warning(price);
                       return;
                     }
-                    addToCart();
+                    buyNow();
                   }}
-                  className="btn btn-black gap-2 rounded-md w-1/2"
                 >
-                  <HiShoppingCart className="text-2xl" />
-                  ADD TO CART
+                  <HiLightningBolt className="text-2xl" />
+                  BUY NOW
                 </button>
+
+                {addedToCart ? (
+                  <button className="btn gap-2 rounded-md w-1/2">
+                    <HiCheckCircle className="text-2xl" />
+                    Added to Cart
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (btnsDisabled) {
+                        toast.warning(price);
+                        return;
+                      }
+                      addToCart();
+                    }}
+                    className="btn btn-black gap-2 rounded-md w-1/2"
+                  >
+                    <HiShoppingCart className="text-2xl" />
+                    ADD TO CART
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="rightSide px-1 py-0 lg:w-[40%] lg:px-10">
+              <BrandContainer brand={brand} />
+              <span className="text-lg font-medium antialiased mb-5">
+                {product.name}
+              </span>
+
+              <div className="text-lg text-gray-500 antialiased mb-5 flex gap-2">
+                <span className="flex items-center">
+                  4<HiStar className="w-6 h-6 text-orange-400" />
+                </span>
+
+                <span>|</span>
+                <span className="link link-hover">140 Ratings</span>
+              </div>
+              <h5 className="text-3xl font-medium antialiased text-red-900">
+                {product.starting_price === -1
+                  ? "Currently Unavailable"
+                  : price}
+              </h5>
+              {quantity < 10 && !btnsDisabled && (
+                <span className="font-medium antialiased text-error">
+                  Only {quantity} left in stock
+                </span>
               )}
+              <Colors
+                selectedColor={selectedColor}
+                handleColorChange={handleColorChange}
+                availableColors={product.available_colors}
+              />
+              <Size
+                availableSizes={availableSizes}
+                selectedSize={selectedSize}
+                handleSizeChange={handleSizeChange}
+              />
             </div>
           </div>
-          <div className="rightSide px-1 py-0 lg:w-[40%] lg:px-10">
-            <BrandContainer brand={brand} />
-            <span className="text-lg font-medium antialiased mb-5">
-              {product.name}
-            </span>
-            <h5 className="text-3xl font-medium antialiased text-red-900">
-              {product.starting_price === -1 ? "Currently Unavailable" : price}
-            </h5>
-            {quantity < 10 && !btnsDisabled && (
-              <span className="font-medium antialiased text-error">
-                Only {quantity} left in stock
-              </span>
-            )}
-            <Colors
-              selectedColor={selectedColor}
-              handleColorChange={handleColorChange}
-              availableColors={product.available_colors}
-            />
-            <Size
-              availableSizes={availableSizes}
-              selectedSize={selectedSize}
-              handleSizeChange={handleSizeChange}
-            />
-          </div>
+          <ReviewsSection />
         </div>
       )}
     </>

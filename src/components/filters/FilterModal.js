@@ -5,6 +5,7 @@ import axios from "../../utils/axios";
 import filterList from "../../utils/filterList";
 import Brand from "./FilterItems/Brand";
 import Price from "./FilterItems/Price";
+import FilterItemSkeleton from "../skeletons/FilterItemSkeleton";
 
 function FilterModal({
   selectedBrands,
@@ -15,6 +16,7 @@ function FilterModal({
   appliedFilters,
   setAppliedFilters,
 }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState("brand");
 
   // handling brand filter
@@ -38,9 +40,14 @@ function FilterModal({
   // fetching brand list
   // *****
   useEffect(() => {
-    axios.get("/brand-list").then((res) => {
-      setBrandList(res.data);
-    });
+    const fetchBrandList = async () => {
+      setIsLoading(true);
+      await axios.get("/brand-list").then((res) => {
+        setBrandList(res.data);
+      });
+      setIsLoading(false);
+    };
+    fetchBrandList();
   }, []);
 
   return (
@@ -87,16 +94,22 @@ function FilterModal({
             </ul>
           </div>
           <div className="h-full">
-            {page === "price" ? (
-              <Price />
-            ) : page === "brand" ? (
-              <Brand
-                brandList={brandList}
-                selectedBrands={selectedBrands}
-                handleBrandChange={handleBrandChange}
-              />
+            {isLoading ? (
+              <FilterItemSkeleton />
             ) : (
-              <> </>
+              <>
+                {page === "price" ? (
+                  <Price />
+                ) : page === "brand" ? (
+                  <Brand
+                    brandList={brandList}
+                    selectedBrands={selectedBrands}
+                    handleBrandChange={handleBrandChange}
+                  />
+                ) : (
+                  <> </>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 function ProductPageSkeleton() {
   return (
-    <div className="productPageSkeleton h-screen">
+    <div className="productPageSkeleton h-screen mb-10">
       <div className="h-auto p-5 flex flex-col lg:flex-row lg:p-20">
         <div className="leftSide flex flex-col items-center w-full lg:w-[40%] ">
           <div className="h-80 lg:h-[28rem] w-full bg-slate-200 animate-pulse"></div>
