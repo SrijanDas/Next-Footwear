@@ -15,12 +15,12 @@ function Card({
         marginBottom && `mb-${marginBottom}`
       } bg-base-100 shadow-md border border-gray-200 ${
         padding && `p-${padding}`
-      } flex flex-col justify-around gap-2 rounded-xl`}
+      } rounded-xl`}
     >
       {title && (
         <>
           <h1 className="text-black text-2xl font-semibold">{title}</h1>
-          {titleBorderBottom && <hr />}
+          {titleBorderBottom && <hr className="my-4" />}
         </>
       )}
 

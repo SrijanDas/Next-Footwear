@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../store/actions/authActions";
+import { logout } from "../store/actions/authActions";
 import { useRouter } from "next/router";
-import axios from "../../utils/axios";
-import AccountInfo from "../../components/account/AccountInfo";
-import Orders from "../../components/account/Orders";
-import Addresses from "../../components/account/Addresses";
-import Card from "../../components/styled/Card";
-import Spinner from "../../components/shared/Spinner";
+import axios from "../utils/axios";
+import AccountInfo from "../components/account/AccountInfo";
+import Addresses from "../components/account/Addresses";
+import Card from "../components/styled/Card";
+import Spinner from "../components/shared/Spinner";
+import Link from "next/link";
 
 function Account() {
   const dispatch = useDispatch();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const [orders, setOrders] = useState([]);
   const [allAddress, setAllAddress] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-
     const fetData = async () => {
+      setIsLoading(true);
       await axios
         .get("accounts/address/", {
           headers: {
@@ -33,17 +31,6 @@ function Account() {
           setAllAddress(res.data);
         });
 
-      await axios
-        .get("orders/", {
-          headers: {
-            Authorization: `Token ${JSON.parse(
-              localStorage.getItem("nf_auth_token")
-            )}`,
-          },
-        })
-        .then((res) => {
-          setOrders(res.data);
-        });
       setIsLoading(false);
     };
     fetData();
@@ -71,9 +58,13 @@ function Account() {
           </div>
         </div>
       ) : (
-        <>
+        <div className="flex flex-col gap-4">
           <AccountInfo user={user} />
-          <Orders orders={orders} />
+          <Card title="My Orders">
+            <Link href="/orders">
+              <button className="btn btn-primary">View All Orders</button>
+            </Link>
+          </Card>
           <Addresses allAddress={allAddress} />
           <Card>
             <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
@@ -89,7 +80,7 @@ function Account() {
               </div>
             </div>
           </Card>
-        </>
+        </div>
       )}
     </div>
   );

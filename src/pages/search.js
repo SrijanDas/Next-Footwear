@@ -27,7 +27,7 @@ function search(pageProps) {
     } else if (method === "high-to-low") {
       setProducts(products.sort((a, b) => b.starting_price - a.starting_price));
     } else {
-      setProducts(products.sort((a, b) => b.created_at - a.created_at));
+      setProducts(products.sort((a, b) => a.date_added - b.date_added));
     }
 
     toggleSortModal();
@@ -37,8 +37,8 @@ function search(pageProps) {
   // filtering
   // *****
 
-  const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const toggleFilterModal = () => setFilterModalOpen(!filterModalOpen);
+  // const [filterModalOpen, setFilterModalOpen] = useState(false);
+  // const toggleFilterModal = () => setFilterModalOpen(!filterModalOpen);
 
   useEffect(() => {
     dispatch({
@@ -56,20 +56,20 @@ function search(pageProps) {
           <HiSortAscending className="h-5 w-5" />
           Sort
         </button>
-        <button
+        {/* <button
           onClick={toggleFilterModal}
           className="btn btn-ghost gap-2 w-1/2 md:w-auto rounded-none md:rounded-md border-l-2 border-l-slate-200 shadow-md"
         >
           <HiFilter className="h-5 w-5" />
           Filter
-        </button>
+        </button> */}
         <SorterModal
           isOpen={sortModalOpen}
           onClose={toggleSortModal}
           sortMethod={sortMethod}
           handleSortMethodChange={handleSortMethodChange}
         />
-        <FilterModal isOpen={filterModalOpen} onClose={toggleFilterModal} />
+        {/* <FilterModal isOpen={filterModalOpen} onClose={toggleFilterModal} /> */}
       </div>
       <div className="h-screen md:mt-5">
         {products.length ? (

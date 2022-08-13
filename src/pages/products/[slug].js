@@ -148,9 +148,9 @@ function ProductSlug({ product }) {
         <div className="h-auto p-5 lg:p-20 bg-white mb-10">
           <div className="flex flex-col lg:flex-row">
             <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
-              <div className="flex w-full h-80 lg:h-[28rem] gap-4">
+              <div className="flex w-full h-80 lg:h-[28rem]">
                 {otherImages.length > 0 && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 overflow-y-clip">
                     {otherImages.map((image, index) => (
                       <div
                         key={index}
@@ -230,14 +230,26 @@ function ProductSlug({ product }) {
                 {product.name}
               </span>
 
-              <div className="text-lg text-gray-500 antialiased mb-5 flex gap-2">
-                <span className="flex items-center">
-                  4<HiStar className="w-6 h-6 text-orange-400" />
-                </span>
+              {product.rating.rating > 0 ? (
+                <div className="text-lg text-gray-500 antialiased mb-5 flex gap-2">
+                  <span className="flex items-center">
+                    {product.rating.rating}
+                    <HiStar className="w-6 h-6 text-orange-400" />
+                  </span>
 
-                <span>|</span>
-                <span className="link link-hover">140 Ratings</span>
-              </div>
+                  <span>|</span>
+                  <span className="link link-hover">
+                    {product.rating.review_count === 1
+                      ? `${product.rating.review_count} Review`
+                      : `${product.rating.review_count} Reviews`}
+                  </span>
+                </div>
+              ) : (
+                <p className="text-sm font-bold text-gray-900 flex items-center">
+                  <HiStar className="w-6 h-6 text-green-600" />
+                  Not rated yet
+                </p>
+              )}
               <h5 className="text-3xl font-medium antialiased text-red-900">
                 {product.starting_price === -1
                   ? "Currently Unavailable"
@@ -260,7 +272,12 @@ function ProductSlug({ product }) {
               />
             </div>
           </div>
-          <ReviewsSection />
+          {product.rating.rating > 0 && (
+            <ReviewsSection
+              productRating={product.rating}
+              productId={product.id}
+            />
+          )}
         </div>
       )}
     </>

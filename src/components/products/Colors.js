@@ -16,7 +16,7 @@ function Colors({ selectedColor, availableColors, handleColorChange }) {
             onClick={() => handleColorChange(color.color_slug)}
           >
             <div className="avatar ">
-              <div className="w-16 rounded">
+              <div className="w-16 rounded relative">
                 <Image
                   src={color.image_url}
                   className="rounded"

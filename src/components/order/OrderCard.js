@@ -24,7 +24,7 @@ function OrderCard({ order }) {
   const { items, order_status, delivery_date, total_amount } = order;
   return (
     <Link href={`/account/orders/${order.id}`}>
-      <div className="my-4 cursor-pointer rounded-lg bg-base-100 shadow-md hover:shadow-lg border border-gray-200 p-4">
+      <div className="cursor-pointer rounded-lg bg-base-100 shadow-md hover:shadow-lg border border-gray-200 p-4">
         <div className="flex flex-col md:flex-row justify-between">
           <h5 className="text-black text-lg font-semibold">{`Order ID #${order.id}`}</h5>
           <span className="text-black text-lg font-semibold">
