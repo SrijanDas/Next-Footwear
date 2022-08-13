@@ -1,11 +1,11 @@
 import React from "react";
-import Card from "../../../components/styled/Card";
-import axios from "../../../utils/axios";
+import Card from "../../components/styled/Card";
+import axios from "../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
-import OrderItem from "../../../components/account/OrderItem";
-import Address from "../../../components/shared/Address";
+import OrderItem from "../../components/order/OrderItem";
+import Address from "../../components/shared/Address";
 import { isMobile } from "react-device-detect";
-import formatDate from "../../../utils/formatDate";
+import formatDate from "../../utils/formatDate";
 
 function Order({ order, error }) {
   if (error) {
