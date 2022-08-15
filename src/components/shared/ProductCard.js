@@ -4,6 +4,7 @@ import trimProductName from "../../utils/trimProductName";
 import AddToWishlist from "./AddToWishlist";
 import { isDesktop } from "react-device-detect";
 import { HiStar } from "react-icons/hi";
+import Rating from "./Rating";
 
 function ProductCard({ product }) {
   const productLink = `/products/${product.slug}`;
@@ -48,26 +49,14 @@ function ProductCard({ product }) {
             <div className="my-2 pb-2">
               {product.rating.rating > 0 ? (
                 <div className="flex items-center">
-                  <span className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <HiStar
-                        key={i}
-                        className={`w-6 h-6 ${
-                          i >= Math.floor(product.rating.rating)
-                            ? "text-green-200"
-                            : "text-green-600"
-                        } `}
-                      />
-                    ))}
-                  </span>
-                  <span className="font-semibold">{product.rating.rating}</span>
+                  <Rating rating={product.rating.rating} />
                   <span className="ml-1 text-slate-400">
                     ({product.rating.review_count})
                   </span>
                 </div>
               ) : (
                 <p className="text-sm font-bold text-gray-900 flex items-center">
-                  <HiStar className="w-6 h-6 text-green-600" />
+                  <HiStar className="w-6 h-6 text-orange-400" />
                   Not rated yet
                 </p>
               )}

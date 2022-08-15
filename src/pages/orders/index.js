@@ -22,7 +22,7 @@ function orders() {
       setIsLoading(false);
     };
     fetchOrders();
-  });
+  }, []);
   return (
     <div className="p-4 md:px-10 w-full max-w-6xl mx-auto">
       <h1 className="text-black text-2xl font-semibold">My Orders</h1>

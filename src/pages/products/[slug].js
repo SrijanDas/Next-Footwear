@@ -18,8 +18,12 @@ import {
 import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
 import AddToWishlist from "../../components/shared/AddToWishlist";
 import ReviewsSection from "../../components/products/ReviewsSection";
+import { useRef } from "react";
+import Rating from "../../components/shared/Rating";
 
 const availableSizes = [6, 7, 8, 9, 10];
+const executeScroll = (ref) =>
+  ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
 
 function ProductSlug({ product }) {
   const router = useRouter();
@@ -132,6 +136,9 @@ function ProductSlug({ product }) {
     router.push("/cart");
   };
 
+  // scrill to reviews
+  const reviewSectionRef = useRef(null);
+
   return (
     <>
       <Head>
@@ -232,13 +239,13 @@ function ProductSlug({ product }) {
 
               {product.rating.rating > 0 ? (
                 <div className="text-lg text-gray-500 antialiased mb-5 flex gap-2">
-                  <span className="flex items-center">
-                    {product.rating.rating}
-                    <HiStar className="w-6 h-6 text-orange-400" />
-                  </span>
+                  <Rating rating={product.rating.rating} />
 
                   <span>|</span>
-                  <span className="link link-hover">
+                  <span
+                    onClick={() => executeScroll(reviewSectionRef)}
+                    className="link link-hover"
+                  >
                     {product.rating.review_count === 1
                       ? `${product.rating.review_count} Review`
                       : `${product.rating.review_count} Reviews`}
@@ -246,7 +253,7 @@ function ProductSlug({ product }) {
                 </div>
               ) : (
                 <p className="text-sm font-bold text-gray-900 flex items-center">
-                  <HiStar className="w-6 h-6 text-green-600" />
+                  <HiStar className="w-6 h-6 text-orange-400" />
                   Not rated yet
                 </p>
               )}
@@ -273,10 +280,12 @@ function ProductSlug({ product }) {
             </div>
           </div>
           {product.rating.rating > 0 && (
-            <ReviewsSection
-              productRating={product.rating}
-              productId={product.id}
-            />
+            <div ref={reviewSectionRef}>
+              <ReviewsSection
+                productRating={product.rating}
+                productId={product.id}
+              />
+            </div>
           )}
         </div>
       )}

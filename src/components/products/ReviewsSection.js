@@ -1,6 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
 import { HiStar } from "react-icons/hi";
 import axios from "../../utils/axios";
+import formatDate from "../../utils/formatDate";
+import Rating from "../shared/Rating";
 import ReviewSkeleton from "../skeletons/ReviewSkeleton";
 
 function ReviewsSection({ productId, productRating }) {
@@ -26,7 +28,7 @@ function ReviewsSection({ productId, productRating }) {
               <HiStar
                 key={i}
                 className={`w-6 h-6 ${
-                  i >= productRating.rating
+                  i >= Math.floor(productRating.rating)
                     ? "text-green-200"
                     : "text-green-600"
                 } `}
@@ -50,12 +52,13 @@ function ReviewsSection({ productId, productRating }) {
         reviews.map((review, i) => (
           <div key={i} className="my-4">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-auto bg-green-600 p-2 flex gap-1 items-center text-lg font-semibold text-white rounded">
-                {review.rating} <HiStar className="h-5 w-5" />
-              </div>
+              <Rating rating={review.rating} />
               <span className="font-bold">{review.username}</span>
             </div>
-            <div>{review.review}</div>
+            <p className="text-sm text-gray-500">
+              Reviewed on {formatDate(review.date)}
+            </p>
+            <div className="mt-2">{review.review}</div>
           </div>
         ))
       )}
