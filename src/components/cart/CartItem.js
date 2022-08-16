@@ -5,8 +5,10 @@ import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { isBrowser, isMobile } from "react-device-detect";
+import formatPrice from "../../utils/formatPrice";
 
 function CartItem({ item }) {
+  const productLink = `/products/${item.parentSlug}?color=${item.color}&size=${item.size}`;
   const dispatch = useDispatch();
   // const memoizedValue = useMemo(() => computeItemTotal(item.price, item.quantity), [item.price, item.quantity]);
 
@@ -79,19 +81,19 @@ function CartItem({ item }) {
     <div className="border-t-2 border-gray-300 py-4 flex flex-col gap-2 sm:gap-4">
       <div className="flex md:gap-6">
         <div className="flex flex-col items-center">
-          {/* <Link href={`/products/${item.slug}`}> */}
-          <a className="rounded-xl w-40 h-30">
-            <Image
-              alt="image"
-              src={item.imageUrl}
-              className="rounded-xl"
-              width="100%"
-              height="100%"
-              layout="responsive"
-              objectFit="cover"
-            />
-          </a>
-          {/* </Link> */}
+          <Link href={productLink}>
+            <a className="rounded-xl w-40 h-30">
+              <Image
+                alt="image"
+                src={item.imageUrl}
+                className="rounded-xl"
+                width="100%"
+                height="100%"
+                layout="responsive"
+                objectFit="cover"
+              />
+            </a>
+          </Link>
           <div className="flex items-center gap-3 mt-4">
             <button
               onClick={decrementQty}
@@ -114,18 +116,22 @@ function CartItem({ item }) {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="ml-4">
-            <h5 className="text-black text-lg font-semibold">{item.name}</h5>
-            <span className="mr-2">
-              Color: {item.color} | Size: {item.size}
-            </span>
-            <br />
-            <span>Delivery by Fri Jul 22</span>
-            <br />
-            <span className="text-black text-3xl font-semibold">
-              ₹{item.price * item.quantity}
-            </span>
-          </div>
+          <Link href={productLink}>
+            <a className="ml-4">
+              <h5 className="text-black text-lg font-semibold hover:text-green-600">
+                {item.name}
+              </h5>
+              <span className="mr-2">
+                Color: {item.color} | Size: {item.size}
+              </span>
+              <br />
+              <span>Delivery by Fri Jul 22</span>
+              <br />
+              <span className="text-black text-3xl font-semibold hover:text-red-800">
+                {formatPrice(item.price * item.quantity, "INR")}
+              </span>
+            </a>
+          </Link>
           {isBrowser && (
             <div className="flex items-center ml-4 mt-6 gap-2">
               <button

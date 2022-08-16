@@ -13,7 +13,7 @@ function OrderPlaced({ orderDetails }) {
         </div>
       </div>
       <div className="flex-none">
-        <Link href={`account/orders/${orderDetails.id}`}>
+        <Link href={`/orders/${orderDetails.id}`}>
           <button className="btn btn-sm btn-primary">Track Order</button>
         </Link>
       </div>

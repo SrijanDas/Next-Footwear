@@ -80,7 +80,7 @@ export default function Home({ newProducts }) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("/products/latest-products");
+  const res = await axios.get("/latest-products");
   const newProducts = res.data;
   return {
     props: { newProducts },

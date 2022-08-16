@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../../components/shared/Loader";
@@ -18,31 +18,44 @@ import {
 import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton";
 import AddToWishlist from "../../components/shared/AddToWishlist";
 import ReviewsSection from "../../components/products/ReviewsSection";
-import { useRef } from "react";
 import Rating from "../../components/shared/Rating";
+import formatPrice from "../../utils/formatPrice";
 
-const availableSizes = [6, 7, 8, 9, 10];
 const executeScroll = (ref) =>
   ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
 
-function ProductSlug({ product }) {
+function ProductSlug(pageProps) {
   const router = useRouter();
-  if (!product) {
-    router.push("/500");
-    return <Loader />;
-  }
+  // if (!pageProps.product) {
+  //   router.push("/500");
+  //   return <Loader />;
+  // }
 
-  const pageTitle = `NFootwears | ${product.name}`;
+  const pageTitle = `NFootwears | ${pageProps.product.name}`;
+
+  const [product, setProduct] = useState(pageProps.product);
   const brand = product.brand;
   const [selectedColor, setSelectedColor] = useState(product.color);
-  const [selectedSize, setSelectedSize] = useState(0);
-  const [productId, setProductId] = useState(product.id);
+  const [selectedSize, setSelectedSize] = useState(
+    pageProps.size ? pageProps.size : 0
+  );
   // const [productSlug, setProductSlug] = useState(product.slug);
   const [imageUrl, setImageUrl] = useState(product.image_url);
-  const [otherImages, setOtherImages] = useState(product.images);
+  const otherImages = product.images;
   const [addedToCart, setAddedToCart] = useState(false);
-  const [price, setPrice] = useState("₹" + product.starting_price);
-  const [quantity, setQuantity] = useState(product.quantity);
+
+  // this is product
+  const [price, setPrice] = useState(
+    pageProps.size
+      ? product.available_products[String(pageProps.size)].price
+      : "Please Select Size"
+  );
+  const [quantity, setQuantity] = useState(
+    pageProps.size
+      ? product.available_products[String(pageProps.size)].quantity
+      : product.quantity
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   const btnsDisabled =
@@ -51,66 +64,27 @@ function ProductSlug({ product }) {
     price === "This variant is not available";
 
   // handleColorChange
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
+  const handleColorChange = async (color) => {
+    setIsLoading(true);
+    await axios
+      .get(`/products/${product.parent_slug}?color=${color}`)
+      .then((res) => {
+        setPrice("Please Select Size");
+        setSelectedSize(0);
+        setProduct(res.data);
+        setSelectedColor(color);
+        setImageUrl(res.data.image_url);
+      });
+    setIsLoading(false);
   };
 
   // handleSizeChange
   const handleSizeChange = (size) => {
+    setAddedToCart(false);
     setSelectedSize(size);
+    setPrice(product.available_products[size].price);
+    setQuantity(product.available_products[size].quantity);
   };
-
-  // updating price when color or size is changed
-  useEffect(() => {
-    setAddedToCart(false);
-
-    const fetchProduct = async () => {
-      setIsLoading(true);
-
-      try {
-        let strArr = product.slug.split("-");
-        strArr[strArr.length - 1] = selectedColor;
-        strArr.push(selectedSize);
-        const newSlug = strArr.join("-");
-        const { data } = await axios.get(`/products/details/${newSlug}`);
-
-        setPrice("₹" + data.price);
-        setProductId(data.id);
-        setImageUrl(data.image_url);
-        setQuantity(data.quantity);
-      } catch (error) {
-        // console.log(error);
-        if (selectedSize !== 0) {
-          setPrice("This variant is not available");
-        }
-      }
-      setIsLoading(false);
-    };
-    if (selectedSize === 0) {
-      setPrice("Please select size");
-      return;
-    }
-    fetchProduct();
-  }, [selectedColor, selectedSize]);
-
-  // updating image change
-  useEffect(() => {
-    setAddedToCart(false);
-    const fetchImage = async () => {
-      setIsLoading(true);
-      let strArr = product.slug.split("-");
-      strArr[strArr.length - 1] = selectedColor;
-      const newSlug = strArr.join("-");
-
-      await axios.get(`/products/get-image-url/${newSlug}`).then((res) => {
-        setImageUrl(res.data.image_url);
-        setOtherImages(res.data.images);
-      });
-
-      setIsLoading(false);
-    };
-    fetchImage();
-  }, [selectedColor]);
 
   const dispatch = useDispatch();
 
@@ -118,13 +92,14 @@ function ProductSlug({ product }) {
     dispatch({
       type: "ADDED_TO_CART",
       payload: {
-        id: productId,
+        id: product.available_products[selectedSize].id,
         name: product.name,
         imageUrl,
         size: selectedSize,
         color: selectedColor,
+        parentSlug: product.parent_slug,
         quantity: 1,
-        price: parseInt(price.replace("₹", "")),
+        price: parseInt(price),
       },
     });
     setAddedToCart(true);
@@ -260,23 +235,28 @@ function ProductSlug({ product }) {
               <h5 className="text-3xl font-medium antialiased text-red-900">
                 {product.starting_price === -1
                   ? "Currently Unavailable"
-                  : price}
+                  : formatPrice(price, "INR")}
               </h5>
-              {quantity < 10 && !btnsDisabled && (
-                <span className="font-medium antialiased text-error">
-                  Only {quantity} left in stock
+              {quantity < 10 && !btnsDisabled ? (
+                <span className="font-medium h-5 antialiased text-error">
+                  `Only {quantity} left in stock`
                 </span>
+              ) : (
+                <div className="font-medium h-6 w-full antialiased text-error"></div>
               )}
+
               <Colors
                 selectedColor={selectedColor}
                 handleColorChange={handleColorChange}
                 availableColors={product.available_colors}
               />
-              <Size
-                availableSizes={availableSizes}
-                selectedSize={selectedSize}
-                handleSizeChange={handleSizeChange}
-              />
+              {Object.keys(product.available_products).length !== 0 && (
+                <Size
+                  availableSizes={Object.keys(product.available_products)}
+                  selectedSize={selectedSize}
+                  handleSizeChange={handleSizeChange}
+                />
+              )}
             </div>
           </div>
           {product.rating.rating > 0 && (
@@ -298,12 +278,17 @@ export default ProductSlug;
 // This gets called on every request
 export async function getServerSideProps(req, res) {
   // Fetch data from external API
-  const { slug } = req.query;
+  const { slug, color, size } = req.query;
 
   try {
-    const res = await axios.get(`/products/${slug}`);
+    const serverRes = await axios.get(`/products/${slug}?color=${color}`);
     // Pass data to the page via props
-    return { props: { product: res.data } };
+    let props = { product: serverRes.data };
+    if (size) {
+      props.size = parseInt(size);
+    }
+
+    return { props };
   } catch (error) {
     return { props: { product: null } };
   }

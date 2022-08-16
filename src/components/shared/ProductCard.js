@@ -7,7 +7,7 @@ import { HiStar } from "react-icons/hi";
 import Rating from "./Rating";
 
 function ProductCard({ product }) {
-  const productLink = `/products/${product.slug}`;
+  const productLink = `/products/${product.parent_slug}?color=${product.color}`;
 
   return (
     <div

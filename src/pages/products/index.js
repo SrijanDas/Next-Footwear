@@ -137,7 +137,7 @@ export default Products;
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await axios.get("/products/latest-products");
+  const res = await axios.get("/latest-products");
   const products = res.data;
 
   // Pass data to the page via props
