@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import trimProductName from "../../utils/trimProductName";
+import { trimProductName, formatDate, formatPrice } from "../../utils/helpers";
 import { isMobile } from "react-device-detect";
-import formatDate from "../../utils/formatDate";
 import Image from "next/image";
 import { HiStar } from "react-icons/hi";
 import ReviewModal from "./ReviewModal";
 import axios from "../../utils/axios";
+import { useRouter } from "next/router";
 
-function OrderItem({ item, order_status, delivery_date = "" }) {
+function OrderItem({
+  item,
+  order_status,
+  delivery_date = "",
+  redirectLink = "/",
+}) {
+  const router = useRouter();
+  const orderStatus = item.returned ? "RET" : order_status;
+  // handle review
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const toggleReviewModal = () => setReviewModalOpen(!reviewModalOpen);
   const [orderItemReview, setOrderItemReview] = useState(item.review);
@@ -32,11 +40,23 @@ function OrderItem({ item, order_status, delivery_date = "" }) {
 
     toggleReviewModal();
   };
+
+  const handleClick = (e) => {
+    if (e.target.id === "review-btn") {
+      toggleReviewModal();
+    } else {
+      router.push(redirectLink);
+    }
+  };
+
   return (
     <>
-      <div className="flex gap-2 items-start md:justify-around">
+      <div
+        onClick={handleClick}
+        className="flex gap-4 items-start md:justify-around"
+      >
         <div className="avatar">
-          <div className="w-24 rounded-lg relative">
+          <div className="w-24 rounded-lg relative cursor-pointer">
             <Image
               alt="product"
               src={item.product.image_url}
@@ -48,33 +68,55 @@ function OrderItem({ item, order_status, delivery_date = "" }) {
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:justify-around md:w-3/4">
-          <div>
+          <div className="hidden md:flex flex-col">
+            <span className="font-medium">
+              {trimProductName(item.product.name, 20)}
+            </span>
+            <span className="mr-2 text-gray-400 antialiased">
+              Color: {item.product.color.name} | Size: {item.product.size}
+              <br />
+              Qty: {item.quantity}
+            </span>
+            <span className="text-lg font-semibold">
+              {formatPrice(item.price)}
+            </span>
+          </div>
+          <div className="flex flex-col md:w-[50%]">
             {delivery_date !== "" && (
               <div className="flex flex-col">
-                <span className="text-black text-lg font-semibold flex gap-2 items-center">
+                <span className="text-black text-lg font-medium flex gap-2 items-center">
                   {!isMobile && (
                     <div
                       className={`w-3 h-3 ${
-                        order_status === "SHP" ? "bg-green-600" : "bg-warning"
+                        orderStatus === "SHP"
+                          ? "bg-green-600"
+                          : orderStatus === "RET"
+                          ? "bg-error"
+                          : "bg-warning"
                       } rounded-full`}
                     ></div>
                   )}
 
-                  {order_status === "SHP"
+                  {orderStatus === "SHP"
                     ? `Delivered on ${formatDate(delivery_date)}`
+                    : orderStatus === "RET"
+                    ? "Returned"
                     : `Expected Delivery on ${formatDate(delivery_date)}`}
                 </span>
                 <span className="">
                   {trimProductName(item.product.name, 20)}
                   <br />
-                  {order_status === "SHP"
+                  {orderStatus === "SHP"
                     ? "Your item has been delivered"
+                    : orderStatus === "RET"
+                    ? "Your returned this Item"
                     : "Your item is yet to deliver"}
                 </span>
-                {order_status === "SHP" &&
+                {orderStatus === "SHP" &&
                   (!orderItemReview ? (
                     <span
-                      onClick={toggleReviewModal}
+                      // onClick={toggleReviewModal}
+                      id="review-btn"
                       className="text-indigo-600 mt-2 text-lg font-semibold flex gap-2 items-center"
                     >
                       <HiStar /> Rate and Review
@@ -95,13 +137,6 @@ function OrderItem({ item, order_status, delivery_date = "" }) {
                   ))}
               </div>
             )}
-          </div>
-          <div className="flex flex-col">
-            <h5 className="text-black text-lg font-semibold">
-              {trimProductName(item.product.name, 20)}
-            </h5>
-            <span className="mr-2">Color: {item.product.color.name}</span>
-            <span>Size: {item.product.size}</span>
           </div>
         </div>
       </div>

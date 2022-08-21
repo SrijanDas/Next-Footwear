@@ -1,10 +1,11 @@
 import React, { memo } from "react";
 import Link from "next/link";
-import trimProductName from "../../utils/trimProductName";
 import AddToWishlist from "./AddToWishlist";
 import { isDesktop } from "react-device-detect";
 import { HiStar } from "react-icons/hi";
 import Rating from "./Rating";
+import ProductTitle from "./ProductTitle";
+import ProductPrice from "./ProductPrice";
 
 function ProductCard({ product }) {
   const productLink = `/products/${product.parent_slug}?color=${product.color}`;
@@ -37,13 +38,9 @@ function ProductCard({ product }) {
         <a>
           <div className="productDetails mt-4 px-3 pb-2">
             <p>{product.brand.name}</p>
-            <h5 className="text-md md:text-lg cursor-pointer font-semibold tracking-tight text-gray-900 dark:text-white hover:text-green-600">
-              {trimProductName(product.name)}
-            </h5>
+            <ProductTitle title={product.name} />
             {product.starting_price !== -1 && (
-              <h5 className="text-xl md:text-2xl cursor-pointer font-semibold tracking-tight text-red-900 dark:text-white">
-                ₹{product.starting_price}
-              </h5>
+              <ProductPrice price={product.starting_price} />
             )}
             <p className="link">{product.available_colors.length} Colors</p>
             <div className="my-2 pb-2">

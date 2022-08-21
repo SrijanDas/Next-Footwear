@@ -21,10 +21,10 @@ export default function Home({ newProducts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!isAuthenticated && <LoginSection />}
-
       <HeroSection />
-      <section className="newProducts md:p-10 bg-white">
+      {!isAuthenticated && <LoginSection />}
+      {/* <div className="divider"></div> */}
+      <section className="newProducts md:p-10 bg-white mt-2">
         <div className="flex flex-wrap justify-between items-center px-2 py-4">
           <span className="text-lg font-semibold uppercase">NEW ARRIVALS</span>
           <Link href="/products">

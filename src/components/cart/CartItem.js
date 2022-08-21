@@ -5,7 +5,9 @@ import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { isBrowser, isMobile } from "react-device-detect";
-import formatPrice from "../../utils/formatPrice";
+import { formatPrice } from "../../utils/helpers";
+import ProductPrice from "../shared/ProductPrice";
+import ProductTitle from "../shared/ProductTitle";
 
 function CartItem({ item }) {
   const productLink = `/products/${item.parentSlug}?color=${item.color}&size=${item.size}`;
@@ -118,18 +120,14 @@ function CartItem({ item }) {
         <div className="flex flex-col">
           <Link href={productLink}>
             <a className="ml-4">
-              <h5 className="text-black text-lg font-semibold hover:text-green-600">
-                {item.name}
-              </h5>
-              <span className="mr-2">
+              <ProductTitle title={item.name} />
+              <span className="mr-2 capitalize">
                 Color: {item.color} | Size: {item.size}
               </span>
               <br />
               <span>Delivery by Fri Jul 22</span>
               <br />
-              <span className="text-black text-3xl font-semibold hover:text-red-800">
-                {formatPrice(item.price * item.quantity, "INR")}
-              </span>
+              <ProductPrice price={item.price * item.quantity} />
             </a>
           </Link>
           {isBrowser && (

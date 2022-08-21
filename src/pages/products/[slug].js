@@ -19,17 +19,17 @@ import ProductPageSkeleton from "../../components/skeletons/ProductPageSkeleton"
 import AddToWishlist from "../../components/shared/AddToWishlist";
 import ReviewsSection from "../../components/products/ReviewsSection";
 import Rating from "../../components/shared/Rating";
-import formatPrice from "../../utils/formatPrice";
+import { formatPrice } from "../../utils/helpers";
 
 const executeScroll = (ref) =>
   ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
 
 function ProductSlug(pageProps) {
   const router = useRouter();
-  // if (!pageProps.product) {
-  //   router.push("/500");
-  //   return <Loader />;
-  // }
+  if (!pageProps.product) {
+    router.push("/500");
+    return <Loader />;
+  }
 
   const pageTitle = `NFootwears | ${pageProps.product.name}`;
 
@@ -88,7 +88,7 @@ function ProductSlug(pageProps) {
 
   const dispatch = useDispatch();
 
-  const addToCart = () => {
+  const addToCart = (showAlert = false) => {
     dispatch({
       type: "ADDED_TO_CART",
       payload: {
@@ -103,7 +103,7 @@ function ProductSlug(pageProps) {
       },
     });
     setAddedToCart(true);
-    toast.success("Added to cart");
+    showAlert && toast.success("Added to cart");
   };
 
   const buyNow = () => {
@@ -196,7 +196,7 @@ function ProductSlug(pageProps) {
                         toast.warning(price);
                         return;
                       }
-                      addToCart();
+                      addToCart(true);
                     }}
                     className="btn btn-black gap-2 rounded-md w-1/2"
                   >
@@ -239,7 +239,7 @@ function ProductSlug(pageProps) {
               </h5>
               {quantity < 10 && !btnsDisabled ? (
                 <span className="font-medium h-5 antialiased text-error">
-                  `Only {quantity} left in stock`
+                  Only {quantity} left in stock
                 </span>
               ) : (
                 <div className="font-medium h-6 w-full antialiased text-error"></div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { HiStar } from "react-icons/hi";
 import axios from "../../utils/axios";
-import formatDate from "../../utils/formatDate";
+import { formatDate } from "../../utils/helpers";
 import Rating from "../shared/Rating";
 import ReviewSkeleton from "../skeletons/ReviewSkeleton";
 

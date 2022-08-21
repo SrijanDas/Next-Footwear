@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios";
 import OrderCard from "../../components/order/OrderCard";
+import OrderCardSkeleton from "../../components/skeletons/OrderCardSkeleton";
 
 function orders() {
   const [orders, setOrders] = useState([]);
@@ -28,7 +29,7 @@ function orders() {
       <h1 className="text-black text-2xl font-semibold">My Orders</h1>
       <div className="divider"></div>
       {isLoading ? (
-        "Loading orders..."
+        <OrderCardSkeleton />
       ) : orders.length > 0 ? (
         <div className="flex flex-col gap-2 md:gap-4">
           {orders.map((order) => (
