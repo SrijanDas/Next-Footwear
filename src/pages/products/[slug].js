@@ -26,10 +26,10 @@ const executeScroll = (ref) =>
 
 function ProductSlug(pageProps) {
   const router = useRouter();
-  // if (!pageProps.product) {
-  //   router.push("/500");
-  //   return <Loader />;
-  // }
+  if (!pageProps.product) {
+    router.push("/500");
+    return <Loader />;
+  }
 
   const pageTitle = `NFootwears | ${pageProps.product.name}`;
 
@@ -47,12 +47,12 @@ function ProductSlug(pageProps) {
   // this is product
   const [price, setPrice] = useState(
     pageProps.size && selectedSize !== 0
-      ? product.available_products[String(pageProps.size)].price
+      ? product.available_products[String(selectedSize)].price
       : "Please Select Size"
   );
   const [quantity, setQuantity] = useState(
     pageProps.size && selectedSize !== 0
-      ? product.available_products[String(pageProps.size)].quantity
+      ? product.available_products[String(selectedSize)].quantity
       : product.quantity
   );
 
@@ -66,6 +66,8 @@ function ProductSlug(pageProps) {
   // handleColorChange
   const handleColorChange = async (color) => {
     setIsLoading(true);
+    setAddedToCart(false);
+
     let slug = product.parent_slug;
     router.replace(
       {
@@ -81,7 +83,7 @@ function ProductSlug(pageProps) {
       }
     );
     await axios
-      .get(`/products/${product.parent_slug}?color=${color}`)
+      .get(`/products/${slug}?color=${color}`)
       .then((res) => {
         setPrice("Please Select Size");
         setSelectedSize(0);
@@ -112,7 +114,7 @@ function ProductSlug(pageProps) {
       }
     );
     setAddedToCart(false);
-    setSelectedSize(pageProps.productsize);
+    setSelectedSize(size);
     setPrice(product.available_products[size].price);
     setQuantity(product.available_products[size].quantity);
   };
