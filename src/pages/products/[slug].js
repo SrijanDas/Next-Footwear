@@ -26,10 +26,10 @@ const executeScroll = (ref) =>
 
 function ProductSlug(pageProps) {
   const router = useRouter();
-  if (!pageProps.product) {
-    router.push("/500");
-    return <Loader />;
-  }
+  // if (!pageProps.product) {
+  //   router.push("/500");
+  //   return <Loader />;
+  // }
 
   const pageTitle = `NFootwears | ${pageProps.product.name}`;
 
@@ -46,12 +46,12 @@ function ProductSlug(pageProps) {
 
   // this is product
   const [price, setPrice] = useState(
-    pageProps.size
+    pageProps.size && selectedSize !== 0
       ? product.available_products[String(pageProps.size)].price
       : "Please Select Size"
   );
   const [quantity, setQuantity] = useState(
-    pageProps.size
+    pageProps.size && selectedSize !== 0
       ? product.available_products[String(pageProps.size)].quantity
       : product.quantity
   );
@@ -66,6 +66,20 @@ function ProductSlug(pageProps) {
   // handleColorChange
   const handleColorChange = async (color) => {
     setIsLoading(true);
+    let slug = product.parent_slug;
+    router.replace(
+      {
+        pathname: `/products/[slug]`,
+        query: {
+          slug,
+          color,
+        },
+      },
+      `/products/${slug}?color=${color}`,
+      {
+        shallow: true,
+      }
+    );
     await axios
       .get(`/products/${product.parent_slug}?color=${color}`)
       .then((res) => {
@@ -74,14 +88,31 @@ function ProductSlug(pageProps) {
         setProduct(res.data);
         setSelectedColor(color);
         setImageUrl(res.data.image_url);
+      })
+      .catch((e) => {
+        console.log(e);
       });
     setIsLoading(false);
   };
 
   // handleSizeChange
   const handleSizeChange = (size) => {
+    let slug = product.parent_slug;
+    router.replace(
+      {
+        pathname: `/products/[slug]`,
+        query: {
+          slug,
+          size,
+        },
+      },
+      `/products/${slug}?color=${selectedColor}&size=${size}`,
+      {
+        shallow: true,
+      }
+    );
     setAddedToCart(false);
-    setSelectedSize(size);
+    setSelectedSize(pageProps.productsize);
     setPrice(product.available_products[size].price);
     setQuantity(product.available_products[size].quantity);
   };
@@ -287,7 +318,6 @@ export async function getServerSideProps(req, res) {
     if (size) {
       props.size = parseInt(size);
     }
-
     return { props };
   } catch (error) {
     return { props: { product: null } };
