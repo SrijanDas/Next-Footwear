@@ -14,7 +14,11 @@ function OrderItem({
   redirectLink = "/",
 }) {
   const router = useRouter();
-  const orderStatus = item.returned ? "RET" : order_status;
+  const orderStatus = item.returned
+    ? "RET"
+    : item.return_requested
+    ? "RET_REQUESTED"
+    : order_status;
   // handle review
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const toggleReviewModal = () => setReviewModalOpen(!reviewModalOpen);
@@ -90,7 +94,8 @@ function OrderItem({
                       className={`w-3 h-3 ${
                         orderStatus === "SHP"
                           ? "bg-green-600"
-                          : orderStatus === "RET"
+                          : orderStatus === "RET" ||
+                            orderStatus === "RET_REQUESTED"
                           ? "bg-error"
                           : "bg-warning"
                       } rounded-full`}
@@ -101,6 +106,8 @@ function OrderItem({
                     ? `Delivered on ${formatDate(delivery_date)}`
                     : orderStatus === "RET"
                     ? "Returned"
+                    : orderStatus === "RET_REQUESTED"
+                    ? "Return Requested"
                     : `Expected Delivery on ${formatDate(delivery_date)}`}
                 </span>
                 <span className="">
@@ -110,6 +117,8 @@ function OrderItem({
                     ? "Your item has been delivered"
                     : orderStatus === "RET"
                     ? "Your returned this Item"
+                    : orderStatus === "RET_REQUESTED"
+                    ? "Pending return"
                     : "Your item is yet to deliver"}
                 </span>
                 {orderStatus === "SHP" &&

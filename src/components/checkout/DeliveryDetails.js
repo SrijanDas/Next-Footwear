@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HiCheck, HiPlusCircle } from "react-icons/hi";
 import axios from "../../utils/axios";
-import NewAddressForm from "./NewAddressForm";
+import NewAddressForm from "../shared/NewAddressForm";
 import Address from "../shared/Address";
 
 function DeliveryDetails({

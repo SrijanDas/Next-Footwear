@@ -4,9 +4,9 @@ import axios from "../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
 import OrderItem from "../../components/order/OrderItem";
 import Address from "../../components/shared/Address";
-import { isMobile } from "react-device-detect";
 import { checkReturnPolicy, formatDate } from "../../utils/helpers";
 import OrderItemReturnModal from "../../components/order/OrderItemReturnModal";
+import DeliveryTimeline from "../../components/order/DeliveryTimeline";
 
 function Order({ order, error }) {
   if (error) {
@@ -25,64 +25,17 @@ function Order({ order, error }) {
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const toggleReturnModal = () => setReturnModalOpen(!returnModalOpen);
   const [itemReturned, setItemReturned] = useState([]);
+  const cancelReturn = async (itemId) => {
+    // setItemReturned((prev) => prev.filter((id) => id !== itemId));
+    await axios.post("cancel-return/", { itemId });
+    window.location.reload();
+  };
+
   return (
     <>
       {!error ? (
         <div className="p-2 md:p-10 w-full max-w-4xl mx-auto flex flex-col gap-4">
-          <Card title={`Order ID #${order.id}`}>
-            <div className="flex flex-col">
-              <span className="text-lg font-medium">
-                Total Amount: {order.total_amount}
-              </span>
-              <span className="">Items: {order.items.length}</span>
-              <span className="text-black text-lg font-semibold mt-4 flex gap-2 items-center">
-                {!isMobile && (
-                  <div
-                    className={`w-3 h-3 ${
-                      order_status === "SHP" ? "bg-green-600" : "bg-warning"
-                    } rounded-full`}
-                  ></div>
-                )}
-
-                {order_status === "SHP"
-                  ? `Delivered on ${formatDate(deliveryDate)}`
-                  : `Expected Delivery on ${formatDate(deliveryDate)}`}
-              </span>
-            </div>
-
-            <ul className="steps w-full">
-              <li className="step step-primary">
-                Order Confirmed
-                <br />
-                {formatDate(order.created_at)}
-              </li>
-              <li
-                className={`step ${
-                  order_status === "DIS" ||
-                  (order_status === "SHP" && "step-primary")
-                }`}
-              >
-                Order Dispatched
-                <br />
-                {order_status === "DIS" ||
-                  (order_status === "SHP" && formatDate(order.dispatched_on))}
-              </li>
-              <li
-                className={`step ${order_status === "SHP" && "step-primary"}`}
-              >
-                Out for Delivery
-                <br />
-                {order_status === "SHP" && formatDate(order.delivery_date)}
-              </li>
-              <li
-                className={`step ${order_status === "SHP" && "step-primary"}`}
-              >
-                Delivered
-                <br />
-                {order_status === "SHP" && formatDate(order.delivery_date)}
-              </li>
-            </ul>
-          </Card>
+          <DeliveryTimeline order={order} />
           <Card title="Items">
             {order.items.map((item, index) => (
               <div key={item.id}>
@@ -91,18 +44,22 @@ function Order({ order, error }) {
                     item={item}
                     delivery_date={deliveryDate}
                     order_status={
-                      itemReturned.includes(item.id) || item.returned
+                      item.returned
                         ? "RET"
+                        : itemReturned.includes(item.id) ||
+                          item.return_requested
+                        ? "RET_REQUESTED"
                         : orderStatus
                     }
                     redirectLink={`/products/${item.product.slug}?color=${item.product.color.slug}&size=${item.product.size}`}
                   />
                   {order_status === "SHP" && (
-                    <div className="flex justify-between items-center mt-4">
+                    <div className="md:flex md:justify-between md:items-center mt-4">
                       <div className="text-gray-500">
                         <span className="text-gray-500">
-                          {itemReturned.includes(item.id) || item.returned ? (
-                            "Item Returned"
+                          {itemReturned.includes(item.id) ||
+                          item.return_requested ? (
+                            "Returned Requested"
                           ) : (
                             <>
                               {!returnPolicy.expired
@@ -114,16 +71,31 @@ function Order({ order, error }) {
                           )}
                         </span>
                       </div>
-                      <div className="btn-group">
-                        {!returnPolicy.expired && !item.returned && (
+                      <div className="divider my-1 md:hidden"></div>
+                      <div className="md:mt-0 btn-group justify-center">
+                        {item.return_requested ||
+                        itemReturned.includes(item.id) ? (
                           <button
-                            className="btn btn-sm btn-ghost"
-                            onClick={() => toggleReturnModal()}
+                            onClick={() => cancelReturn(item.id)}
+                            className="btn btn-sm btn-ghost w-1/2 md:w-auto"
                           >
-                            Return Item
+                            Cancel Return
                           </button>
+                        ) : (
+                          ""
                         )}
-                        <button className="btn btn-sm btn-ghost">
+                        {!returnPolicy.expired &&
+                          !item.returned &&
+                          !item.return_requested &&
+                          !itemReturned.includes(item.id) && (
+                            <button
+                              className="btn btn-sm btn-ghost w-1/2 md:w-auto"
+                              onClick={() => toggleReturnModal()}
+                            >
+                              Return Item
+                            </button>
+                          )}
+                        <button className="btn btn-sm btn-ghost w-1/2 md:w-auto">
                           Need Help?
                         </button>
                       </div>

@@ -13,6 +13,7 @@ function OrderItemReturnModal({ itemId, isOpen, onClose, setItemReturned }) {
     onClose();
     setIsloading(false);
     setItemReturned((prev) => [...prev, itemId]);
+    setReason("");
     // window.location.reload();
   };
   return (

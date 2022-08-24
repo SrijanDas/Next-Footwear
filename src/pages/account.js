@@ -65,7 +65,7 @@ function Account() {
               <button className="btn btn-primary">View All Orders</button>
             </Link>
           </Card>
-          <Addresses allAddress={allAddress} />
+          <Addresses allAddress={allAddress} setAllAddress={setAllAddress} />
           <Card>
             <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
               <div className="bg-base-300 rounded-lg p-4 text-center w-full md:w-1/3">

@@ -17,6 +17,7 @@ export const load_user = () => async (dispatch) => {
         type: actiontypes.USER_LOADED_SUCCESS,
         payload: res.data,
       });
+      return true;
     } catch (error) {
       console.log(error);
       dispatch({
@@ -29,6 +30,7 @@ export const load_user = () => async (dispatch) => {
       type: actiontypes.USER_LOADED_FAIL,
     });
   }
+  return false;
 };
 
 export const loginCall = (email, password) => async (dispatch) => {

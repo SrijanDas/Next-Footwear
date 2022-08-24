@@ -130,7 +130,7 @@ function ProductSlug(pageProps) {
         <div className="h-auto p-5 lg:p-20 bg-white mb-10">
           <div className="flex flex-col lg:flex-row">
             <div className="leftSide flex flex-col items-center w-full lg:w-[40%]">
-              <div className="flex w-full h-80 lg:h-[28rem]">
+              <div className="flex gap-2 w-full h-80 lg:h-[28rem]">
                 {otherImages.length > 0 && (
                   <div className="flex flex-col gap-2 overflow-y-clip">
                     {otherImages.map((image, index) => (

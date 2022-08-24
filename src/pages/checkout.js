@@ -20,10 +20,11 @@ function checkout() {
   const [deliveryDetails, setDeliveryDetails] = useState({
     name: "",
     phone: "",
-    pincode: "",
     address: "",
-    city: "",
     state: "",
+    district: "",
+    city: "",
+    pincode: "",
     landmark: "",
   });
 
