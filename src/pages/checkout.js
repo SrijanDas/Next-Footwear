@@ -9,6 +9,7 @@ import Script from "next/script";
 import axios from "../utils/axios";
 import OrderPlaced from "../components/checkout/OrderPlaced";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 function checkout() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -32,9 +33,19 @@ function checkout() {
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [order, setOrder] = useState({});
-  const [transactionDetails, setTransactionDetails] = useState({});
 
-  const confirmOrder = async (e) => {
+  if (typeof window !== undefined && items.length <= 0 && !paymentSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4">
+        No items in cart
+        <Link href={"/products"}>
+          <a className="btn">Continue Shopping</a>
+        </Link>
+      </div>
+    );
+  }
+
+  const createOrder = async (e) => {
     setLoading(true);
     e.preventDefault();
 
@@ -51,10 +62,10 @@ function checkout() {
       )}`,
     };
 
-    axios
+    await axios
       .post("/orders/checkout/", data, { headers })
       .then((res) => {
-        if (res.data.status) {
+        if (res.data) {
           setOrderConfirmed(true);
           setOrder(res.data);
         } else {
@@ -71,70 +82,96 @@ function checkout() {
   // * Payment
   // *
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e, paymentMethod) => {
     setLoading(true);
-
     e.preventDefault();
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${JSON.parse(
+        localStorage.getItem("nf_auth_token")
+      )}`,
+    };
+    const res = await axios.post(
+      "orders/place-order/",
+      {
+        order_id: order.id,
+        paymentMethod,
+      },
+      { headers }
+    );
 
-    const { razorpay_order_id, razorpay_amount, currency } =
-      order.razorpay_details;
-
-    const options = {
-      key: process.env.KEY_ID, // Enter the Key ID generated from the Dashboard
-      amount: razorpay_amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: currency,
-      name: "Next Footwear",
-      description: "Transaction",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/nshoes-ca1c5.appspot.com/o/website_logo.png?alt=media&token=633636d2-58cd-4101-afc7-c79a5152ebdf",
-      order_id: razorpay_order_id,
-      handler: (response) => {
+    if (res.status) {
+      if (paymentMethod === "cod") {
+        console.log("cod placing order");
         setPaymentSuccess(true);
         setLoading(false);
-        setTransactionDetails(response.razorpay_payment_id);
         dispatch({
           type: "CLEAR_CART",
         });
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature);
-      },
-      prefill: {
-        name: deliveryDetails.name,
-        email: user.email,
-        contact: deliveryDetails.phone,
-      },
-      notes: {
-        address: "NextFootwear Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-      modal: {
-        ondismiss: function () {
-          console.log("Checkout form closed");
+      } else if (paymentMethod === "online") {
+        const { razorpay_order_id, razorpay_amount, currency } =
+          res.data.razorpay_details;
+
+        const options = {
+          key: process.env.KEY_ID, // Enter the Key ID generated from the Dashboard
+          amount: razorpay_amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: currency,
+          name: "Next Footwear",
+          description: "Transaction",
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/nshoes-ca1c5.appspot.com/o/website_logo.png?alt=media&token=633636d2-58cd-4101-afc7-c79a5152ebdf",
+          order_id: razorpay_order_id,
+          handler: (response) => {
+            setPaymentSuccess(true);
+            setLoading(false);
+            setOrder({ ...order, transactionId: response.razorpay_payment_id });
+            dispatch({
+              type: "CLEAR_CART",
+            });
+            // alert(response.razorpay_payment_id);
+            // alert(response.razorpay_order_id);
+            // alert(response.razorpay_signature);
+          },
+          prefill: {
+            name: deliveryDetails.name,
+            email: user.email,
+            contact: deliveryDetails.phone,
+          },
+          notes: {
+            address: "NextFootwear Corporate Office",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+          modal: {
+            ondismiss: function () {
+              console.log("Checkout form closed");
+              setLoading(false);
+              setPaymentSuccess(false);
+            },
+          },
+        };
+
+        const rzp1 = new Razorpay(options);
+
+        rzp1.on("payment.failed", (response) => {
+          // alert(response.error.code);
+          // alert(response.error.description);
+          // alert(response.error.source);
+          // alert(response.error.step);
+          // alert(response.error.reason);
+          // alert(response.error.metadata.order_id);
+          toast.error("Payment Failed");
+
           setLoading(false);
           setPaymentSuccess(false);
-        },
-      },
-    };
+        });
 
-    const rzp1 = new Razorpay(options);
-
-    rzp1.on("payment.failed", (response) => {
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      toast.error("Payment Failed");
+        rzp1.open();
+      }
 
       setLoading(false);
-      setPaymentSuccess(false);
-    });
-
-    rzp1.open();
+    }
   };
 
   return (
@@ -158,27 +195,25 @@ function checkout() {
                 items={items}
                 totalAmount={totalAmount}
                 totalItems={totalItems}
-                confirmOrder={confirmOrder}
+                confirmOrder={createOrder}
                 orderConfirmed={orderConfirmed}
+                setOrderConfirmed={setOrderConfirmed}
                 loading={loading}
                 setLoading={setLoading}
               />
             )}
             {isAuthenticated && deliveryDetailsFilled && orderConfirmed && (
               <PaymentDetails
-                orderDetails={order.order_details}
+                orderDetails={order}
                 handlePayment={handlePayment}
                 paymentSuccess={paymentSuccess}
                 loading={loading}
-                transactionDetails={transactionDetails}
               />
             )}
             {isAuthenticated &&
               deliveryDetailsFilled &&
               orderConfirmed &&
-              paymentSuccess && (
-                <OrderPlaced orderDetails={order.order_details} />
-              )}
+              paymentSuccess && <OrderPlaced orderDetails={order} />}
           </>
         )}
       </div>

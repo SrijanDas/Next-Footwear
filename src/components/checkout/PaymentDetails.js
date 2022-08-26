@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiCheck } from "react-icons/hi";
 
 function PaymentDetails({
   orderDetails,
   handlePayment,
   paymentSuccess,
-  transactionDetails,
   loading,
 }) {
   const packagingFee = Number(orderDetails.packaging_fees);
   const subTotal = Number(orderDetails.sub_total);
   const totalAmount = Number(orderDetails.total_amount);
+
+  const [paymentOption, setPaymentOption] = useState("");
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-md p-4 w-auto h-auto">
       <div className="border-b-2 border-gray-300 pb-4">
@@ -29,9 +31,11 @@ function PaymentDetails({
             Amount: <strong> ₹{totalAmount}</strong>
           </span>
           <br />
-          <span>
-            Transaction id: <strong>{transactionDetails}</strong>
-          </span>
+          {orderDetails.transactionDetails && (
+            <span>
+              Transaction id: <strong>{transactionDetails}</strong>
+            </span>
+          )}
         </div>
       ) : (
         <div>
@@ -61,15 +65,54 @@ function PaymentDetails({
               </tr>
             </tbody>
           </table>
-          <div className="flex justify-end border-t-2 border-gray-300 pt-4">
-            <button
-              onClick={handlePayment}
-              className={`btn btn-warning bg-orange-500 text-white ${
-                loading && "loading"
-              }`}
-            >
-              Proceed to Pay ₹{totalAmount}
-            </button>
+          <div className="border-t-2 border-gray-300 p-4 ">
+            <span className="text-lg font-semibold">Select Payment Option</span>
+            <div className="my-4">
+              <label className="flex gap-4 items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="cod"
+                  className="radio radio-primary"
+                  onChange={(e) => setPaymentOption(e.target.name)}
+                  checked={paymentOption === "cod"}
+                />
+
+                <span>Cash on Delivery</span>
+              </label>
+              {paymentOption === "cod" && (
+                <button
+                  onClick={(e) => handlePayment(e, "cod")}
+                  className={`btn mt-2 ml-10 btn-warning bg-orange-500 text-white ${
+                    loading && "loading"
+                  }`}
+                >
+                  Place Order
+                </button>
+              )}
+            </div>
+            <div className="my-4">
+              <label className="flex gap-4 items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="online"
+                  className="radio radio-primary"
+                  onChange={(e) => setPaymentOption(e.target.name)}
+                  checked={paymentOption === "online"}
+                />
+
+                <span>UPI/Net Banking/Card</span>
+              </label>
+              {paymentOption === "online" && (
+                <button
+                  onClick={(e) => handlePayment(e, "online")}
+                  className={`btn mt-2 ml-10 btn-warning bg-orange-500 text-white ${
+                    loading && "loading"
+                  }`}
+                >
+                  Proceed to Pay ₹{totalAmount}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -78,3 +121,14 @@ function PaymentDetails({
 }
 
 export default PaymentDetails;
+
+{
+  /* <button
+              onClick={handlePayment}
+              className={`btn btn-warning bg-orange-500 text-white ${
+                loading && "loading"
+              }`}
+            >
+              Proceed to Pay ₹{totalAmount}
+            </button> */
+}

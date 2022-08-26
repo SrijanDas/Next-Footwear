@@ -12,6 +12,7 @@ function DeliveryDetails({
 }) {
   const [allAddress, setAllAddress] = useState([]);
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // fetching addresses
   useEffect(() => {
@@ -25,6 +26,7 @@ function DeliveryDetails({
       })
       .then((res) => {
         setAllAddress(res.data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -78,31 +80,37 @@ function DeliveryDetails({
           </div>
         ) : (
           <div className="mt-2">
-            {allAddress.length > 0 ? (
-              allAddress.map((address) => (
-                <div className="my-4" key={address.id}>
-                  <label className="flex gap-4 items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-primary"
-                      onChange={() => handleAddressChange(address.id)}
-                    />
-
-                    <Address address={address} />
-                  </label>
-                  {deliveryAddress.id === address.id && (
-                    <button
-                      onClick={handleDeliverHere}
-                      className="btn mt-2 ml-10"
-                    >
-                      Deliver Here
-                    </button>
-                  )}
-                </div>
-              ))
+            {loading ? (
+              "Loading..."
             ) : (
-              <span className="text-gray-600">No address added yet</span>
+              <>
+                {allAddress.length > 0 ? (
+                  allAddress.map((address) => (
+                    <div className="my-4" key={address.id}>
+                      <label className="flex gap-4 items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name="radio-2"
+                          className="radio radio-primary"
+                          onChange={() => handleAddressChange(address.id)}
+                        />
+
+                        <Address address={address} />
+                      </label>
+                      {deliveryAddress.id === address.id && (
+                        <button
+                          onClick={handleDeliverHere}
+                          className="btn mt-2 ml-10"
+                        >
+                          Deliver Here
+                        </button>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-gray-600">No address added yet</span>
+                )}
+              </>
             )}
           </div>
         )}
