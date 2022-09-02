@@ -99,7 +99,7 @@ function CartItem({ item }) {
           <div className="flex items-center gap-3 mt-4">
             <button
               onClick={decrementQty}
-              className="btn btn-sm btn-circle btn-outline"
+              className="btn btn-sm btn-circle btn-outline btn-ghost border-slate-300 border-2"
             >
               <HiMinus />
             </button>
@@ -110,7 +110,7 @@ function CartItem({ item }) {
               onChange={handleQtyChange}
             />
             <button
-              className="btn btn-sm btn-circle btn-outline"
+              className="btn btn-sm btn-circle btn-outline btn-ghost border-slate-300 border-2"
               onClick={incrementQty}
             >
               <HiPlus />
@@ -133,14 +133,14 @@ function CartItem({ item }) {
           {isBrowser && (
             <div className="flex items-center ml-4 mt-6 gap-2">
               <button
-                className="btn btn-xs btn-ghost gap-2"
+                className="btn btn-xs btn-ghost gap-2 shadow-md"
                 onClick={saveToWishlist}
               >
                 Save for later
                 <HiHeart />
               </button>
               <button
-                className="btn btn-xs btn-ghost gap-2"
+                className="btn btn-xs btn-ghost gap-2 shadow-md"
                 onClick={removeItem}
               >
                 <HiOutlineTrash />

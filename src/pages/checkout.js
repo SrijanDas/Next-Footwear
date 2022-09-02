@@ -200,6 +200,7 @@ function checkout() {
                 setOrderConfirmed={setOrderConfirmed}
                 loading={loading}
                 setLoading={setLoading}
+                order={order}
               />
             )}
             {isAuthenticated && deliveryDetailsFilled && orderConfirmed && (

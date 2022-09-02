@@ -9,6 +9,7 @@ function OrderSummary({
   confirmOrder,
   orderConfirmed,
   loading,
+  order,
 }) {
   return (
     <div className="orderSummary bg-white rounded-lg border border-gray-200 shadow-md p-4">
@@ -25,7 +26,7 @@ function OrderSummary({
       {orderConfirmed ? (
         <div className="mt-3">
           <span>
-            {totalItems} {totalItems > 1 ? "items" : "item"}
+            {order.items.length} {order.items.length > 1 ? "items" : "item"}
           </span>
         </div>
       ) : (
