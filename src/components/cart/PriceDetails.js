@@ -1,6 +1,7 @@
 import React from "react";
+import { formatPrice } from "../../utils/helpers";
 
-function PriceDetails({ totalItems, totalAmount, handleCheckout }) {
+function PriceDetails({ totalItems, totalAmount, handleCheckout, cartValid }) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-md p-4 w-auto h-auto">
       <div className="border-b-2 border-gray-300 pb-4">
@@ -13,7 +14,7 @@ function PriceDetails({ totalItems, totalAmount, handleCheckout }) {
           <tbody>
             <tr>
               <td>Price ({totalItems} items)</td>
-              <td className="text-right">₹{totalAmount}</td>
+              <td className="text-right">{formatPrice(totalAmount)}</td>
             </tr>
 
             <tr>
@@ -22,9 +23,9 @@ function PriceDetails({ totalItems, totalAmount, handleCheckout }) {
             </tr>
 
             <tr>
-              <td className="text-2xl font-semibold">Subtotal</td>
-              <td className="text-2xl font-semibold text-right">
-                ₹{totalAmount}
+              <td className="text-xl md:text-2xl font-semibold">Subtotal</td>
+              <td className="text-xl md:text-2xl font-semibold text-right">
+                {formatPrice(totalAmount)}
               </td>
             </tr>
           </tbody>

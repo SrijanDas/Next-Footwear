@@ -5,11 +5,10 @@ import { HiPlus, HiMinus, HiHeart, HiOutlineTrash } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { isBrowser, isMobile } from "react-device-detect";
-import { formatPrice } from "../../utils/helpers";
 import ProductPrice from "../shared/ProductPrice";
 import ProductTitle from "../shared/ProductTitle";
 
-function CartItem({ item }) {
+function CartItem({ item, availableQuantity, setCartValid }) {
   const productLink = `/products/${item.parentSlug}?color=${item.color}&size=${item.size}`;
   const dispatch = useDispatch();
   // const memoizedValue = useMemo(() => computeItemTotal(item.price, item.quantity), [item.price, item.quantity]);
@@ -47,17 +46,23 @@ function CartItem({ item }) {
 
   const incrementQty = () => {
     if (quantity < 10) {
-      setQuantity(quantity + 1);
-      dispatch({
-        type: "INCREMENT_QUANTITY",
-        payload: {
-          itemId: item.id,
-          price: item.price,
-        },
-      });
-      toast.success(
-        `You've changed '${item.name}' QUANTITY to '${item.quantity}'`
-      );
+      if (availableQuantity > 0 && quantity + 1 <= availableQuantity) {
+        setQuantity(quantity + 1);
+        dispatch({
+          type: "INCREMENT_QUANTITY",
+          payload: {
+            itemId: item.id,
+            price: item.price,
+          },
+        });
+        toast.success(
+          `You've changed '${item.name}' QUANTITY to '${item.quantity}'`
+        );
+      } else {
+        toast.warning(
+          `We're sorry! Only ${availableQuantity} unit(s) available for this item`
+        );
+      }
     } else {
       toast.warn("We're sorry! Only 10 unit(s) allowed for each item");
       setQuantity(10);
@@ -77,6 +82,9 @@ function CartItem({ item }) {
       },
     });
     toast.warning(`You've removed '${item.name}' from cart`);
+    if (availableQuantity <= 0) {
+      setCartValid(true);
+    }
   };
 
   return (
@@ -128,6 +136,9 @@ function CartItem({ item }) {
               <span>Delivery by Fri Jul 22</span>
               <br />
               <ProductPrice price={item.price * item.quantity} />
+              {availableQuantity <= 0 && (
+                <span className="mt-2 text-md text-red-600">Out of stock</span>
+              )}
             </a>
           </Link>
           {isBrowser && (

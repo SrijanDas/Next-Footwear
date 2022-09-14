@@ -208,9 +208,13 @@ function ProductSlug(pageProps) {
                   onClick={() => {
                     if (btnsDisabled) {
                       toast.warning(price);
+
                       return;
+                    } else if (quantity <= 0) {
+                      toast.warning("This item is out of stock");
+                    } else {
+                      buyNow();
                     }
-                    buyNow();
                   }}
                 >
                   <HiLightningBolt className="text-2xl" />
@@ -227,9 +231,13 @@ function ProductSlug(pageProps) {
                     onClick={() => {
                       if (btnsDisabled) {
                         toast.warning(price);
+
                         return;
+                      } else if (quantity <= 0) {
+                        toast.warning("This item is out of stock");
+                      } else {
+                        addToCart(true);
                       }
-                      addToCart(true);
                     }}
                     className="btn btn-black gap-2 rounded-md w-1/2"
                   >
@@ -272,7 +280,9 @@ function ProductSlug(pageProps) {
               </h5>
               {quantity < 10 && !btnsDisabled ? (
                 <span className="font-medium h-5 antialiased text-error">
-                  Only {quantity} left in stock
+                  {quantity <= 0
+                    ? "Out of stock"
+                    : "Only {quantity} left in stock"}
                 </span>
               ) : (
                 <div className="font-medium h-6 w-full antialiased text-error"></div>
