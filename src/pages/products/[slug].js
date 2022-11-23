@@ -282,7 +282,7 @@ function ProductSlug(pageProps) {
                 <span className="font-medium h-5 antialiased text-error">
                   {quantity <= 0
                     ? "Out of stock"
-                    : "Only {quantity} left in stock"}
+                    : `Only ${quantity} left in stock`}
                 </span>
               ) : (
                 <div className="font-medium h-6 w-full antialiased text-error"></div>
