@@ -21,10 +21,10 @@ Next Footwear is an e-commerce website where you can buy premium footwears of di
 ## Features to be added later in the future
 
 - [ ] Wishlist
-- [] Different Categories of Products (Men, Women, Kids)
-- [] Offers
-- [] Add Swiper for Images (Product details page)
-- [] Verify Email Address
+- [ ] Different Categories of Products (Men, Women, Kids)
+- [ ] Offers
+- [ ] Add Swiper for Images (Product details page)
+- [ ] Verify Email Address
 
 ## Preview
 
