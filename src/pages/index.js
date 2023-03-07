@@ -24,23 +24,26 @@ export default function Home({ newProducts }) {
       <HeroSection />
       {!isAuthenticated && <LoginSection />}
       {/* <div className="divider"></div> */}
-      <section className="newProducts md:p-10 bg-white mt-2">
-        <div className="flex flex-wrap justify-between items-center px-2 py-4">
-          <span className="text-lg font-semibold uppercase">NEW ARRIVALS</span>
-          <Link href="/products">
-            <button className="btn-black-outlined flex items-center gap-2">
-              VIEW ALL
-              <HiArrowRight />
-            </button>
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-          {newProducts.length >= 0 &&
-            newProducts.map((product) => (
+      {newProducts.length > 0 && (
+        <section className="newProducts md:p-10 bg-white mt-2">
+          <div className="flex flex-wrap justify-between items-center px-2 py-4">
+            <span className="text-lg font-semibold uppercase">
+              NEW ARRIVALS
+            </span>
+            <Link href="/products">
+              <button className="btn-black-outlined flex items-center gap-2">
+                VIEW ALL
+                <HiArrowRight />
+              </button>
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+            {newProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
       {/* <section className="trending p-4 md:p-10 bg-white">
         <div className="flex flex-wrap justify-between items-center pb-4">
           <span className="text-lg font-semibold uppercase">Trending</span>
@@ -80,8 +83,13 @@ export default function Home({ newProducts }) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get("/latest-products");
-  const newProducts = res.data;
+  let newProducts = [];
+  try {
+    const res = await axios.get("/latest-products");
+    newProducts = res.data;
+  } catch (error) {
+    console.log(error);
+  }
   return {
     props: { newProducts },
   };

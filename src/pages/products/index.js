@@ -81,50 +81,53 @@ function Products(pageProps) {
       </Head>
 
       <div className="md:p-20">
-        <div className="flex items-center w-full md:justify-end btn-group mb-2">
-          <button
-            onClick={toggleSortModal}
-            className="btn btn-ghost gap-2 w-1/2 md:w-auto rounded-none md:rounded-md border-r-2 border-r-slate-200 shadow-md"
-          >
-            <HiSortAscending className="h-5 w-5" />
-            Sort
-          </button>
-          <button
-            onClick={toggleFilterModal}
-            className="btn btn-ghost gap-2 w-1/2 md:w-auto rounded-none md:rounded-md border-l-2 border-l-slate-200 shadow-md"
-          >
-            <HiFilter className="h-5 w-5" />
-            Filter
-            {appliedFilters.length > 0 && (
-              <div className="badge badge-md badge-primary">
-                {appliedFilters.length}
-              </div>
-            )}
-          </button>
-          <SorterModal
-            isOpen={sortModalOpen}
-            onClose={toggleSortModal}
-            sortMethod={sortMethod}
-            handleSortMethodChange={handleSortMethodChange}
-          />
-          <FilterModal
-            selectedBrands={selectedBrands}
-            setSelectedBrands={setSelectedBrands}
-            appliedFilters={appliedFilters}
-            setAppliedFilters={setAppliedFilters}
-            clearFilters={clearFilters}
-            isOpen={filterModalOpen}
-            onClose={toggleFilterModal}
-          />
-        </div>
         {products.length > 0 ? (
-          <div className="h-screen md:mt-5">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          <>
+            <div className="flex items-center w-full md:justify-end btn-group mb-2">
+              <button
+                onClick={toggleSortModal}
+                className="btn btn-ghost gap-2 w-1/2 md:w-auto rounded-none md:rounded-md border-r-2 border-r-slate-200 shadow-md"
+              >
+                <HiSortAscending className="h-5 w-5" />
+                Sort
+              </button>
+              <button
+                onClick={toggleFilterModal}
+                className="btn btn-ghost gap-2 w-1/2 md:w-auto rounded-none md:rounded-md border-l-2 border-l-slate-200 shadow-md"
+              >
+                <HiFilter className="h-5 w-5" />
+                Filter
+                {appliedFilters.length > 0 && (
+                  <div className="badge badge-md badge-primary">
+                    {appliedFilters.length}
+                  </div>
+                )}
+              </button>
+              <SorterModal
+                isOpen={sortModalOpen}
+                onClose={toggleSortModal}
+                sortMethod={sortMethod}
+                handleSortMethodChange={handleSortMethodChange}
+              />
+              <FilterModal
+                selectedBrands={selectedBrands}
+                setSelectedBrands={setSelectedBrands}
+                appliedFilters={appliedFilters}
+                setAppliedFilters={setAppliedFilters}
+                clearFilters={clearFilters}
+                isOpen={filterModalOpen}
+                onClose={toggleFilterModal}
+              />
             </div>
-          </div>
+
+            <div className="h-screen md:mt-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </div>
+          </>
         ) : (
           "No products found"
         )}
@@ -137,8 +140,9 @@ export default Products;
 
 export async function getServerSideProps() {
   // Fetch data from external API
+  let products = [];
   const res = await axios.get("/latest-products");
-  const products = res.data;
+  products = res.data;
 
   // Pass data to the page via props
   return { props: { products } };
